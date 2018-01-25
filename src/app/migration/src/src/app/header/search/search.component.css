@@ -1,0 +1,21 @@
+.searchdropdown.ui.disabled.button {
+  box-shadow: 0 0 0 1px rgba(51, 51, 51, 0.33) inset !important;
+}
+.searchfilterinput.ui.search .prompt {
+  border-radius: 0;
+}
+.searchicon.ui.icon.input input {
+  padding-right: 6px!important;
+  border: 1px solid rgba(51, 51, 51, 0.33);
+  border-radius: 0 .28571429rem .28571429rem 0;
+  padding-top: 0.85em;
+}
+.padding-top-1rem {
+  padding-top: 1rem !important;
+}
+.searchicon.ui.icon.input i {
+  cursor: pointer;
+}
+.searchinput {
+  width: 450px;
+}

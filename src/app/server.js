@@ -96,7 +96,7 @@ if (defaultTenant) {
 }
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'private')))
-
+app.use(express.static(path.join(__dirname, 'migration/dist'), { extensions: ['ejs'], index: false }))
 // Announcement routing
 app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak))
@@ -208,6 +208,15 @@ app.all('/private/*', keycloak.protect(), permissionsHelper.checkPermission(), f
   res.locals.theme = envHelper.PORTAL_THEME
   res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
   res.render(path.join(__dirname, 'private', 'index.ejs'))
+})
+
+app.all('/migration/*', keycloak.protect(), permissionsHelper.checkPermission(), function (req, res) {
+  res.locals.userId = req.kauth.grant.access_token.content.sub
+  res.locals.sessionId = req.sessionID
+  res.locals.cdnUrl = envHelper.PORTAL_CDN_URL
+  res.locals.theme = envHelper.PORTAL_THEME
+  res.locals.defaultPortalLanguage = envHelper.PORTAL_DEFAULT_LANGUAGE
+  res.render(path.join(__dirname, 'migration/dist', 'index.ejs'))
 })
 
 app.get('/get/envData', keycloak.protect(), function (req, res) {
