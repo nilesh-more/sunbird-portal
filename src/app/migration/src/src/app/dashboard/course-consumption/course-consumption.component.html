@@ -1,0 +1,55 @@
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+       
+        <select class="ui dropdown" [(ngModel)]="selectedOption" (ngModelChange)="selectNextAttr($event)">
+            <option value="">Select one</option>
+            <option *ngFor="let course of courseList" [value]="course.name">{{course.name}}</option>
+        </select>
+
+        <div class="ui segments">
+            <div class="ui segment">
+                <ng-template let-option #optionTemplate>
+                    {{ option.name }}
+                </ng-template>
+                <sui-select class="selection"
+                    [(ngModel)]="selectedOption"
+                    [options]="options"
+                    labelField="name"
+                    [optionTemplate]="optionTemplate"
+                    [isSearchable]="true"
+                    #templated>
+                    <sui-select-option *ngFor="let o of courseList" [value]="o"></sui-select-option>
+                </sui-select>
+            </div>
+            <div class="ui segment consumption-data-holder">
+                <div class="ui four cards">
+		  			<div class="card" *ngFor="let o of numberData">
+						<div class="content center aligned">
+			  				<div class="meta dashBoardCardText">{{o.name}}</div>
+			  				<h2 class="description dashboardCardSubText">{{o.value}}</h2>
+						</div>
+		  			</div>
+				</div>
+            </div>           
+            <div class="ui segment">
+                <div class="col-md-6">
+                    <div style="display: block;">
+                        <canvas baseChart width="400" height="300"
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+
+        

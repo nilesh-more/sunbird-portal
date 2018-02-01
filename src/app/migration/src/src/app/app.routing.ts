@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth-guard.service';
 import { RouteResolveService } from './services/route-resolve.service';
 import { AuthGuardComponent } from './random/auth-guard/auth-guard.component';
+import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component'
 
 const appRoutes: Routes = [
     {
@@ -29,6 +30,13 @@ const appRoutes: Routes = [
         },
         canActivate: [
             AuthGuard,
+        ]
+    },
+    {
+        path: 'migration/myactivity',
+        component: CourseConsumptionDashboardComponent,
+        canActivate: [
+            'CanActivate',
         ]
     }
 ];

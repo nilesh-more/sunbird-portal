@@ -14,6 +14,13 @@ import { AuthGuard } from './services/auth-guard.service';
 import { RouteResolveService } from './services/route-resolve.service';
 import { AuthGuardComponent } from './random/auth-guard/auth-guard.component';
 import { SuiModule } from 'ng2-semantic-ui';
+import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component';
+import { CourseConsumptionService } from './dashboard/datasource/course-consumption.service';
+import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
+
+import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -22,6 +29,7 @@ import { SuiModule } from 'ng2-semantic-ui';
     MainMenuComponent,
     SearchComponent,
     CommunityListComponent,
+    CourseConsumptionDashboardComponent,
     ProfileComponent,
     AuthGuardComponent
   ],
@@ -29,13 +37,17 @@ import { SuiModule } from 'ng2-semantic-ui';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SuiModule
+    SuiModule,
+    FormsModule,
+    ChartsModule
   ],
   providers: [
     RouteResolveService,
     ProfileService,
     PermissionService,
-    AuthGuard
+    AuthGuard,
+    CourseConsumptionService,
+    DashboardUtilsService
   ],
     entryComponents: [AppComponent],
     bootstrap: [AppComponent]
