@@ -24,27 +24,30 @@
             </div>
             <div class="ui segment consumption-data-holder">
                 <div class="ui four cards">
-		  			<div class="card" *ngFor="let o of numberData">
+		  			<div class="card" *ngFor="let block of blockData">
 						<div class="content center aligned">
-			  				<div class="meta dashBoardCardText">{{o.name}}</div>
-			  				<h2 class="description dashboardCardSubText">{{o.value}}</h2>
+			  				<div class="meta dashBoardCardText">{{block.name}}</div>
+			  				<h2 class="description dashboardCardSubText">{{block.value}}</h2>
 						</div>
 		  			</div>
 				</div>
             </div>           
-            <div class="ui segment">
-                <div class="col-md-6">
-                    <div style="display: block;">
-                        <canvas baseChart width="400" height="300"
-                            [datasets]="lineChartData"
-                            [labels]="lineChartLabels"
-                            [options]="lineChartOptions"
-                            [colors]="lineChartColors"
-                            [legend]="lineChartLegend"
-                            [chartType]="lineChartType"
-                            (chartHover)="chartHovered($event)"
-                            (chartClick)="chartClicked($event)">
-                        </canvas>
+
+            <div *ngIf="graphData && graphData.length > 0">
+                <div class="ui segment" *ngFor="let block of graphData">
+                    <div class="col-md-6">
+                        <div style="display: block;">
+                            <canvas baseChart width="400" height="300"
+                                [datasets]="block[0]"
+                                [labels]="block[1]"
+                                [options]="block[2]"
+                                [colors]="block[3]"
+                                [legend]="lineChartLegend"
+                                [chartType]="lineChartType"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)">
+                            </canvas>
+                        </div>
                     </div>
                 </div>
             </div>
