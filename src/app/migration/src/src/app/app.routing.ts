@@ -6,6 +6,7 @@ import { AuthGuard } from './services/auth-guard.service';
 import { RouteResolveService } from './services/route-resolve.service';
 import { AuthGuardComponent } from './random/auth-guard/auth-guard.component';
 import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component'
+import { OrganisationComponent } from './dashboard/organisation/organisation.component';
 
 const appRoutes: Routes = [
     {
@@ -35,6 +36,13 @@ const appRoutes: Routes = [
     {
         path: 'migration/myactivity',
         component: CourseConsumptionDashboardComponent,
+        canActivate: [
+            'CanActivate',
+        ]
+    },
+    {
+        path: 'migration/org-dashboard',
+        component: OrganisationComponent,
         canActivate: [
             'CanActivate',
         ]

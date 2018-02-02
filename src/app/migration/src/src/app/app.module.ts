@@ -20,6 +20,7 @@ import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.se
 
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
+import { OrganisationComponent } from './dashboard/organisation/organisation.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ChartsModule } from 'ng2-charts';
     CommunityListComponent,
     CourseConsumptionDashboardComponent,
     ProfileComponent,
-    AuthGuardComponent
+    AuthGuardComponent,
+    OrganisationComponent
   ],
   imports: [
     BrowserModule,
