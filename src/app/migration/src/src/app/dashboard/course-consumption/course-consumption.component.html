@@ -1,15 +1,47 @@
-<div class="ui grid">
+show:{{showLoader}}
+<div class="ui grid margin-top" [hidden]="showLoader">
     <div class="one wide column"></div>
     <div class="ten wide column">
-       
-        <select class="ui dropdown" [(ngModel)]="selectedOption" (ngModelChange)="selectNextAttr($event)">
-            <option value="">Select one</option>
-            <option *ngFor="let course of courseList" [value]="course.name">{{course.name}}</option>
-        </select>
+        <div class="ui grid">
+            <div class="five wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length === 1">
+                <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
+                <span class="dashBoardSectionHeading">{{courseName}}</span>
+            </div>
+
+            <div class="one wide column" *ngIf="myCoursesList && myCoursesList.length > 1">
+                <span class="dashBoardSectionHeading"><i class="large bar chart icon padding-top-5"></i></span>
+            </div>
+            <div class="four wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length > 1">
+                <ng-template let-option #optionTemplate>
+                    {{ option.name }}
+                </ng-template>
+                <sui-select class="selection"
+                    [(ngModel)]="selectedOption"
+                    (ngModelChange)="onAfterCourseChange($event)"
+                    [options]="options"
+                    labelField="name"
+                    [optionTemplate]="optionTemplate"
+                    [isSearchable]="true"
+                    #templated>
+                    <sui-select-option *ngFor="let o of myCoursesList" [value]="o"></sui-select-option>
+                </sui-select> 
+            </div>
+        </div>
+        <div class="ui grid margin-top-10 padding-left-5" *ngIf="!isMultipleCourses">
+		    <div class="six wide column">
+			    <div class="ui text menu float-ContentLeft padding-top-10">
+				    <span class="dashBoardMenuItem cursor-pointer active" 
+				    [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				    <span class="dashBoardMenuItem cursor-pointer">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				    <span class="dashBoardMenuItem cursor-pointer">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			    </div>
+		    </div>
+		    <div class="two wide column"></div>
+	    </div>
 
         <div class="ui segments">
             <div class="ui segment">
-                <ng-template let-option #optionTemplate>
+                <!--<ng-template let-option #optionTemplate>
                     {{ option.name }}
                 </ng-template>
                 <sui-select class="selection"
@@ -19,28 +51,34 @@
                     [optionTemplate]="optionTemplate"
                     [isSearchable]="true"
                     #templated>
-                    <sui-select-option *ngFor="let o of courseList" [value]="o"></sui-select-option>
-                </sui-select>
+                    <sui-select-option *ngFor="let o of myCoursesList" [value]="o"></sui-select-option>
+                </sui-select>-->
             </div>
             <div class="ui segment consumption-data-holder">
                 <div class="ui four cards">
-		  			<div class="card" *ngFor="let block of blockData">
-						<div class="content center aligned">
-			  				<div class="meta dashBoardCardText">{{block.name}}</div>
-			  				<h2 class="description dashboardCardSubText">{{block.value}}</h2>
-						</div>
-		  			</div>
-				</div>
+                    <div class="card" *ngFor="let block of blockData">
+                        <div class="content center aligned">
+                            <div class="meta dashBoardCardText">{{block.name}}</div>
+                            <h2 class="description dashboardCardSubText">{{block.value}}</h2>
+                        </div>
+                    </div>
+                </div>
             </div>           
-
+            <div class="ui icon message" [hidden]="!showLoader">
+                <i class="notched circle loading icon"></i>
+                <div class="content">
+                    <div class="header">Please wait.</div>
+                    <p>We are fetching details</p>
+                </div>
+            </div>
             <div *ngIf="graphData && graphData.length > 0">
                 <div class="ui segment" *ngFor="let block of graphData">
                     <div class="col-md-6">
                         <div style="display: block;">
                             <canvas baseChart width="400" height="300"
-                                [datasets]="block[0]"
-                                [labels]="block[1]"
-                                [options]="block[2]"
+                                [datasets]="block.yaxesData"
+                                [labels]="block.xaxesData"
+                                [options]="block.chartOptions"
                                 [colors]="block[3]"
                                 [legend]="lineChartLegend"
                                 [chartType]="lineChartType"

@@ -14,9 +14,11 @@ import { AuthGuard } from './services/auth-guard.service';
 import { RouteResolveService } from './services/route-resolve.service';
 import { AuthGuardComponent } from './random/auth-guard/auth-guard.component';
 import { SuiModule } from 'ng2-semantic-ui';
+// Dashboards
 import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component';
 import { CourseConsumptionService } from './dashboard/datasource/course-consumption.service';
 import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
+import { SearchService } from './services/search.service'
 
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
@@ -47,7 +49,8 @@ import { ChartsModule } from 'ng2-charts';
     PermissionService,
     AuthGuard,
     CourseConsumptionService,
-    DashboardUtilsService
+    DashboardUtilsService,
+    SearchService
   ],
     entryComponents: [AppComponent],
     bootstrap: [AppComponent]
