@@ -38,7 +38,6 @@ export class DataService {
           }
         })
       .catch((err) => {
-        console.log('error...', err)
         return Observable.throw(err)
       })
   }
@@ -54,9 +53,6 @@ export class DataService {
           }
         })
       .catch((err) => {
-        console.log('Error in service...', err)
-        // err = {"responseCode":"OK","result":{"count":15,"content":[{"identifier":"do_2123213692758835201833","name":"Course 1"},{"identifier":"do_2123213687280271361832","name":"Untitled textbook"}]}}
-        err = {"responseCode":"OK","result":{"count":15,"content":[{"identifier":"do_2123213692758835201833","name":"Untitled textbook"}]}}
         return Observable.throw(err)
       })
   }
