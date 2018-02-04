@@ -51,7 +51,7 @@ export class DashboardUtilsService  {
     }
 
     // ===================== Move into renderer =======================
-    getLineDataA(bucketData){
+    getLineData(bucketData){
         let values: Array<any> = []
         let labels: Array<any> = []
         _.forEach(bucketData.buckets, function (bucketValue, bucketKey) {

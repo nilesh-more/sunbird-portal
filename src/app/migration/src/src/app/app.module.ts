@@ -17,6 +17,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 // Dashboards
 import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component';
 import { CourseConsumptionService } from './dashboard/datasource/course-consumption.service';
+import { OrganisationService } from './dashboard/datasource/organisation.service';
 import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
 import { SearchService } from './services/search.service'
 
@@ -51,6 +52,7 @@ import { OrganisationComponent } from './dashboard/organisation/organisation.com
     PermissionService,
     AuthGuard,
     CourseConsumptionService,
+    OrganisationService,
     DashboardUtilsService,
     SearchService
   ],
