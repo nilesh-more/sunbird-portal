@@ -6,7 +6,6 @@
                 <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
                 <span class="dashBoardSectionHeading">{{courseName}}</span>
             </div>
-
             <div class="one wide column" *ngIf="myCoursesList && myCoursesList.length > 1">
                 <span class="dashBoardSectionHeading"><i class="large bar chart icon padding-top-5"></i></span>
             </div>
@@ -14,30 +13,18 @@
                 <ng-template let-option #optionTemplate>
                     {{ option.name }}
                 </ng-template>
-                <sui-select class="selection"
-                    [(ngModel)]="selectedOption"
-                    (ngModelChange)="onAfterCourseChange($event)"
-                    [options]="options"
-                    labelField="name"
-                    [optionTemplate]="optionTemplate"
-                    [isSearchable]="true"
-                    #templated>
+                <sui-select class="selection" [(ngModel)]="selectedOption" (ngModelChange)="onAfterCourseChange($event)" [options]="options"
+                    labelField="name" [optionTemplate]="optionTemplate" [isSearchable]="true" #templated>
                     <sui-select-option *ngFor="let o of myCoursesList" [value]="o"></sui-select-option>
-                </sui-select> 
+                </sui-select>
             </div>
         </div>
         <div class="ui grid margin-top-10 padding-left-5" *ngIf="!isMultipleCourses">
             <div class="six wide column" *ngIf="myCoursesList && myCoursesList.length > 0">
                 <div class="ui text menu float-ContentLeft padding-top-10">
-                    <span class="dashBoardMenuItem cursor-pointer active" 
-                        (click)="onAfterFilterChange('7d')" 
-                        [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="dashBoardMenuItem cursor-pointer" 
-                        (click)="onAfterFilterChange('14d')"
-                        [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span class="dashBoardMenuItem cursor-pointer" 
-                        (click)="onAfterFilterChange('5w')"
-                        [ngClass]="{'active': timePeriod === '5w' }">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
             </div>
             <div class="two wide column"></div>
@@ -58,26 +45,18 @@
                         <div *ngFor="let block of graphData;let graphIndex = index;">
                             <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
                                 <div class="ui segment">
-                                    <canvas baseChart width="300" height="110"
-                                        [datasets]="block.yaxesData"
-                                        [labels]="block.xaxesData"
-                                        [options]="block.chartOptions"
-                                        [colors]="block[3]"
-                                        [legend]="true"
-                                        [chartType]="'line'"
-                                        (chartHover)="chartHovered($event)"
+                                    <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                                        [colors]="block[3]" [legend]="true" [chartType]="'line'" (chartHover)="chartHovered($event)"
                                         (chartClick)="chartClicked($event)">
                                     </canvas>
                                 </div>
                             </div>
                         </div>
                         <div class="corse-graph-navigation-btn">
-                            <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')"
-                            [ngClass]="{'disabled': showGraph <= 0 }">
+                            <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
                                 <i class="left arrow icon"></i>
                             </button>
-                            <button class="ui primary basic compact icon button" (click)="graphNavigation('next')"
-                            [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
+                            <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
                                 <i class="right arrow icon"></i>
                             </button>
                         </div>
@@ -85,7 +64,7 @@
                 </div>
             </div>
         </div>
-        <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }"> 
+        <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }">
             <i class="notched circle loading icon"></i>
             <div class="content">
                 <div class="header">Please wait.</div>
@@ -103,4 +82,4 @@
             </ul>
         </div>
     </div>
- </div>
+</div>
