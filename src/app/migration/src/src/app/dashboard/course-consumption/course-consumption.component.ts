@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../../services/data.service'
 import { SearchService } from '../../services/search.service'
 import { CourseConsumptionService } from '../../dashboard/datasource/course-consumption.service';
 import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
@@ -13,17 +12,22 @@ import * as _ from 'lodash';
 })
 
 export class CourseConsumptionDashboardComponent implements OnInit {
-
-	public myCoursesList: Array<any> = []
-	public blockData: Array<any> = []
+	// Variable(s) to make api request
 	public timePeriod: string = '7d'
 	public identifier: string = ''
 	public courseName: string = ''
-	public showLoader: boolean = true
-	public isMultipleCourses: boolean = false
-	public showGraph: number = 0;
-	public showError: boolean = false
+	public myCoursesList: Array<any> = []
+	// Variables to render chart and block data
 	public graphData: any
+	public blockData: Array<any> = []
+	public showGraph: number = 0;
+	// Flags to show loader and error
+	public showLoader: boolean = true
+	public showError: boolean = false
+	public isMultipleCourses: boolean = false
+	// Graph settings - chartType = line/bar/radar/pie etc 
+	public chartLegend: boolean = true; 
+	public chartType: string = 'line';
 
 
 	/**
