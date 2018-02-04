@@ -7,6 +7,7 @@ import { RouteResolveService } from './services/route-resolve.service';
 import { AuthGuardComponent } from './random/auth-guard/auth-guard.component';
 import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component'
 import { OrganisationComponent } from './dashboard/organisation/organisation.component';
+import { BreadcrumbsModule} from 'ng2-breadcrumbs';
 
 const appRoutes: Routes = [
     {
@@ -19,9 +20,15 @@ const appRoutes: Routes = [
     {
         path: 'migration/profile',
         component: ProfileComponent,
+        resolve: {
+            profile: RouteResolveService
+        },
         canActivate: [
-            'CanActivate',
-        ]
+            AuthGuard,
+        ],
+        data: {
+            breadcrumb: ['Home', 'profile']
+        }
     },
     {
         path: 'migration/auth',
@@ -31,27 +38,38 @@ const appRoutes: Routes = [
         },
         canActivate: [
             AuthGuard,
-        ]
+        ],
+        data: {
+            breadcrumb: ['Home', 'auth']
+        }
     },
     {
         path: 'migration/myactivity',
         component: CourseConsumptionDashboardComponent,
         canActivate: [
             'CanActivate',
-        ]
+        ],
+        data: {
+            breadcrumb: ['Home', 'Profile', 'Course Creator Dashboard']
+        }
     },
     {
         path: 'migration/org-dashboard',
         component: OrganisationComponent,
         canActivate: [
             'CanActivate',
-        ]
+        ],
+        data: {
+            breadcrumb: ['Home', 'Profile', 'Organisation Dashboard']
+        }
     }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(appRoutes)],
-  exports: [RouterModule],
+  imports: [RouterModule.forRoot(appRoutes),
+            BreadcrumbsModule],
+  exports: [RouterModule,
+            BreadcrumbsModule],
   providers: [
     RouteResolveService,
     {

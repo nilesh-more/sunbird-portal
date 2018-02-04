@@ -1,47 +1,58 @@
-<div class="ui grid margin-top" [hidden]="showLoader">
+<div class="ui grid " [hidden]="showLoader">
     <div class="one wide column"></div>
     <div class="ten wide column">
+
         <div class="ui grid">
-            <div class="five wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length === 1">
-                <span class="dashBoardSectionHeading"><i class="large bar chart icon"></i></span>
-                <span class="dashBoardSectionHeading">{{courseName}}</span>
+            <div class="nine wide column">
+                <!--<span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  Org name</span>
+                <div class="ui dropdown" id="dashboardMenu">
+                    <span class="dashBoardSectionHeading padding-right-10"><i class="bar chart icon"></i></span>
+                    <div class="text dashBoardSectionHeading">Select Organization</div>
+                    <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
+                    <div class="menu">
+                        <div class="item" data-dataset="consumption" ng-repeat="item in dashboardData.orgDetails" ng-init="dashboardData.initDropdwon()" ng-click="dashboardData.onAfterOrgChange(item.organisationId)">{{item.orgName}}</div>
+                    </div>
+                </div>-->
             </div>
 
-            <div class="one wide column" *ngIf="myCoursesList && myCoursesList.length > 1">
-                <span class="dashBoardSectionHeading"><i class="large bar chart icon padding-top-5"></i></span>
-            </div>
-            <div class="four wide column float-ContentLeft" *ngIf="myCoursesList && myCoursesList.length > 1">
-                <ng-template let-option #optionTemplate>
-                    {{ option.name }}
-                </ng-template>
-                <sui-select class="selection"
-                    [(ngModel)]="selectedOption"
-                    (ngModelChange)="onAfterCourseChange($event)"
-                    [options]="options"
-                    labelField="name"
-                    [optionTemplate]="optionTemplate"
-                    [isSearchable]="true"
-                    #templated>
-                    <sui-select-option *ngFor="let o of myCoursesList" [value]="o"></sui-select-option>
-                </sui-select> 
+            <div class="right floated three wide column padding-right-dropdown padding-right-10" suiDropdown [(isOpen)]="isOpen" [isDisabled]="isDisabled">
+                <div class="ui dropdown float-ContentRight">
+                    <div class="text dashBoardSectionHeading">Creation</div>
+                    <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
+                    <div class="menu" suiDropdownMenu>
+                        <div class="active item" [ngClass]="{'active': datasetType === 'ORG_CREATION' }" (click)="onAfterDatasetChange('ORG_CREATION')">Creation</div>
+                        <div class="item" [ngClass]="{'active': datasetType === 'ORG_CONSUMPTION' }" (click)="onAfterDatasetChange('ORG_CONSUMPTION')">Consumption</div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div class="ui grid margin-top-10 padding-left-5" *ngIf="!isMultipleCourses">
-		    <div class="six wide column">
-			    <div class="ui text menu float-ContentLeft padding-top-10">
-				    <span class="dashBoardMenuItem cursor-pointer active" 
-				    [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-				    <span class="dashBoardMenuItem cursor-pointer">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-				    <span class="dashBoardMenuItem cursor-pointer">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
-			    </div>
-		    </div>
-		    <div class="two wide column"></div>
-	    </div>
 
-        <div class="ui segments">
-            <div class="ui segment">
+        <div class="ui grid">
+            <div class="twelve wide column">
+                <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="ui segment consumption-data-holder">
+        </div>
+
+        <!--<div class="ui warning message tweleve wide column" ng-show="dashboardData.showOrgWarningDiv">
+            <div class="header">
+                No organization selected!
+            </div>
+            Please select a organization from the above list
+        </div>-->
+
+        <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }">
+            <i class="notched circle loading icon"></i>
+            <div class="content">
+                <div class="header">Please wait.</div>
+                <p>We are fetching details</p>
+            </div>
+        </div>
+
+        <div >
+            <div class="consumption-data-holder" [ngStyle]="{'display':showLoader === false ? 'block' : 'none' }">
                 <div class="ui three cards">
                     <div class="card" *ngFor="let block of blockData">
                         <div class="content center aligned">
@@ -51,29 +62,27 @@
                     </div>
                 </div>
             </div>           
-            <div class="ui icon message" [hidden]="!showLoader">
-                <i class="notched circle loading icon"></i>
-                <div class="content">
-                    <div class="header">Please wait.</div>
-                    <p>We are fetching details</p>
-                </div>
-            </div>
-{{graphData | json}}
 
-            <div *ngIf="graphData && graphData.length > 0">
-                <div class="ui segment" *ngFor="let block of graphData">
-                    <div class="col-md-6">
-                        <div style="display: block;">
-                            <canvas baseChart width="400" height="110"
-                                [datasets]="block.yaxesData"
-                                [labels]="block.xaxesData"
-                                [options]="block.chartOptions"
-                                [colors]="block.chartColors"
-                                [legend]="lineChartLegend"
-                                [chartType]="lineChartType"
-                                (chartHover)="chartHovered($event)"
-                                (chartClick)="chartClicked($event)">
-                            </canvas>
+            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" [ngStyle]="{'display':showLoader === false ? 'block' : 'none' }">
+                <div class="column">
+                    <div class="regular slider padding-top-30 course-graph-holder">
+                        <div *ngFor="let block of graphData;let graphIndex = index;">
+                            <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
+                                <div class="ui segment">
+                                    <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                                        [colors]="block.chartColors" [legend]="true" [chartType]="'line'" (chartHover)="chartHovered($event)"
+                                        (chartClick)="chartClicked($event)">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corse-graph-navigation-btn" *ngIf="graphData.length-1 > 0">
+                            <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
+                                <i class="left arrow icon"></i>
+                            </button>
+                            <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
+                                <i class="right arrow icon"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -81,5 +90,3 @@
         </div>
     </div>
  </div>
-
-        

@@ -18,8 +18,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
           if (permissionAvailable) {
             observer.next(true);
             observer.complete();
+            console.log('auth gaurd permissionAvailable')
+            // permission check
           } else {
-            // console.log('Permission not avilable');
+            console.log('Permission not avilable');
           }
         }
       );

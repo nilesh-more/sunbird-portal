@@ -4,6 +4,7 @@ import { DataService } from '../../services/data.service'
 import { SearchService } from '../../services/search.service'
 import { OrganisationService } from '../../dashboard/datasource/organisation.service';
 import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
+import { RendererService } from '../../dashboard/renderer/renderer.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -12,144 +13,92 @@ import * as _ from 'lodash';
   styleUrls: ['./organisation.component.css']
 })
 
-
-
 export class OrganisationComponent implements OnInit {
-  myCoursesList: Array<any> = []
-  public blockData: Array<any> = []
-  public graphData: any
-  public timePeriod: string = '7d'
-  public identifier: string
-  public courseName: string
-  public showLoader: boolean = true
-
+	public blockData: Array<any> = []
+	public timePeriod: string = '7d'
+	public identifier: string = ''
+	public showLoader: boolean = true
+	public showGraph: number = 0;
+	public showError: boolean = false
+	public graphData: any
+	public datasetType: any
+	public s: any = 'Creation'
   
   /**
    * @function constructor
    * @desc to initialize variables
    */
   constructor(private OrganisationService: OrganisationService, 
-      private DashboardUtils: DashboardUtilsService, private SearchService: SearchService) {
-    this.blockData = []
-    this.myCoursesList = []
-    this.getMyContent()
-    this.getData()
+      private DashboardUtils: DashboardUtilsService, private SearchService: SearchService, 
+      private RendererService: RendererService) {
+
+      this.blockData = []
+      this.datasetType = 'ORG_CREATION'
+      this.getData(this.timePeriod, 'ORG_001')
   }
 
-  getData(){
+  getData(timePeriod: string, identifier: string){
+    this.showLoader = true
+    this.showGraph = 0
+    this.timePeriod = timePeriod
+    this.identifier = identifier
     this.OrganisationService.getData({
       identifier: this.identifier,
       timePeriod: this.timePeriod
-    }).subscribe(
+    }, this.datasetType).subscribe(
       data => {
           console.log('API-Response: : Dashboard compo', data)
           this.blockData = data.numericData
-          this.graphData = this.parseApiResponse(data.bucketData)
+          this.graphData = this.RendererService.parseApiResponse(data)
+          this.showLoader = false
       },
       err => {
         this.blockData = err.numericData
-        this.graphData = this.parseApiResponse(err)
+        this.graphData = this.RendererService.parseApiResponse(err)
+        this.showLoader = false
       }
     );
+    
   }
 
-  getMyContent(){
-    this.SearchService.getMyContent(['Live'], ['Course'], {lastUpdatedOn: 'desc'}).subscribe(
-        data => {
-            this.myCoursesList = data.result.content
-            // Check course count
-            if (this.myCoursesList && this.myCoursesList.length === 1) {
-              this.identifier = data.result.content[0].identifier
-              this.courseName = data.result.content[0].name
-            } else {
-              console.log('more than one course')
-            }
-            this.showLoader = false
-            console.log('API-Response: Dashboard search ', data)
-        },
-        err => {
-          this.myCoursesList = err.result.content
-          if(this.myCoursesList.length === 1){
-            this.identifier = err.result.content[0].identifier
-            this.courseName = err.result.content[0].name
-          } else {
-            console.log('more than one course')
-          }
-          this.showLoader = false
-          console.log('error while fetching my course/content', err)
-        }
-    );
-  }
+	/**
+	 * @function onAfterFilterChange
+	 * @desc change filter
+	 * @param {string} timePeriod
+	 * @return void
+	 */
+	onAfterFilterChange(timePeriod: string) {
+		if (this.timePeriod === timePeriod) {
+			return false
+		}
+		this.getData(timePeriod, this.identifier)
+	}
 
-  onAfterCourseChange(newVal){
-    if(this.identifier === newVal.identifier){
+	/**
+	 * @function onAfterDatasetChange
+	 * @desc change filter
+	 * @param {string} timePeriod
+	 * @return void
+	 */
+	onAfterDatasetChange(datasetType: string) {
+    if (this.datasetType === datasetType) {
       return false
     }
-    this.identifier = newVal.identifier
-  }
+    this.timePeriod = '7d'
+		this.datasetType = datasetType
+		this.getData(this.timePeriod, this.identifier)
+	}
 
-  parseApiResponse(res){
-    console.log('Inside rendered---',res);
-    var chartList = []
-    var groupList = {}
-    var i = 0
-    _.forEach(res.bucketData, (bucketData, key) => {
-      let groupData: object = {}
-      let yAxesLabel: string = res.name
-    
+	/**
+	 * @function graphNavigation
+	 * @desc show 
+	 * @param {string} step 
+	 * @return void
+	 */
+	graphNavigation(step: string) {
+		step === 'next' ? this.showGraph++ : this.showGraph--
+	}
 
-
-
-if (res.series === '') {
-              groupData['legend'] = [bucketData.name]
-
-              if (bucketData.time_unit !== undefined) {
-                yAxesLabel = bucketData.name + ' (' + bucketData.time_unit + ')'
-              } else {
-                yAxesLabel = bucketData.name
-              }
-            } else {
-              groupData['legend'] = res.series
-            }
-
-
-
-
-
-      var chartData = this.DashboardUtils.getLineData(bucketData)
-
-      
-      console.log('Inside rendered1234---',res.series[0]);
-
-      // Options
-      groupData['options'] = this.DashboardUtils.getChartOption(yAxesLabel)
-      groupData['yAxes'] = [{data: chartData.values, label: res.series[i]}]
-      groupData['xAxes'] = chartData.labels
-
-
-      if (groupList[bucketData.group_id]) {
-        Array.prototype.push.apply(groupList[bucketData.group_id].yAxes, groupData['yAxes'])
-      } else {
-        groupList[bucketData.group_id] = groupData
-      }
-
-      // Colors
-      groupData['colors'] = this.DashboardUtils.getChartColors(groupList[bucketData.group_id].legend.length)
-i++
-    });   
-
-   
-
-     
-
-    _.forOwn(groupList, function (group, groupId) {
-      chartList.push({yaxesData: group.yAxes, xaxesData: group.xAxes, chartOptions: group.options, chartColors: group.colors  })
-    })
-
-   
-
-    return chartList  
-  }
 
   ngOnInit() {
   }

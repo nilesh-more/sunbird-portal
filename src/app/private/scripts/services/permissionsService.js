@@ -34,6 +34,7 @@ angular.module('playerApp')
           rolesAndPermissions.push(mainRole)
         })
         rolesAndPermissions = _.uniqBy(rolesAndPermissions, 'role')
+        console.log(rolesAndPermissions)
       }
       /**
              * @method setCurrentUserRoleMap

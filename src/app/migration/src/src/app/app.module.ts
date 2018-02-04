@@ -20,11 +20,11 @@ import { CourseConsumptionService } from './dashboard/datasource/course-consumpt
 import { OrganisationService } from './dashboard/datasource/organisation.service';
 import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
 import { SearchService } from './services/search.service'
-
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { OrganisationComponent } from './dashboard/organisation/organisation.component';
-
+import { RendererService } from './dashboard/renderer/renderer.service';
+import { PermissionDirective } from './directive/permission.directive';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { OrganisationComponent } from './dashboard/organisation/organisation.com
     CourseConsumptionDashboardComponent,
     ProfileComponent,
     AuthGuardComponent,
-    OrganisationComponent
+    OrganisationComponent,
+    PermissionDirective
   ],
   imports: [
     BrowserModule,
@@ -54,6 +55,7 @@ import { OrganisationComponent } from './dashboard/organisation/organisation.com
     CourseConsumptionService,
     OrganisationService,
     DashboardUtilsService,
+    RendererService,
     SearchService
   ],
     entryComponents: [AppComponent],

@@ -24,30 +24,18 @@
              header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
             <img src="{{ profileService.currentUserProfile['avatar'] || '/assets/common/images/user_logo.png'}}" class="ui circular image logged-in-user" />
             <div class="menu" suiDropdownMenu>
-                <div class="item headerDropdownProfile" >{{profileService.currentUserProfile['userName']}}</div>
+                <div class="item headerDropdownProfile" >{{profileService.currentUserProfile['firstName']}}&nbsp;{{profileService.currentUserProfile['lastName']}}</div>
                 <div class="ui divider"></div>
                 <a class="item" href="/private/index#!/profile" >Profile</a>
-                <a class="item" href="/private/index#!/workspace/content/create" >Workspace</a>
-                <a class="item" href="private/index#!/course-creator-dashboard" >My Activity</a>
-                <a class="item" href="/migration/org-dashboard">Admin Dashboard</a>
-                <a class="item" href="#" >Logout</a>
-                <a href="/migration/myactivity">A5</a>
-<!--                 <a class="item" href="#" >workSpace</a>
-                <a class="item" href="#" >myactivity</a>
-                <a class="item" href="#" >Setup</a>
-                <a class="item">logout</a> -->
+                <a class="item"  href="/migration/org-dashboard">Admin dashboard</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'announcementRole' href="/private/index#!/announcement/outbox/list/1" >Announcement dashboard</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'workSpaceRole' href="/private/index#!/workspace/content/create" >Workspace</a>
+                <a class="item"  href="/migration/myactivity" >My Activity</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'orgSetupRole' href="/private/index#!/course-creator-dashboard" >Setup</a>
+                <a class="item" href="#" (click)='logout()'>Logout</a>
             </div>
         </div>
     </div>
-     <!-- <div class="ui dropdown">
-      <input type="hidden" name="gender">
-      <i class="dropdown icon"></i>
-      <div class="default text">Gender</div>
-      <div class="menu">
-        <div class="item" data-value="male">Male</div>
-        <div class="item" data-value="female">Female</div>
-      </div>
-    </div> -->
     <div class="one wide column"></div>
 </div>
 </div>

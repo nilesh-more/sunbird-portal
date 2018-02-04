@@ -1,0 +1,11 @@
+{
+    "readPermissionsUrl" : "/private/service/v1/learner/data/v1/role/read",
+    "readUserProfileUrl" : "/private/service/v1/learner/user/v1/read/",
+    "mainHeaderRoles" :{
+        "workSpaceRole" : ["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR"],
+        "adminDashBoard" : ["ORG_ADMIN" , "SYSTEM_ADMINISTRATION"],
+        "announcementRole" : ["ANNOUNCEMENT_SENDER"],
+        "myActivityRole" : ["CONTENT_CREATOR"],
+        "orgSetupRole" : ["SYSTEM_ADMINISTRATION"]
+    }
+}
