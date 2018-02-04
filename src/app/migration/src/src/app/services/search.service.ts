@@ -9,12 +9,22 @@ import { Observable } from 'rxjs/Observable';
 export class SearchService extends DataService {
 
   serchUrl = ''
+  
+  /**
+   * @function constructor
+   * @param  {HttpClient} publichttp
+   */
   constructor(public http: HttpClient) {
     super(http)
     this.serchUrl = ''
   }
 
-  private getDefaultHeader(headers: HttpHeaders | null): object {
+  /**
+   * @function getHeaders
+   * @param headers
+   * @return {object} headers
+   */
+  private getHeaders(headers?: HttpHeaders): object {
       headers = headers || new HttpHeaders();
       headers = headers.set('Content-Type', 'application/json');
       headers = headers.set('cid', 'sunbird')
@@ -25,12 +35,21 @@ export class SearchService extends DataService {
       };
   }
 
+  /**
+   * @function getMyContent
+   * @desc get content by user id
+   * @param {} status getMyContent
+   * @param {} contentType
+   * @param {} params
+   * @return object
+   */
   getMyContent(status, contentType, params){
-    let headers: object = this.getDefaultHeader(null)
+    let userId = (<HTMLInputElement>document.getElementById('userId')).value
+    let headers: object = this.getHeaders()
     let apiRequest: object = {
         filters:{
           status: status,
-          createdBy: 'b14e7747-e66d-49f3-8152-7a6706f0b530',
+          createdBy: userId,
           contentType: contentType
         },
         sort_by: {

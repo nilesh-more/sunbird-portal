@@ -79,7 +79,7 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 			data => {
 				if (data.result.count && data.result.content) {
 					this.myCoursesList = data.result.content
-					if (data.result.count === 1) {
+					if (data.result.content.length === 1) {
 						this.identifier = data.result.content[0].identifier
 						this.courseName = data.result.content[0].name
 						this.getData('7d', data.result.content[0].identifier)
