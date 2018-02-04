@@ -22,8 +22,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	public showLoader: boolean = true
 	public isMultipleCourses: boolean = false
 	public showGraph: number = 0;
-	public lineChartLegend: boolean = true;
-	public lineChartType: string = 'line';
 	public showError: boolean = false
 	public graphData: any
 
@@ -65,7 +63,7 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 			err => {
 				this.showError = true
 			}
-		);
+			);
 		this.showLoader = false
 	}
 

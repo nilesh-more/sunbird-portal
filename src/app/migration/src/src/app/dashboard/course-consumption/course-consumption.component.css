@@ -7,7 +7,6 @@
 .margin-top {
     margin-top: 30px;
 }
-
 span.dashBoardMenuItem.active {
     color: #007AFF;
     font-family: 'sunbirdboldfont';
@@ -43,6 +42,10 @@ span.dashBoardMenuItem.active {
 }
 .padding-top-30 {
     padding-top: 30px !important;
+}
+.dashBoardSectionHeading {
+    font-family: 'sunbirdboldfont';
+    font-size: 1.4em;
 }
 /*New*/
 .padding-left-5 {
