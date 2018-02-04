@@ -46,8 +46,7 @@
                             <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
                                 <div class="ui segment">
                                     <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
-                                        [colors]="block[3]" [legend]="true" [chartType]="'line'" (chartHover)="chartHovered($event)"
-                                        (chartClick)="chartClicked($event)">
+                                        [colors]="block[3]" [legend]="chartLegend" [chartType]="chartType">
                                     </canvas>
                                 </div>
                             </div>
