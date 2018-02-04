@@ -8,11 +8,14 @@ import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
 import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { PermissionService } from './permission.service';
+import * as config from './../config/config.json';
 
 @Injectable()
 export class ProfileService extends DataService {
   userid: string;
-  readUserProfileUrl = '/private/service/v1/learner/user/v1/read/';
+  conFig = (<any>config);
+  readUserProfileUrl = this.conFig.readUserProfileUrl;
   rolesAndPermissions: any[] = [];  // permission sevrvice
   currentUserProfile: object = {};
   currentUserRoles: any[] = [];
@@ -32,8 +35,8 @@ export class ProfileService extends DataService {
     );
   }
   public getUserProfile() {
-    const header = this.prepareHeader(null);
-    return  this.http.get(this.readUserProfileUrl + this.userid, header);
+    // const header = this.prepareHeader(null);
+    return  this.http.get(this.readUserProfileUrl + this.userid);
   }
   private prepareHeader(headers: HttpHeaders | null): object {
 
@@ -63,21 +66,11 @@ export class ProfileService extends DataService {
       });
       this.currentUserProfile = profileData;
       this.currentUserRoles = userRoles;
-      this.setCurrentRoleActions(userRoles);
+      this.profileAvailable = true;
+      this.profileAvailable$.next(true);
+      console.log('Profile available');
     } else {
       // TODO: allow only public permissions
     }
-  }
-
-  public setCurrentRoleActions(userRoles) {
-    _.forEach(userRoles,  (r) => {
-      const roleActions = _.filter(this.rolesAndPermissions, { role: r });
-      if (_.isArray(roleActions) && roleActions.length > 0) {
-        this.currentRoleActions = _.concat(this.currentRoleActions,
-          _.map(roleActions[0].actions, 'id'));
-      }
-    });
-    this.profileAvailable$.next(true);
-    console.log('Profile available');
   }
 }

@@ -26,47 +26,43 @@
                         </div>
                         <div class="three fields">
                             <div class="field">
-                                <label>
-                                {{$root.frmelmnts.lbl.curriculum}}
-                            </label>
-                                <select name="board" class="ui fluid search selection dropdown" id="boardDropDown" ng-options=" board for board in textbook.boards" ng-model="textbook.data.board">
-                                <option value="">{{$root.frmelmnts.lbl.curriculum}}</option>
-                            </select>
+                                <label for="category1">{{textbook.category1.name}}</label>
+                                <select id="textbookmeta-category-1" class="ui search dropdown placeholder-padding textbookmeta-category-1" ng-model="textbook.data[textbook.category1.code]" ng-change="textbook.updatedDependentCategory('1', textbook.data[textbook.category1.code]); generateTelemetry({type: 'change', subtype: 'select', target: category1.name})">
+                                    <option value="">Select</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category1.terms">{{category.name}}</option>
+                                </select>
                             </div>
                             <div class="field">
-                                <label>
-                                {{$root.frmelmnts.lbl.medium}}
-                            </label>
-                                <select name="medium" class="ui fluid search selection  dropdown" id="mediumDropDown" ng-options=" medium for medium in textbook.mediums" ng-model="textbook.data.language">
-                                <option value="">{{$root.frmelmnts.lbl.medium}}</option>
-                            </select>
+                                <label for="category2">{{textbook.category2.name}}</label>
+                                <select id="textbookmeta-category-2" class="ui search dropdown textbookmeta-category-2" ng-model="textbook.data[textbook.category2.code]" multiple="" ng-change="textbook.updatedDependentCategory('2', textbook.data[textbook.category2.code]); generateTelemetry({type: 'change', subtype: 'select', target: category2.name})">
+                                    <option value="">Select</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category2.terms">{{category.name}}</option>
+                                </select>
                             </div>
                             <div class="field">
-                                <label>
-                                {{$root.frmelmnts.lbl.publisher}}
-                            </label>
-                                <div class="field">
-                                    <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.publisher}} ng-model="textbook.data.publisher">
-                                </div>
+                                <label for="category3">{{textbook.category3.name}}</label>
+                                <select id="textbookmeta-category-3" class="ui search dropdown placeholder-padding textbookmeta-category-3" ng-model="textbook.data[textbook.category3.code]" ng-change="textbook.updatedDependentCategory('3', textbook.data[textbook.category3.code]); generateTelemetry({type: 'change', subtype: 'select', target: category3.name})">
+                                    <option value="">Select</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category3.terms">{{category.name}}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="three fields">
                             <div class="field">
-                                <label>
-                                {{$root.frmelmnts.lbl.subject}}
-                            </label>
-                                <select name="subject" class="ui fluid search selection  dropdown" id="subjectDropDown" ng-options=" subject for subject in textbook.subjects" ng-model="textbook.data.subject">
-                                <option value="">{{$root.frmelmnts.lbl.subject}}</option>
-                            </select>
+                                <label for="category4">{{textbook.category4.name}}</label>
+                                <select id="textbookmeta-category-4" class="ui search dropdown placeholder-padding textbookmeta-category-4" ng-model="textbook.data[textbook.category4.code]" ng-change="textbook.updatedDependentCategory('4', textbook.data[textbook.category4.code]); generateTelemetry({type: 'change', subtype: 'select', target: category4.name})">
+                                    <option value="">Select</option>
+                                    <option value="{{category.name}}" ng-repeat="category in textbook.category4.terms">{{category.name}}</option>
+                                </select>
                             </div>
                             <div class="field">
-                                <label>
-                                {{$root.frmelmnts.lbl.class}}
-                            </label>
-                                <select name="grades" multiple="" class="ui fluid search selection  dropdown" id="gradeDropDown" ng-options=" grade for grade in textbook.grades" ng-model="textbook.data.gradeLevel" s>
-                                <option value="">{{$root.frmelmnts.lbl.class}}</option>
-                            </select>
-                            </div>
+                                    <label>
+                                    {{$root.frmelmnts.lbl.publisher}}
+                                </label>
+                                    <div class="field">
+                                        <input type="text" name="title" placeholder={{$root.frmelmnts.lbl.publisher}} ng-model="textbook.data.publisher">
+                                    </div>
+                                </div>
                             <div class="field">
                                 <label>
                                 {{$root.frmelmnts.lbl.year}}

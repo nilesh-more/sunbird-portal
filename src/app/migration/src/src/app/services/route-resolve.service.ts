@@ -22,7 +22,7 @@ export class RouteResolveService implements Resolve<any> {// implements Resolve<
           if (profileAvailable) {
             observer.next({
               id: 1,
-              name: 'np test',
+              name: 'test',
               role: 'creator'
             });
             observer.complete();

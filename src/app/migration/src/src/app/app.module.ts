@@ -19,10 +19,9 @@ import { CourseConsumptionDashboardComponent } from './dashboard/course-consumpt
 import { CourseConsumptionService } from './dashboard/datasource/course-consumption.service';
 import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
 import { SearchService } from './services/search.service'
-
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
-
+import { PermissionDirective } from './directive/permission.directive';
 
 @NgModule({
   declarations: [
@@ -33,7 +32,8 @@ import { ChartsModule } from 'ng2-charts';
     CommunityListComponent,
     CourseConsumptionDashboardComponent,
     ProfileComponent,
-    AuthGuardComponent
+    AuthGuardComponent,
+    PermissionDirective
   ],
   imports: [
     BrowserModule,

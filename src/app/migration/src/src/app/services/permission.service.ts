@@ -1,3 +1,5 @@
+import * as config from './../config/config.json';
+import { ProfileService } from './profile.service';
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
@@ -11,16 +13,16 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class PermissionService extends DataService {
-  userid: string;
-  readPermissionsUrl = '/private/service/v1/learner/data/v1/role/read';
+  conFig = (<any>config);
+  readPermissionsUrl = this.conFig.readPermissionsUrl;
   rolesAndPermissions: any[] = [];
   mainRoles: any[] = [];
   permissionAvailable = false;
+  currentRoleActions: any[] = [];
+  currentUserRoles: any[] = [];
   permissionAvailable$ = new BehaviorSubject<boolean>(this.permissionAvailable);
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public profileService: ProfileService) {
     super(http);
-    this.userid =  (<HTMLInputElement>document.getElementById('userId')).value;
-    console.log(this.userid);
     this.getPermissionsData().subscribe(
       data => {
         this.setRolesAndPermissions(data);
@@ -31,8 +33,7 @@ export class PermissionService extends DataService {
     );
   }
   public getPermissionsData() {
-    const header = this.prepareHeader(null);
-    return this.http.get(this.readPermissionsUrl, header);
+    return this.get(this.readPermissionsUrl, '');
   }
 
   private prepareHeader(headers: HttpHeaders | null): object {
@@ -50,7 +51,7 @@ export class PermissionService extends DataService {
     return {
         headers: headers
     };
-}
+  }
   public setRolesAndPermissions(data) {
     const rolePermissions = _.cloneDeep(data.result.roles);
     _.forEach(rolePermissions, (r, p) => {
@@ -64,7 +65,52 @@ export class PermissionService extends DataService {
       this.rolesAndPermissions.push(mainRole);
     });
     this.rolesAndPermissions = _.uniqBy(this.rolesAndPermissions, 'role');
-    this.permissionAvailable$.next(true);
-    console.log('Permission available');
+    this.setCurrentRoleActions();
+  }
+  public setCurrentRoleActions() {
+    this.profileService.profileAvailable$.subscribe(
+      profileAvailable => {
+        if (profileAvailable) {
+          this.currentUserRoles = this.profileService.currentUserRoles;
+          _.forEach(this.profileService.currentUserRoles,  (r) => {
+            const roleActions = _.filter(this.rolesAndPermissions, { role: r });
+            if (_.isArray(roleActions) && roleActions.length > 0) {
+              this.currentRoleActions = _.concat(this.currentRoleActions,
+                _.map(roleActions[0].actions, 'id'));
+            }
+          });
+          console.log('Permission available');
+          this.permissionAvailable = true;
+          this.permissionAvailable$.next(true);
+        } else {
+
+        }
+      }
+    );
+  }
+  public checkRolesPermissions(data, flag) {
+    if (this.currentUserRoles && this.currentUserRoles.length > 0) {
+      if (!this.checkActionsPermissions(data, flag)) {
+        if (_.isArray(data)) {
+          if ((_.intersection(data, this.currentUserRoles).length === 0) && !flag) {
+            return true;
+          }
+          return ((_.intersection(data, this.currentUserRoles).length > 0) && flag);
+        }
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkActionsPermissions(data, flag) {
+    if (_.isArray(data)) {
+      if ((_.intersection(data, this.currentRoleActions).length === 0) && !flag) {
+        return false;
+      }
+      return ((_.intersection(data, this.currentRoleActions).length > 0) && flag);
+    }
+    return false;
   }
 }
