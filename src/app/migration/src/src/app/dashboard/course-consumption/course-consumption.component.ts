@@ -6,7 +6,6 @@ import { CourseConsumptionService } from '../../dashboard/datasource/course-cons
 import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
 import * as _ from 'lodash';
 
-
 @Component({
 	selector: 'course-consumption-dashboard',
 	templateUrl: './course-consumption.component.html',

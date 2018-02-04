@@ -7,7 +7,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
-
 @Injectable()
 export class CourseConsumptionService extends DataService  {
     constructor(
