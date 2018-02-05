@@ -21,8 +21,7 @@ export class OrganisationComponent implements OnInit {
 	public showGraph: number = 0;
 	public showError: boolean = false
 	public graphData: any
-	public datasetType: any
-	public s: any = 'Creation'
+	public datasetType: any = 'ORG_CREATION'  
   
   /**
    * @function constructor
@@ -98,7 +97,6 @@ export class OrganisationComponent implements OnInit {
 	graphNavigation(step: string) {
 		step === 'next' ? this.showGraph++ : this.showGraph--
 	}
-
 
   ngOnInit() {
   }

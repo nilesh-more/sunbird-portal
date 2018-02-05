@@ -17,11 +17,11 @@
 
             <div class="right floated three wide column padding-right-dropdown padding-right-10" suiDropdown [(isOpen)]="isOpen" [isDisabled]="isDisabled">
                 <div class="ui dropdown float-ContentRight">
-                    <div class="text dashBoardSectionHeading">Creation</div>
+                    <div class="text dashBoardSectionHeading">{{SelectedDataSet || 'Creation'}}</div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
                     <div class="menu" suiDropdownMenu>
-                        <div class="active item" [ngClass]="{'active': datasetType === 'ORG_CREATION' }" (click)="onAfterDatasetChange('ORG_CREATION')">Creation</div>
-                        <div class="item" [ngClass]="{'active': datasetType === 'ORG_CONSUMPTION' }" (click)="onAfterDatasetChange('ORG_CONSUMPTION')">Consumption</div>
+                        <div class="active item" [ngClass]="{'active': datasetType === 'ORG_CREATION' }" (click)="onAfterDatasetChange('ORG_CREATION'); SelectedDataSet = 'Creation'">Creation</div>
+                        <div class="item" [ngClass]="{'active': datasetType === 'ORG_CONSUMPTION' }" (click)="onAfterDatasetChange('ORG_CONSUMPTION'); SelectedDataSet = 'Consumption'">Consumption</div>
                     </div>
                 </div>
 

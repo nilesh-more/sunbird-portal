@@ -55,3 +55,6 @@ span.dashBoardMenuItem.active {
 .sb-hide {
     display: none !important;
 }
+.float-ContentRight {
+    float:right;
+}
