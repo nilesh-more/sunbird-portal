@@ -10,6 +10,7 @@
 span.dashBoardMenuItem.active {
     color: #007AFF;
     font-family: 'sunbirdboldfont';
+    font-weight: bold;
 }
 .cursor-pointer {
     cursor: pointer !important;

@@ -4,6 +4,7 @@ import { DataService } from './data.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
+import { ProfileService } from './profile.service';
 
 @Injectable()
 export class SearchService extends DataService {
@@ -14,7 +15,7 @@ export class SearchService extends DataService {
      * @function constructor
      * @param  {HttpClient} publichttp
      */
-    constructor(public http: HttpClient) {
+    constructor(public http: HttpClient, public ProfileService: ProfileService) {
         super(http)
         this.serchUrl = ''
     }
@@ -44,6 +45,8 @@ export class SearchService extends DataService {
      * @return object
      */
     getMyContent(status, contentType, params) {
+        console.log('AAAAAAAA', this.ProfileService.userid)
+        // var dd = this.ProfileService.userid
         let userId = (<HTMLInputElement>document.getElementById('userId')).value
         let headers: object = this.getHeaders()
         let apiRequest: object = {
