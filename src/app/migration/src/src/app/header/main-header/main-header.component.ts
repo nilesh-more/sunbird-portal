@@ -1,7 +1,8 @@
 import * as config from './../../config/config.json';
-import { PermissionService } from './../../services/permission.service';
+import { PermissionService } from './../../services/permission/permission.service';
 import { Component, OnInit } from '@angular/core';
-import { ProfileService } from '../../services/profile.service';
+import { UserService } from '../../services/user/user.service';
+import { ResourceService } from '../../services/resource/resource.service';
 // import * as config from './config/config.json';
 
 @Component({
@@ -21,7 +22,9 @@ export class MainHeaderComponent implements OnInit {
   announcementRole = this.conFig.mainHeaderRoles.announcementRole;
   myActivityRole = this.conFig.mainHeaderRoles.myActivityRole;
   orgSetupRole = this.conFig.mainHeaderRoles.orgSetupRole;
-  constructor(public permissionService: PermissionService, public profileService: ProfileService) {
+  constructor(public resourceService: ResourceService,
+    public permissionService: PermissionService,
+    public userService: UserService) {
   }
 
   ngOnInit() {

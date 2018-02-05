@@ -1,17 +1,17 @@
 <div class="ui secondary pointing menu">
 	<a class="item"   href="private/index#!/home"  >
-	     Home
+		{{resourceService?.frmelmnts?.tab?.home}}
 	    </a>
 	<a class="item"  href="/private/index#!/learn" >
-	    Courses
+	    {{resourceService?.frmelmnts?.tab?.courses}}
 	    </a>
 	<a class="item"  href="/private/index#!/resources" >
-	      Library
+		{{resourceService?.frmelmnts?.tab?.resources}}
 	    </a>
-	<a class="item active" href="/migration/groups" >
-	      Groups
+	<a class="item" routerLinkActive="active" routerLink="/migration/groups" >
+		{{resourceService?.frmelmnts?.tab?.community}}
 	    </a>
 	<a class="item" href="/private/index#!/profile" >
-	      Profile
+		{{resourceService?.frmelmnts?.tab?.profile}}
 	    </a>
 </div>

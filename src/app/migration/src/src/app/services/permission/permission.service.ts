@@ -1,7 +1,7 @@
-import * as config from './../config/config.json';
-import { ProfileService } from './profile.service';
+import * as  config from './../../config/config.json';
+import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
-import { DataService } from './data.service';
+import { DataService } from '../data/data.service';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
@@ -21,7 +21,7 @@ export class PermissionService extends DataService {
   currentRoleActions: any[] = [];
   currentUserRoles: any[] = [];
   permissionAvailable$ = new BehaviorSubject<boolean>(this.permissionAvailable);
-  constructor(public http: HttpClient, public profileService: ProfileService) {
+  constructor(public http: HttpClient, public userService: UserService) {
     super(http);
     this.getPermissionsData().subscribe(
       data => {
@@ -33,24 +33,10 @@ export class PermissionService extends DataService {
     );
   }
   public getPermissionsData() {
-    return this.get(this.readPermissionsUrl, '');
-  }
-
-  private prepareHeader(headers: HttpHeaders | null): object {
-    headers = headers || new HttpHeaders();
-
-    headers = headers.set('Content-Type', 'application/json');
-    headers = headers.set('Accept', 'application/json');
-    headers = headers.set('X-Consumer-ID', 'X-Consumer-ID');
-    headers = headers.set('X-Device-ID', 'X-Device-ID');
-    headers = headers.set('X-Org-code', 'AP');
-    headers = headers.set('X-Source', 'web');
-    headers = headers.set('ts', moment().format());
-    headers = headers.set('X-msgid', UUID.UUID());
-
-    return {
-        headers: headers
+    const option = {
+      url: this.readPermissionsUrl
     };
+    return this.get(option);
   }
   public setRolesAndPermissions(data) {
     const rolePermissions = _.cloneDeep(data.result.roles);
@@ -68,11 +54,11 @@ export class PermissionService extends DataService {
     this.setCurrentRoleActions();
   }
   public setCurrentRoleActions() {
-    this.profileService.profileAvailable$.subscribe(
+    this.userService.userAvailable$.subscribe(
       profileAvailable => {
         if (profileAvailable) {
-          this.currentUserRoles = this.profileService.currentUserRoles;
-          _.forEach(this.profileService.currentUserRoles,  (r) => {
+          this.currentUserRoles = this.userService.userRoles;
+          _.forEach(this.userService.userRoles,  (r) => {
             const roleActions = _.filter(this.rolesAndPermissions, { role: r });
             if (_.isArray(roleActions) && roleActions.length > 0) {
               this.currentRoleActions = _.concat(this.currentRoleActions,

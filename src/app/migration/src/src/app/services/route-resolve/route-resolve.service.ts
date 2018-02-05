@@ -1,13 +1,13 @@
-import { PermissionService } from './permission.service';
+import { PermissionService } from '../permission/permission.service';
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router/src/router_state';
 import { Resolve } from '@angular/router/src/interfaces';
-import { ProfileService } from './profile.service';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class RouteResolveService implements Resolve<any> {// implements Resolve<migration>
-  constructor(public permissionService: PermissionService, private profileService: ProfileService) {}
+  constructor(public permissionService: PermissionService, private profileService: UserService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -17,7 +17,7 @@ export class RouteResolveService implements Resolve<any> {// implements Resolve<
   }
   getProfile() {
     return Observable.create(observer => {
-      this.profileService.profileAvailable$.subscribe(
+      this.profileService.userAvailable$.subscribe(
         profileAvailable => {
           if (profileAvailable) {
             observer.next({

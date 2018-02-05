@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.config.js",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -28,15 +28,12 @@
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.1",
     "core-js": "^2.4.1",
-    "jquery": "^3.2.1",
-    "loadash": "^1.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "ng2-breadcrumbs": "^0.1.281",
     "ng2-charts": "^1.6.0",
     "ng2-semantic-ui": "^0.9.6",
     "rxjs": "^5.5.2",
-    "semantic-ui": "^2.2.13",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

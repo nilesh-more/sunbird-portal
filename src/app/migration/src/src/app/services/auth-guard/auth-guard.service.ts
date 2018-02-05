@@ -1,12 +1,14 @@
+import { PermissionService } from '../permission/permission.service';
 import { Observable } from 'rxjs/Rx';
-import { PermissionService } from './permission.service';
+// import { PermissionService } from './permission/permission/.service';
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild } from '@angular/router';
-import { ProfileService } from './profile.service';
+import { UserService } from '../user/user.service';
+// import { UserService } from './user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
-  constructor(private permissionService: PermissionService, private profileService: ProfileService) {
+  constructor(private permissionService: PermissionService, private userService: UserService) {
   }
   canActivate(): Observable<any> {
     return this.getPermission();
