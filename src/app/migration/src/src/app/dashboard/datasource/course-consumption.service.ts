@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '../../services/data.service'
+import { DataService } from '../../services/data/data.service'
 import { HttpClient } from '@angular/common/http';
 import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
 import * as _ from 'lodash';
@@ -23,9 +23,12 @@ export class CourseConsumptionService extends DataService  {
      * @return {object} data
      */
     getData (apiReq: object){
-        let URL: string = this.DashboardUtils.constructApiUrl(apiReq, 'COURSE_CONSUMPTION')
         let headers: object = this.DashboardUtils.getDefaultHeaders()
-        return this.get(URL, headers)
+        const option = {
+            url: this.DashboardUtils.constructApiUrl(apiReq, 'COURSE_CONSUMPTION')
+            //param: {}
+        };
+        return this.get(option)
             .map((data: any) => {
                 console.log('Dashboard data received: in datasource', data)
                 if (data && data.responseCode === 'OK') {

@@ -37,6 +37,8 @@ import { ProfileViewComponent } from './profile/profile-view/profile-view.compon
     MainMenuComponent,
     SearchComponent,
     CommunityListComponent,
+    CourseConsumptionDashboardComponent,
+    ProfileComponent,
     AuthGuardComponent,
     PermissionDirective,
     ProfileComponent,

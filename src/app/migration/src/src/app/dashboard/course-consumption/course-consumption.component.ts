@@ -13,21 +13,21 @@ import * as _ from 'lodash';
 
 export class CourseConsumptionDashboardComponent implements OnInit {
 	// Variable(s) to make api request
-	public timePeriod: string = '7d'
-	public identifier: string = ''
-	public courseName: string = ''
-	public myCoursesList: Array<any> = []
+	timePeriod: string = '7d'
+	identifier: string = ''
+	courseName: string = ''
+	myCoursesList: Array<any> = []
 	// Variables to render chart and block data
-	public graphData: any
-	public blockData: Array<any> = []
-	public showGraph: number = 0;
+	graphData: any
+	blockData: Array<any> = []
+	showGraph: number = 0;
 	// Flags to show loader and error
-	public showLoader: boolean = true
-	public showError: boolean = false
-	public isMultipleCourses: boolean = false
+	showLoader: boolean = true
+	showError: boolean = false
+	isMultipleCourses: boolean = false
 	// Graph settings - chartType = line/bar/radar/pie etc 
-	public chartLegend: boolean = true; 
-	public chartType: string = 'line';
+	chartLegend: boolean = true; 
+	chartType: string = 'line';
 
 
 	/**
