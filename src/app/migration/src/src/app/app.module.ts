@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
 import { OrganisationComponent } from './dashboard/organisation/organisation.component';
 import { RendererService } from './dashboard/renderer/renderer.service';
+import { LineChartService } from './dashboard/renderer/graph/lineChart.service';
 import { PermissionDirective } from './directive/permission.directive';
 import { ResourceService } from './services/resource/resource.service';
 import { ProfileComponent } from './profile/profile/profile.component';
@@ -65,6 +66,7 @@ import { ProfileViewComponent } from './profile/profile-view/profile-view.compon
     OrganisationService,
     DashboardUtilsService,
     RendererService,
+    LineChartService,
     SearchService,
     ResourceService
   ],

@@ -76,13 +76,26 @@ export class SearchService extends DataService {
      * @function orgSearch
      * @desc get content by user id
      * @param {} status orgSearch
-     * @param {} contentType
-     * @param {} params
+     * @param {} apiRequest
      * @return object
      */
     orgSearch(apiRequest) {
-        let headers: object = this.getHeaders()
-        return this.post('private/service/v1/learner/org/v1/search', apiRequest, headers)
+        const option = {
+            url: 'private/service/v1/learner/org/v1/search',
+            data: apiRequest
+        };
+
+        return this.post(option)
+            .map((data: any) => {
+                if (data && data.responseCode === 'OK') {
+                    return data
+                } else {
+                    return Observable.throw(data)
+                }
+            })
+            .catch((err) => {
+                return Observable.throw(err)
+            })
     }
 
 }

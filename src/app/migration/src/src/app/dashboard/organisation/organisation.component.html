@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="right floated three wide column padding-right-dropdown padding-right-10" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
+            <div class="right floated three wide column padding-right-dropdown padding-right-10" *ngIf="!showOrgWarningDiv">
                 <div class="ui dropdown float-ContentRight" suiDropdown>
                     <div class="text dashBoardSectionHeading">{{SelectedDataSet || 'Creation'}}</div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="ui grid" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
+        <div class="ui grid" *ngIf="!showOrgWarningDiv">
             <div class="twelve wide column">
                 <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -41,7 +41,7 @@
             Please select a organization from the above list
         </div>
 
-        <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }" *ngIf="!showOrgWarningDiv">
+        <div class="ui icon message margin-top-20" [ngStyle]="{'display':showLoader === true ? '' : 'none' }" *ngIf="!showOrgWarningDiv">
             <i class="notched circle loading icon"></i>
             <div class="content">
                 <div class="header">Please wait.</div>
