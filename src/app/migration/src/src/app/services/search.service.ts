@@ -21,22 +21,6 @@ export class SearchService extends DataService {
     }
 
     /**
-     * @function getHeaders
-     * @param headers
-     * @return {object} headers
-     */
-    private getHeaders(headers?: HttpHeaders): object {
-        headers = headers || new HttpHeaders();
-        headers = headers.set('Content-Type', 'application/json');
-        headers = headers.set('cid', 'sunbird')
-        headers = headers.set('headers.Accept', 'text/html,application/xhtml+xml,application/xml,application/json;q=0.9,image/webp,*/*;q=0.8')
-
-        return {
-            headers: headers
-        };
-    }
-
-    /**
      * @function getMyContent
      * @desc get content by user id
      * @param {} status getMyContent
@@ -47,14 +31,16 @@ export class SearchService extends DataService {
     getMyContent(status, contentType, params) {
         const option = {
             url: 'private/service/v1/content/composite/v1/search',
-            param: {
-                filters: {
-                    status: status,
-                    createdBy: this.UserService.userid,
-                    contentType: contentType
-                },
-                sort_by: {
-                    lastUpdatedOn: params.lastUpdatedOn || 'desc'
+            data: {
+                request:{
+                    filters: {
+                        status: status,
+                        createdBy: this.UserService.userid,
+                        contentType: contentType
+                    },
+                    sort_by: {
+                        lastUpdatedOn: params.lastUpdatedOn || 'desc'
+                    }
                 }
             }
         };
