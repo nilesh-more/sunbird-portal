@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CourseConsumptionDashboardComponent } from './course-consumption.component';
+import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service';
+
 
 describe('CourseConsumptionDashboardComponent', () => {
   let component: CourseConsumptionDashboardComponent;
@@ -19,7 +20,7 @@ describe('CourseConsumptionDashboardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create =================================================', () => {
     expect(component).toBeTruthy();
   });
 });

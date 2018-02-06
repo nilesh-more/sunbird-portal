@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../services/search.service'
 import { CourseConsumptionService } from '../../dashboard/datasource/course-consumption.service';
-import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
+import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -28,7 +28,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	// Graph settings - chartType = line/bar/radar/pie etc 
 	chartLegend: boolean = true; 
 	chartType: string = 'line';
-
 
 	/**
 	 * @function constructor
