@@ -1,4 +1,4 @@
-import { PermissionService } from './../services/permission.service';
+import { PermissionService } from './../services/permission/permission.service';
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 @Directive({
@@ -7,7 +7,6 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 export class PermissionDirective implements OnInit {
   @Input() permission: string;
     constructor(public el: ElementRef, public permissionService: PermissionService) {
-       // el.nativeElement.remove();
     }
     ngOnInit() {
       this.permissionService.permissionAvailable$.subscribe(

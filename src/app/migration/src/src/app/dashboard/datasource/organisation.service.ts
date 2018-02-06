@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '../../services/data.service'
+import { DataService } from '../../services/data/data.service'
 import { HttpClient } from '@angular/common/http';
 import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
-
 
 @Injectable()
 export class OrganisationService extends DataService  {
@@ -87,12 +86,11 @@ export class OrganisationService extends DataService  {
 
     parseConsumptionData(data){
         var blockData = []
-        _.forEach(data.snapshot, function (numericData, key) {
+        _.forEach(data.snapshot, (numericData, key) => {
           switch (key) {
           case 'org.consumption.content.time_spent.sum':
           case 'org.consumption.content.time_spent.average':
-            //blockData.push(this.DashboardUtils.secondToMinConversion(numericData))
-            blockData.push(numericData)
+            blockData.push(this.DashboardUtils.secondToMinConversion(numericData))
             break
           default:
             blockData.push(numericData)

@@ -1,22 +1,21 @@
 <div class="ui grid " [hidden]="showLoader">
     <div class="one wide column"></div>
     <div class="ten wide column">
-
         <div class="ui grid">
             <div class="nine wide column">
-                <!--<span class="dashBoardSectionHeading"><i class="bar chart icon"></i> &nbsp;  Org name</span>
-                <div class="ui dropdown" id="dashboardMenu">
+                <span class="dashBoardSectionHeading" *ngIf="orgArray.length === 1"><i class="bar chart icon"></i> &nbsp;  {{orgArray[0].orgName}}</span>
+                <div class="ui dropdown" suiDropdown *ngIf="orgArray.length > 1">
                     <span class="dashBoardSectionHeading padding-right-10"><i class="bar chart icon"></i></span>
-                    <div class="text dashBoardSectionHeading">Select Organization</div>
+                    <div class="text dashBoardSectionHeading">{{SelectedOrg || 'Select Organization'}}</div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
-                    <div class="menu">
-                        <div class="item" data-dataset="consumption" ng-repeat="item in dashboardData.orgDetails" ng-init="dashboardData.initDropdwon()" ng-click="dashboardData.onAfterOrgChange(item.organisationId)">{{item.orgName}}</div>
+                    <div class="menu" suiDropdownMenu>
+                        <div class="item" [ngClass]="{'active': item.organisationId === identifier }" *ngFor="let item of orgArray" (click)="onAfterOrgChange(item.organisationId, item.orgName);">{{item.orgName}}</div>
                     </div>
-                </div>-->
+                </div>
             </div>
 
-            <div class="right floated three wide column padding-right-dropdown padding-right-10" suiDropdown [(isOpen)]="isOpen" [isDisabled]="isDisabled">
-                <div class="ui dropdown float-ContentRight">
+            <div class="right floated three wide column padding-right-dropdown padding-right-10" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
+                <div class="ui dropdown float-ContentRight" suiDropdown>
                     <div class="text dashBoardSectionHeading">{{SelectedDataSet || 'Creation'}}</div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
                     <div class="menu" suiDropdownMenu>
@@ -24,11 +23,10 @@
                         <div class="item" [ngClass]="{'active': datasetType === 'ORG_CONSUMPTION' }" (click)="onAfterDatasetChange('ORG_CONSUMPTION'); SelectedDataSet = 'Consumption'">Consumption</div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <div class="ui grid">
+        <div class="ui grid" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
             <div class="twelve wide column">
                 <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -36,14 +34,14 @@
             </div>
         </div>
 
-        <!--<div class="ui warning message tweleve wide column" ng-show="dashboardData.showOrgWarningDiv">
+        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="showOrgWarningDiv">
             <div class="header">
                 No organization selected!
             </div>
             Please select a organization from the above list
-        </div>-->
+        </div>
 
-        <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }">
+        <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }" *ngIf="!showOrgWarningDiv">
             <i class="notched circle loading icon"></i>
             <div class="content">
                 <div class="header">Please wait.</div>
@@ -51,8 +49,8 @@
             </div>
         </div>
 
-        <div >
-            <div class="consumption-data-holder" [ngStyle]="{'display':showLoader === false ? 'block' : 'none' }">
+        <div>
+            <div class="consumption-data-holder margin-top-20" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
                 <div class="ui three cards">
                     <div class="card" *ngFor="let block of blockData">
                         <div class="content center aligned">
@@ -61,9 +59,9 @@
                         </div>
                     </div>
                 </div>
-            </div>           
+            </div>
 
-            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" [ngStyle]="{'display':showLoader === false ? 'block' : 'none' }">
+            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
                 <div class="column">
                     <div class="regular slider padding-top-30 course-graph-holder">
                         <div *ngFor="let block of graphData;let graphIndex = index;">
@@ -89,4 +87,4 @@
             </div>
         </div>
     </div>
- </div>
+</div>

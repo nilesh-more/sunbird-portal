@@ -1,0 +1,17 @@
+<div class="ui" *ngIf="!isError">
+  <profile-header (profileEvents)="eventHandler($event)" ></profile-header>
+</div>
+<div class="ui grid">
+    <div class="one wide column"></div>
+    <div class="ten wide column">
+      <div class="twelve wide column">
+          <div class="ui raised segment " ng-if="showLoader">
+              <app-loader [data]='data'></app-loader>
+          </div>
+      </div>
+      <div  *ngIf="!isError">
+          <profile-view></profile-view>
+      </div> 
+    </div>
+    <div class="one wide column"></div>
+</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DataService } from './data.service';
+import { DataService } from './data/data.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
@@ -58,6 +58,19 @@ export class SearchService extends DataService {
         }
 
         return this.post('private/service/v1/content/composite/v1/search', apiRequest, headers)
+    }
+
+    /**
+     * @function orgSearch
+     * @desc get content by user id
+     * @param {} status orgSearch
+     * @param {} contentType
+     * @param {} params
+     * @return object
+     */
+    orgSearch(apiRequest) {
+        let headers: object = this.getHeaders()
+        return this.post('private/service/v1/learner/org/v1/search', apiRequest, headers)
     }
 
 }
