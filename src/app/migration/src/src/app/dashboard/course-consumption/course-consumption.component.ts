@@ -158,7 +158,7 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 				yAxesLabel = bucketData.name
 			}
 
-			var chartData = this.DashboardUtils.getLineDataA(bucketData)
+			var chartData = this.DashboardUtils.getLineData(bucketData)
 
 			// Options
 			groupData['options'] = this.DashboardUtils.getChartOption(yAxesLabel)
