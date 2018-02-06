@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
 import { CourseConsumptionService } from '../../dashboard/datasource/course-consumption.service';
-import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service';
+import { RendererService } from '../../dashboard/renderer/renderer.service';
+
 import * as _ from 'lodash';
 
 @Component({
@@ -33,12 +34,12 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @function constructor
 	 * @desc to initialize variables
 	 * @param {object} CourseConsumptionService
-	 * @param {object} DashboardUtilsService
 	 * @param {object} SearchService
 	 * @return void
 	 */
-	constructor(private CourseConsumptionService: CourseConsumptionService,
-		private DashboardUtils: DashboardUtilsService, private SearchService: SearchService) {
+	constructor(private CourseConsumptionService: CourseConsumptionService, 
+		private SearchService: SearchService, 
+		private RendererService: RendererService) {
 		this.blockData = []
 		this.myCoursesList = []
 		this.getMyContent()
@@ -61,7 +62,7 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 			data => {
 				console.log('API-Response: Dashboard -', data)
 				this.blockData = data.numericData
-				this.graphData = this.parseApiResponse(data.bucketData)
+				this.graphData = this.RendererService.visualizer(data, this.chartType)
 				this.showLoader = false
 			},
 			err => {
@@ -135,52 +136,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 */
 	graphNavigation(step: string) {
 		step === 'next' ? this.showGraph++ : this.showGraph--
-	}
-
-	/**
-	 * @function parseApiResponse
-	 * @desc prepare line chart data
-	 * @param {object} data
-	 * @return {object} lineChartData
-	 */
-	parseApiResponse(data) {
-		console.log('Line chart rendered called: ', true);
-		var lineChartData = []
-		var groupList = {}
-		_.forEach(data, (bucketData, key) => {
-			let groupData: object = {}
-			let yAxesLabel: string = data.name
-			groupData['legend'] = [bucketData.name]
-
-			if (bucketData.time_unit !== undefined) {
-				yAxesLabel = bucketData.name + ' (' + bucketData.time_unit + ')'
-			} else {
-				yAxesLabel = bucketData.name
-			}
-
-			var chartData = this.DashboardUtils.getLineData(bucketData)
-
-			// Options
-			groupData['options'] = this.DashboardUtils.getChartOption(yAxesLabel)
-			groupData['yAxes'] = [{ data: chartData.values, label: yAxesLabel }]
-			groupData['xAxes'] = chartData.labels
-
-			if (groupList[bucketData.group_id]) {
-				Array.prototype.push.apply(groupList[bucketData.group_id].yaxes, groupData['yaxes'])
-			} else {
-				groupList[bucketData.group_id] = groupData
-			}
-			// Colors
-			groupData['colors'] = this.DashboardUtils.getChartColors(groupList[bucketData.group_id].legend.length)
-
-		});
-
-		_.forOwn(groupList, function (group, groupId) {
-			lineChartData.push({ yaxesData: group.yAxes, xaxesData: group.xAxes, chartOptions: group.options, chartColors: group.colors })
-		})
-
-		console.log('Line chart data prepared: ', lineChartData);
-		return lineChartData
 	}
 
 	ngOnInit() {
