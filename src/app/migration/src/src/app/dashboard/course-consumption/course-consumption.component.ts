@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SearchService } from '../../services/search.service'
+import { SearchService } from '../../services/search.service';
 import { CourseConsumptionService } from '../../dashboard/datasource/course-consumption.service';
 import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service';
 import * as _ from 'lodash';
@@ -62,12 +62,13 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 				console.log('API-Response: Dashboard -', data)
 				this.blockData = data.numericData
 				this.graphData = this.parseApiResponse(data.bucketData)
+				this.showLoader = false
 			},
 			err => {
+				this.showLoader = false
 				this.showError = true
 			}
 			);
-		this.showLoader = false
 	}
 
 	/**
@@ -76,7 +77,7 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @return void
 	 */
 	getMyContent() {
-		this.SearchService.getMyContent(['Live'], ['Course'], { lastUpdatedOn: 'desc' }).subscribe(
+		this.SearchService.getMyContent(['Live', 'Draft'], ['Course', 'Textbook'], { lastUpdatedOn: 'desc' }).subscribe(
 			data => {
 				if (data.result.count && data.result.content) {
 					this.myCoursesList = data.result.content

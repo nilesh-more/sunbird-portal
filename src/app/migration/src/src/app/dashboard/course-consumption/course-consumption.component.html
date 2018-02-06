@@ -30,39 +30,6 @@
             <div class="two wide column"></div>
         </div>
 
-        <div class="consumption-data-holder" [ngStyle]="{'display':showLoader || isMultipleCourses ? 'none' : '' }">
-            <div class="ui four cards">
-                <div class="card" *ngFor="let block of blockData">
-                    <div class="content center aligned">
-                        <div class="meta dashBoardCardText">{{block.name}}</div>
-                        <h2 class="description dashboardCardSubText">{{block.value}}</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0">
-                <div class="column">
-                    <div class="regular slider padding-top-30 course-graph-holder">
-                        <div *ngFor="let block of graphData;let graphIndex = index;">
-                            <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
-                                <div class="ui segment">
-                                    <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
-                                        [colors]="block[3]" [legend]="chartLegend" [chartType]="chartType">
-                                    </canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="corse-graph-navigation-btn">
-                            <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
-                                <i class="left arrow icon"></i>
-                            </button>
-                            <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
-                                <i class="right arrow icon"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="ui icon message" [ngStyle]="{'display':showLoader === true ? '' : 'none' }">
             <i class="notched circle loading icon"></i>
             <div class="content">
@@ -79,6 +46,40 @@
             <ul class="list">
                 <li>You haven't created any course yet. Create new course and check the dashboard again.</li>
             </ul>
+        </div>
+
+        <div class="consumption-data-holder" [ngStyle]="{'display':showLoader || isMultipleCourses ? 'none' : '' }">
+            <div class="ui four cards">
+                <div class="card" *ngFor="let block of blockData">
+                    <div class="content center aligned">
+                        <div class="meta dashBoardCardText">{{block.name}}</div>
+                        <h2 class="description dashboardCardSubText">{{block.value}}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0">
+                <div class="column">
+                    <div class="regular slider padding-top-30 course-graph-holder">
+                        <div *ngFor="let block of graphData;let graphIndex = index;">
+                            <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
+                                <div class="ui segment">
+                                    <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                                        [colors]="block.chartColors" [legend]="chartLegend" [chartType]="chartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="corse-graph-navigation-btn">
+                            <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
+                                <i class="left arrow icon"></i>
+                            </button>
+                            <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }">
+                                <i class="right arrow icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

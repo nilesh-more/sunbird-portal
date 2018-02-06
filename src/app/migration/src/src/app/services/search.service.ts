@@ -44,7 +44,6 @@ export class SearchService extends DataService {
                 }
             }
         };
-        console.log('option...,', option.data)
 
         return this.post(option)
             .map((data: any) => {

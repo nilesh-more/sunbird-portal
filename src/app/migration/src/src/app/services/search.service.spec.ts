@@ -35,12 +35,9 @@ describe('SearchService', () => {
           })));
         });
 
-      service.getMyContent([],[],[]).subscribe((data) => {
+      service.getMyContent(['Live'],['Course'],{ lastUpdatedOn: 'desc' }).subscribe((data) => {
           expect(data.result.period).toEqual('5w');
       });
-
-
-      // expect(service.getMyContent([],[],[])).toBeTruthy();
   }));
   
 });
