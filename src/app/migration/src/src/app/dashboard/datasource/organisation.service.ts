@@ -20,7 +20,7 @@ export class OrganisationService extends DataService  {
      * @function getData
      * @desc api call to get dashboard data
      * @param {object} apiReq
-     * @return {object} datasetType
+     * @return object
      */
     getData (apiReq: object, datasetType: string){
         let URL: string = this.DashboardUtils.constructApiUrl(apiReq, datasetType)
@@ -45,7 +45,7 @@ export class OrganisationService extends DataService  {
      * @function parseApiResponse
      * @desc parse api response depending on dataset
      * @param {object} data
-     * @return {object} datasetType
+     * @return object
      */
     parseApiResponse(data, datasetType){
             switch (datasetType) {
@@ -62,6 +62,7 @@ export class OrganisationService extends DataService  {
      * @function parseCreationData
      * @desc parse api response for creation dashboard
      * @param {object} data
+     * @return object
      */
     parseCreationData(data){
         var contentStatus = {
@@ -96,6 +97,7 @@ export class OrganisationService extends DataService  {
      * @function parseConsumptionData
      * @desc parse api response for consumption dashboard
      * @param {object} data
+     * @return object
      */
     parseConsumptionData(data){
         var blockData = []
