@@ -48,7 +48,7 @@ export class OrganisationComponent {
 
 	/**
 	 * @function getData
-	 * @desc change filter
+	 * @desc Get graph data
 	 * @param {string} timePeriod
 	 * @param {string} identifier
 	 * @return void
@@ -78,7 +78,7 @@ export class OrganisationComponent {
 
 	/**
 	 * @function onAfterFilterChange
-	 * @desc change filter
+	 * @desc get data after timeperiod change
 	 * @param {string} timePeriod
 	 * @return void
 	 */
@@ -91,8 +91,8 @@ export class OrganisationComponent {
 
 	/**
 	 * @function onAfterDatasetChange
-	 * @desc change filter
-	 * @param {string} timePeriod
+	 * @desc get data after dataset change
+	 * @param {string} datasetType
 	 * @return void
 	 */
 	onAfterDatasetChange(datasetType: string) {
@@ -105,7 +105,7 @@ export class OrganisationComponent {
 
 	/**
 	 * @function graphNavigation
-	 * @desc show 
+	 * @desc show navigation arrow
 	 * @param {string} step 
 	 * @return void
 	 */
@@ -153,7 +153,7 @@ export class OrganisationComponent {
 
 	/**
 	 * @method downloadReport
-	 * @desc Download report
+	 * @desc Download dashboard report
 	 */
 	downloadReport() {
 		this.disabledClass = true
@@ -167,7 +167,7 @@ export class OrganisationComponent {
 			err => {
 				this.disabledClass = false
 			}
-			
+
 			);
 	}
 }
