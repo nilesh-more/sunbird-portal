@@ -14,7 +14,7 @@
                     {{ option.name }}
                 </ng-template>
                 <sui-select class="selection" [(ngModel)]="selectedOption" (ngModelChange)="onAfterCourseChange($event)" [options]="options"
-                    labelField="name" [optionTemplate]="optionTemplate" [isSearchable]="true" #templated>
+                    labelField="name" [placeholder]="'Select Course To See Dashboard'" [optionTemplate]="optionTemplate" [isSearchable]="true" #templated>
                     <sui-select-option *ngFor="let o of myCoursesList" [value]="o"></sui-select-option>
                 </sui-select>
             </div>
