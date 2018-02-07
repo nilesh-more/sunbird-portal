@@ -3,15 +3,21 @@ import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../services/search.service';
 import { CourseConsumptionService } from '../../dashboard/datasource/course-consumption.service';
 import { RendererService } from '../../dashboard/renderer/renderer.service';
-
 import * as _ from 'lodash';
 
+/**
+ * The course creation dashboard component
+ */
 @Component({
 	selector: 'course-consumption-dashboard',
 	templateUrl: './course-consumption.component.html',
 	styleUrls: ['./course-consumption.component.css']
 })
 
+/**
+ * @class CourseConsumptionDashboardComponent
+ * @desc interact with dashboard data sources and renderer 
+ */
 export class CourseConsumptionDashboardComponent implements OnInit {
 	// Variable(s) to make api request
 	timePeriod: string = '7d'
@@ -59,7 +65,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 			timePeriod: this.timePeriod
 		}).subscribe(
 			data => {
-				console.log('API-Response: Dashboard -', data)
 				this.blockData = data.numericData
 				this.graphData = this.RendererService.visualizer(data, this.chartType)
 				this.showLoader = false
@@ -86,13 +91,11 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 						this.courseName = data.result.content[0].name
 						this.getData('7d', data.result.content[0].identifier)
 					} else {
-						console.log('more than one course')
 						this.isMultipleCourses = true
 					}
 				}
 
 				this.showLoader = false
-				console.log('API-Response: Dashboard search ', data)
 			},
 			err => {
 				this.showError = true
@@ -107,7 +110,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @return void 
 	 */
 	onAfterCourseChange(course) {
-		console.log('course', course)
 		if (this.identifier === course.identifier) {
 			return false
 		}

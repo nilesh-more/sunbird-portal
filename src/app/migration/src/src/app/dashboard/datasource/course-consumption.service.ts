@@ -26,8 +26,8 @@ export class CourseConsumptionService extends DataService  {
         let headers: object = this.DashboardUtils.getDefaultHeaders()
         const option = {
             url: this.DashboardUtils.constructApiUrl(apiReq, 'COURSE_CONSUMPTION')
-            //param: {}
         };
+    
         return this.get(option)
             .map((data: any) => {
                 console.log('Dashboard data received: in datasource', data)
