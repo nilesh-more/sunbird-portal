@@ -21,7 +21,6 @@ export class DownloadService extends DataService  {
 	 * @desc Download report
 	 */
     getDownloadData (apiReq: object, datasetType: string){
-        let headers: object = this.DashboardUtils.getDefaultHeaders()
         const option = {
             url: this.DashboardUtils.constructDownloadReportUrl(apiReq, datasetType)
         }
