@@ -17,6 +17,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component';
 import { CourseConsumptionService } from './dashboard/datasource/course-consumption.service';
 import { OrganisationService } from './dashboard/datasource/organisation.service';
+import { DownloadService } from './dashboard/datasource/download.service';
 import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
 import { SearchService } from './services/search.service'
 import { FormsModule } from '@angular/forms';
@@ -64,6 +65,7 @@ import { ProfileViewComponent } from './profile/profile-view/profile-view.compon
     AuthGuard,
     CourseConsumptionService,
     OrganisationService,
+    DownloadService,
     DashboardUtilsService,
     RendererService,
     LineChartService,

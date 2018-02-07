@@ -27,6 +27,21 @@ export class DashboardUtilsService  {
         return url
     }
 
+    /**
+     * @method constructDownloadReportUrl
+     * @desc construct download report api url
+     * @memberOf Services.dataSourceUtils
+     * @param {Object}  req - identifier and time period
+     * @param {string}  url - url
+     * @return {string} api url
+     */
+    constructDownloadReportUrl (req, dataset) {
+      let apiUrl = this.datasetType['BASE_PREFIX'] + this.datasetType['LEARNER_PREFIX'] +
+         this.datasetType[dataset] + '/' + req.identifier + '/export?period=' +
+         req.timePeriod + '&format=csv'
+      return apiUrl
+    }
+
 	/**
 	 * @function getDefaultHeaders
 	 * @desc create dedault headers
@@ -46,7 +61,6 @@ export class DashboardUtilsService  {
 	 * @return {object} 
 	 */
     secondToMinConversion(numericData){
-        console.log('numericData', numericData)
       let num
       if (numericData.value < 60) {
         numericData.value += ' second(s)'

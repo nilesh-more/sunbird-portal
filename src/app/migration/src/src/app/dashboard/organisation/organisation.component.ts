@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../services/search.service'
 import { OrganisationService } from '../../dashboard/datasource/organisation.service';
+import { DownloadService } from '../../dashboard/datasource/download.service';
 import { RendererService } from '../../dashboard/renderer/renderer.service';
+import { ResourceService } from '../../services/resource/resource.service';
+import { UserService } from '../../services/user/user.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -26,13 +29,17 @@ export class OrganisationComponent {
 	lineChartLegend: boolean = true
 	showDataDiv: boolean = false
 	lineChartType: string = 'line'
+	disabledClass: boolean = false
 
 	/**
 	 * @function constructor
 	 * @desc to initialize variables
 	 */
 	constructor(private OrganisationService: OrganisationService,
+		private resourceService: ResourceService,
 		private SearchService: SearchService,
+		private DownloadService: DownloadService,
+		private UserService: UserService,
 		private RendererService: RendererService) {
 		this.blockData = []
 		this.datasetType = 'ORG_CREATION'
@@ -92,9 +99,8 @@ export class OrganisationComponent {
 		if (this.datasetType === datasetType) {
 			return false
 		}
-		this.timePeriod = '7d'
 		this.datasetType = datasetType
-		this.getData(this.timePeriod, this.identifier)
+		this.getData('7d', this.identifier)
 	}
 
 	/**
@@ -129,7 +135,6 @@ export class OrganisationComponent {
 
 		this.SearchService.orgSearch({ 'request': { 'filters': { id: orgIds } } }).subscribe(
 			data => {
-				console.log('API-Response: : org success compo', data)
 				_.forEach(data.result.response.content, (org) => {
 					this.orgArray.push({ organisationId: org.id, orgName: org.orgName })
 				})
@@ -144,6 +149,26 @@ export class OrganisationComponent {
 		} else {
 			this.showOrgWarningDiv = true
 		}
+	}
+
+	/**
+	 * @method downloadReport
+	 * @desc Download report
+	 */
+	downloadReport() {
+		this.disabledClass = true
+		this.DownloadService.getDownloadData({
+			identifier: this.identifier,
+			timePeriod: this.timePeriod
+		}, this.datasetType).subscribe(
+			data => {
+				this.disabledClass = false
+			},
+			err => {
+				this.disabledClass = false
+			}
+			
+			);
 	}
 }
 

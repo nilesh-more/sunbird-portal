@@ -54,8 +54,8 @@
                 <div class="ui three cards">
                     <div class="card" *ngFor="let block of blockData">
                         <div class="content center aligned">
-                            <div class="meta dashBoardCardText">{{block.name}}</div>
-                            <h2 class="description dashboardCardSubText">{{block.value}}</h2>
+                            <div class="meta ">{{block.name}}</div>
+                            <h2 class="description ">{{block.value}}</h2>
                         </div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         <div *ngFor="let block of graphData;let graphIndex = index;">
                             <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
                                 <div class="ui segment">
-                                    <canvas baseChart width="300" height="110" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                                    <canvas baseChart width="300" height="90" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
                                         [colors]="block.chartColors" [legend]="true" [chartType]="'line'" (chartHover)="chartHovered($event)"
                                         (chartClick)="chartClicked($event)">
                                     </canvas>
@@ -84,6 +84,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="twelve wide column margin-top-20 " *ngIf="showDataDiv">
+                <p class="text-align-right dashBoardCardText">Download this view as:
+                    <a href="javascript:void(0);" [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline padding-left-10"
+                        (click)="downloadReport();">CSV</a>
+                </p>
             </div>
         </div>
     </div>

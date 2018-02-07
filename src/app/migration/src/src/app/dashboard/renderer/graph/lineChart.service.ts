@@ -7,10 +7,12 @@ export class LineChartService {
     constructor() {}
 
     /**
-     * @function getData
-     */
+	 * @function parseLineChart
+	 * @desc parsing data according to line chart
+	 * @param {object} res
+	 * @return object
+	 */
     parseLineChart(res) {
-        console.log('Inside rendered---', res);
         var chartList = []
         var groupList = {}
         var i = 0
