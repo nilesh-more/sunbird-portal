@@ -4,6 +4,8 @@ import { SearchService } from '../../services/search.service'
 import { OrganisationService } from '../../dashboard/datasource/organisation.service';
 import { DownloadService } from '../../dashboard/datasource/download.service';
 import { RendererService } from '../../dashboard/renderer/renderer.service';
+import { ResourceService } from '../../services/resource/resource.service';
+import { UserService } from '../../services/user/user.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -34,8 +36,10 @@ export class OrganisationComponent {
 	 * @desc to initialize variables
 	 */
 	constructor(private OrganisationService: OrganisationService,
+		private resourceService: ResourceService,
 		private SearchService: SearchService,
 		private DownloadService: DownloadService,
+		private UserService: UserService,
 		private RendererService: RendererService) {
 		this.blockData = []
 		this.datasetType = 'ORG_CREATION'
@@ -158,11 +162,12 @@ export class OrganisationComponent {
 			timePeriod: this.timePeriod
 		}, this.datasetType).subscribe(
 			data => {
-				console.log('download data = ', data)
+				this.disabledClass = false
 			},
 			err => {
 				this.disabledClass = false
 			}
+			
 			);
 	}
 }

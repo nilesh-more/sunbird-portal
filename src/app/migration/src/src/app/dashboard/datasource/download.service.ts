@@ -16,9 +16,10 @@ export class DownloadService extends DataService  {
         super(http)
     }
 
-    /**
-     * @function getData
-     */
+	/**
+	 * @method getDownloadData
+	 * @desc Download report
+	 */
     getDownloadData (apiReq: object, datasetType: string){
         let headers: object = this.DashboardUtils.getDefaultHeaders()
         const option = {
@@ -26,7 +27,6 @@ export class DownloadService extends DataService  {
         }
         return this.get(option)
             .map((data: any) => {
-                console.log('Dashboard data received: in datasource', data)
                 if (data && data.responseCode === 'OK') {
                     return data.result
                 } else {

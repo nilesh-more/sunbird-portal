@@ -27,13 +27,11 @@ export class OrganisationService extends DataService  {
         }
         return this.get(option)
             .map((data: any) => {
-                console.log('Dashboard data received: in datasource', data)
                 if (data && data.responseCode === 'OK') {
                     return this.parseApiResponse(data.result, datasetType)
                 } else {
                     return Observable.throw(data)
                 }
-                
             })
             .catch((err) => {
                 return Observable.throw(err)
