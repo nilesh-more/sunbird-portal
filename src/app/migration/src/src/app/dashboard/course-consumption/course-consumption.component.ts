@@ -42,7 +42,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 		private RendererService: RendererService) {
 		this.blockData = []
 		this.myCoursesList = []
-		this.getMyContent()
 	}
 
 	/**
@@ -108,6 +107,7 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @return void 
 	 */
 	onAfterCourseChange(course) {
+		console.log('course', course)
 		if (this.identifier === course.identifier) {
 			return false
 		}
@@ -139,6 +139,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
+		this.getMyContent()
 	}
 }
