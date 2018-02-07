@@ -7,6 +7,11 @@ import { Observable } from 'rxjs/Observable';
 import { UserService } from './user/user.service';
 
 @Injectable()
+
+/**
+ * @class SearchService
+ * @desc  get data based on request params
+ */
 export class SearchService extends DataService {
 
     serchUrl = ''

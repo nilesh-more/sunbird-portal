@@ -2,8 +2,18 @@ import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
 @Injectable()
+
+/**
+ * @class DashboardUtilsService
+ * @desc - dashboard utils helper to construct api url's based on dataset type
+ */
 export class DashboardUtilsService  {
     datasetType: {}
+
+    /**
+     * @function constructor
+     * @desc initialize class variables 
+     */
     constructor() {
         this.datasetType = {
             'BASE_PREFIX':'private/service/',

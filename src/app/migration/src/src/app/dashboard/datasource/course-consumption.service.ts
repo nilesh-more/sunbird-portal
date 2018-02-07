@@ -8,7 +8,15 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
+
+/**
+ * @class CourseConsumptionService
+ */
 export class CourseConsumptionService extends DataService  {
+    /**
+     * @function constructor
+     * @desc create instance of injected service(s) 
+     */
     constructor(
         public http: HttpClient,
         public DashboardUtils: DashboardUtilsService
