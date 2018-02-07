@@ -38,10 +38,9 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 
 	/**
 	 * @function constructor
-	 * @desc to initialize variables
+	 * @desc create injected service(s) object
 	 * @param {object} CourseConsumptionService
 	 * @param {object} SearchService
-	 * @return void
 	 */
 	constructor(private CourseConsumptionService: CourseConsumptionService, 
 		private SearchService: SearchService, 
@@ -79,7 +78,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	/**
 	 * @function getMyContent
 	 * @desc get courses created by me
-	 * @return void
 	 */
 	getMyContent() {
 		this.SearchService.getMyContent(['Live', 'Draft'], ['Course', 'Textbook'], { lastUpdatedOn: 'desc' }).subscribe(
@@ -107,7 +105,6 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @function onAfterCourseChange
 	 * @desc change course
 	 * @param {object} course
-	 * @return void 
 	 */
 	onAfterCourseChange(course) {
 		if (this.identifier === course.identifier) {
@@ -121,12 +118,12 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @function onAfterFilterChange
 	 * @desc change filter
 	 * @param {string} timePeriod
-	 * @return void
 	 */
 	onAfterFilterChange(timePeriod: string) {
 		if (this.timePeriod === timePeriod) {
 			return false
 		}
+		
 		this.getData(timePeriod, this.identifier)
 	}
 
@@ -134,12 +131,15 @@ export class CourseConsumptionDashboardComponent implements OnInit {
 	 * @function graphNavigation
 	 * @desc show 
 	 * @param {string} step 
-	 * @return void
 	 */
 	graphNavigation(step: string) {
 		step === 'next' ? this.showGraph++ : this.showGraph--
 	}
 
+	/**
+	 * @function ngOnInit
+	 * @desc get list of 'Live' course(s) created by me
+	 */
 	ngOnInit() {
 		this.getMyContent()
 	}

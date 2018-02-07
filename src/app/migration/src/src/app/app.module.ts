@@ -33,8 +33,6 @@ import { SearchService } from './services/search.service'
 import { RendererService } from './dashboard/renderer/renderer.service';
 import { LineChartService } from './dashboard/renderer/graph/lineChart.service';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

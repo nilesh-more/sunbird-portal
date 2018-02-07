@@ -20,6 +20,7 @@ export class DashboardUtilsService  {
 	 * @desc construct required api url
 	 * @param {object} req
 	 * @param {string} dataset
+     * @return {string} api url
 	 */
     constructApiUrl (req, dataset: string){
         let url = this.datasetType['BASE_PREFIX'] + this.datasetType['LEARNER_PREFIX'] +
@@ -40,18 +41,6 @@ export class DashboardUtilsService  {
          this.datasetType[dataset] + '/' + req.identifier + '/export?period=' +
          req.timePeriod + '&format=csv'
       return apiUrl
-    }
-
-	/**
-	 * @function getDefaultHeaders
-	 * @desc create dedault headers
-	 */
-    getDefaultHeaders(){
-        let headers = {
-            'Content-Type': 'application/json',
-            cid: 'sunbird'
-        }
-        return headers
     }
 
 	/**

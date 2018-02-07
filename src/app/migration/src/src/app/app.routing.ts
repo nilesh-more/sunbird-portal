@@ -4,10 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/auth-guard/auth-guard.service';
 import { RouteResolveService } from './services/route-resolve/route-resolve.service';
 import { AuthGuardComponent } from './random/auth-guard/auth-guard.component';
-import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component'
-import { OrganisationComponent } from './dashboard/organisation/organisation.component';
 import { BreadcrumbsModule} from 'ng2-breadcrumbs';
 import { ProfileComponent } from './profile/profile/profile.component';
+import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component'
+import { OrganisationComponent } from './dashboard/organisation/organisation.component';
 
 const appRoutes: Routes = [
     {

@@ -3,12 +3,10 @@ import { async, ComponentFixture, TestBed, inject, fakeAsync } from '@angular/co
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-
 // Import modules
 import { FormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ChartsModule } from 'ng2-charts';
-
 // Import services
 import { CourseConsumptionDashboardComponent } from './course-consumption.component';
 import { CourseConsumptionService } from '../../dashboard/datasource/course-consumption.service';
@@ -17,7 +15,6 @@ import { RendererService } from '../../dashboard/renderer/renderer.service';
 import { LineChartService } from '../../dashboard/renderer/graph/lineChart.service';
 import { SearchService } from '../../services/search.service';
 import { UserService } from '../../services/user/user.service';
-
 
 describe('CourseConsumptionDashboardComponent', () => {
   let component: CourseConsumptionDashboardComponent;

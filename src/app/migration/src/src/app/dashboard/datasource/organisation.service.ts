@@ -23,8 +23,6 @@ export class OrganisationService extends DataService  {
      * @return object
      */
     getData (apiReq: object, datasetType: string){
-        let URL: string = this.DashboardUtils.constructApiUrl(apiReq, datasetType)
-        let headers: object = this.DashboardUtils.getDefaultHeaders()
         const option = {
             url: this.DashboardUtils.constructApiUrl(apiReq, datasetType)
         }

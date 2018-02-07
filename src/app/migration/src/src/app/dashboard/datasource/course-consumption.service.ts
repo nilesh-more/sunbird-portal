@@ -23,7 +23,6 @@ export class CourseConsumptionService extends DataService  {
      * @return {object} data
      */
     getData (apiReq: object){
-        let headers: object = this.DashboardUtils.getDefaultHeaders()
         const option = {
             url: this.DashboardUtils.constructApiUrl(apiReq, 'COURSE_CONSUMPTION')
         };
