@@ -35,7 +35,7 @@ const appRoutes: Routes = [
         }
     },
     {
-        path: 'migration/myactivity',
+        path: 'migration/course-creator-dashboard',
         component: CourseConsumptionDashboardComponent,
         canActivate: [
             'CanActivate',
