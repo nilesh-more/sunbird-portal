@@ -55,8 +55,7 @@ export class PermissionService {
   }
 
   private setCurrentRoleActions() {
-    this.userService.userData$.subscribe(
-      user => {
+    this.userService.userData$.subscribe( user => {
         if (user) {
           if (!user.err) {
             this.userRoles = user.userProfile.userRoles;
