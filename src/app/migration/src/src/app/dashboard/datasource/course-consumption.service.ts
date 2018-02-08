@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 /**
  * @class CourseConsumptionService
  */
-export class CourseConsumptionService extends DataService  {
+export class CourseConsumptionService {
     /**
      * @function constructor
      * @desc create instance of injected service(s) 
@@ -21,7 +21,7 @@ export class CourseConsumptionService extends DataService  {
         public http: HttpClient,
         public DashboardUtils: DashboardUtilsService
         ) {
-        super(http)
+        // super(http)
     }
 
     /**
