@@ -11,7 +11,15 @@ angular.module('playerApp')
 
       searchService.getChannel().then(function (res) {
         if (res.responseCode === 'OK') {
-          textbook.frameworkId = res.result.channel.frameworks[0].identifier
+          textbook.frameworkId = null
+          if (_.get(res, 'result.channel.frameworks') && res.result.channel.frameworks.length > 0) {
+            textbook.frameworkId = res.result.channel.frameworks[0].identifier
+          } else {
+            textbook.frameworkId = _.find(res.result.channel.suggested_frameworks, function (framework) {
+              return framework.identifier === res.result.channel.defaultFramework
+            }).identifier
+          }
+
           searchService.getFramework(textbook.frameworkId).then(function (res) {
             if (res.responseCode === 'OK') {
               textbook.frameworkData = res.result.framework.categories
@@ -93,6 +101,9 @@ angular.module('playerApp')
         requestBody.createdBy = textbook.userId
         requestBody.contentType = textbook.contentType
         requestBody.frameworkId = textbook.frameworkId
+        if (requestBody.gradeLevel && requestBody.gradeLevel[0] === '') {
+          delete requestBody['gradeLevel']
+        }
         if (requestBody.language) {
           requestBody.language = [requestBody.language]
         }

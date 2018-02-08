@@ -22,9 +22,9 @@
         <i class="float-ContentLeft alarm-icon-header alarm icon large alaramIconColor"></i>
         <div suiDropdown [(isOpen)]="isOpen"  class="ui floating dropdown right top pointing
              header-user-container padding-top-circular-human-icon" id="dropdown-menu-list-header">
-            <img src="{{ userService.userProfile['avatar'] || '/assets/common/images/user_logo.png'}}" class="ui circular image logged-in-user" />
+            <img *ngIf='userProfile' src="{{ userProfile?.avatar || '/assets/common/images/user_logo.png'}}" class="ui circular image logged-in-user" />
             <div class="menu" suiDropdownMenu>
-                <div class="item headerDropdownProfile" >{{userService.userProfile['firstName']}}&nbsp;{{userService.userProfile['lastName']}}</div>
+                <div *ngIf='userProfile' class="item headerDropdownProfile" >{{userProfile?.firstName}}&nbsp;{{userProfile?.lastName}}</div>
                 <div class="ui divider"></div>
                 <a class="item" href="/private/index#!/profile" >{{resourceService.frmelmnts?.lnk?.profile}}</a>
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='adminDashboard' href="/migration/org-dashboard">{{resourceService.frmelmnts?.lnk.dashboard}}</a>

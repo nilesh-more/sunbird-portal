@@ -1,5 +1,6 @@
+import { ResourceService } from './../../../services/resource/resource.service';
+
 import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '../../services/resource/resource.service';
 
 @Component({
   selector: 'main-menu',

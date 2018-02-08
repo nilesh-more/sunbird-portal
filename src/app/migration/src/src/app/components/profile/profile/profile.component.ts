@@ -1,7 +1,7 @@
-import { PermissionService } from './../../services/permission/permission.service';
+import { UserService } from './../../../services/user/user.service';
+import { PermissionService } from './../../../services/permission/permission.service';
+import { ResourceService } from './../../../services/resource/resource.service';
 import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '../../services/resource/resource.service';
-import { UserService } from '../../services/user/user.service';
 
 @Component({
   selector: 'app-profile',

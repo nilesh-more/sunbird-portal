@@ -7,7 +7,7 @@ import { UserService } from '../user/user.service';
 
 @Injectable()
 export class RouteResolveService implements Resolve<any> {// implements Resolve<migration>
-  constructor(public permissionService: PermissionService, private profileService: UserService) {}
+  constructor(public permissionService: PermissionService, private userService: UserService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -17,14 +17,10 @@ export class RouteResolveService implements Resolve<any> {// implements Resolve<
   }
   getProfile() {
     return Observable.create(observer => {
-      this.profileService.userAvailable$.subscribe(
+      this.userService.userData$.subscribe(
         profileAvailable => {
           if (profileAvailable) {
-            observer.next({
-              id: 1,
-              name: 'test',
-              role: 'creator'
-            });
+            observer.next(true);
             observer.complete();
           }
         }
@@ -32,3 +28,10 @@ export class RouteResolveService implements Resolve<any> {// implements Resolve<
     });
   }
 }
+// return  new Observable((observer) => {
+//   // check permission
+//   observer.next("true")
+//   observer.complete()
+// })
+
+// // subscribe to the observable in resole

@@ -1,7 +1,7 @@
-import * as  config from './../../config/config.json';
+import { LearnerService } from './../learner/learner.service';
+import * as  urlConfig from './../../config/url.config.json';
 import { UserService } from '../user/user.service';
 import { Injectable } from '@angular/core';
-import { DataService } from '../data/data.service';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
@@ -12,18 +12,24 @@ import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
-export class PermissionService extends DataService {
-  conFig = (<any>config);
-  readPermissionsUrl = this.conFig.readPermissionsUrl;
-  rolesAndPermissions: any[] = [];
-  mainRoles: any[] = [];
-  permissionAvailable = false;
-  currentRoleActions: any[] = [];
-  currentUserRoles: any[] = [];
-  permissionAvailable$ = new BehaviorSubject<boolean>(this.permissionAvailable);
-  constructor(public http: HttpClient, public userService: UserService) {
-    super(http);
-    this.getPermissionsData().subscribe(
+export class PermissionService {
+  urlConFig = (<any>urlConfig);
+  private readPermissionsUrl = this.urlConFig.URLS.ROLES.READ;
+  private rolesAndPermissions: any[] = [];
+  private mainRoles: any[] = [];
+  public permissionAvailable = false;
+  private currentRoleActions: any[] = [];
+  private userRoles: any[] = [];
+  public permissionAvailable$ = new BehaviorSubject<string>(undefined);
+
+  constructor(public http: HttpClient, public learner: LearnerService, public userService: UserService) {
+    this.getPermissionsData();
+  }
+  private getPermissionsData() {
+    const option = {
+      url: this.readPermissionsUrl
+    };
+    this.learner.get(option).subscribe(
       data => {
         this.setRolesAndPermissions(data);
       },
@@ -32,13 +38,7 @@ export class PermissionService extends DataService {
       }
     );
   }
-  public getPermissionsData() {
-    const option = {
-      url: this.readPermissionsUrl
-    };
-    return this.get(option);
-  }
-  public setRolesAndPermissions(data) {
+  private setRolesAndPermissions(data) {
     const rolePermissions = _.cloneDeep(data.result.roles);
     _.forEach(rolePermissions, (r, p) => {
       const mainRole = { role: r.id, actions: [], roleName: r.name };
@@ -53,35 +53,40 @@ export class PermissionService extends DataService {
     this.rolesAndPermissions = _.uniqBy(this.rolesAndPermissions, 'role');
     this.setCurrentRoleActions();
   }
-  public setCurrentRoleActions() {
-    this.userService.userAvailable$.subscribe(
-      profileAvailable => {
-        if (profileAvailable) {
-          this.currentUserRoles = this.userService.userRoles;
-          _.forEach(this.userService.userRoles,  (r) => {
-            const roleActions = _.filter(this.rolesAndPermissions, { role: r });
-            if (_.isArray(roleActions) && roleActions.length > 0) {
-              this.currentRoleActions = _.concat(this.currentRoleActions,
-                _.map(roleActions[0].actions, 'id'));
-            }
-          });
-          console.log('Permission available');
-          this.permissionAvailable = true;
-          this.permissionAvailable$.next(true);
+
+  private setCurrentRoleActions() {
+    this.userService.userData$.subscribe(
+      user => {
+        if (user) {
+          if (!user.err) {
+            this.userRoles = user.userProfile.userRoles;
+            _.forEach(this.userRoles,  (r) => {
+              const roleActions = _.filter(this.rolesAndPermissions, { role: r });
+              if (_.isArray(roleActions) && roleActions.length > 0) {
+                this.currentRoleActions = _.concat(this.currentRoleActions,
+                  _.map(roleActions[0].actions, 'id'));
+              }
+            });
+            this.permissionAvailable = true;
+            this.permissionAvailable$.next('success');
+          } else if (user.err) {
+            this.permissionAvailable$.next('error');
+          }
         } else {
 
         }
       }
     );
   }
+
   public checkRolesPermissions(data, flag) {
-    if (this.currentUserRoles && this.currentUserRoles.length > 0) {
+    if (this.userRoles && this.userRoles.length > 0) {
       if (!this.checkActionsPermissions(data, flag)) {
         if (_.isArray(data)) {
-          if ((_.intersection(data, this.currentUserRoles).length === 0) && !flag) {
+          if ((_.intersection(data, this.userRoles).length === 0) && !flag) {
             return true;
           }
-          return ((_.intersection(data, this.currentUserRoles).length > 0) && flag);
+          return ((_.intersection(data, this.userRoles).length > 0) && flag);
         }
       } else {
         return true;

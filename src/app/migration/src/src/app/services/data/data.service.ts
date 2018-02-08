@@ -1,9 +1,10 @@
-import { Observable } from 'rxjs/Observable';
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -19,7 +20,7 @@ interface RequestParam {
 export class DataService {
   headers: object;
   rootOrgId = '';
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, public baseUrl) {
   }
 
   get(requestParam: RequestParam) {
@@ -27,7 +28,8 @@ export class DataService {
       headers: this.getHeader(),
       params: (<any>requestParam.param)
     };
-    return this.http.get(requestParam.url, httpOptions);
+    return this.http.get(this.baseUrl + requestParam.url, httpOptions)
+
   }
 
   post(requestParam: RequestParam) {
@@ -35,15 +37,15 @@ export class DataService {
       headers: this.getHeader(),
       params: (<any>requestParam.param)
     };
-    return this.http.post(requestParam.url, requestParam.data , httpOptions);
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data , httpOptions);
   }
 
   update(requestParam: RequestParam) {
-    return this.http.patch(requestParam.url, requestParam.data);
+    return this.http.patch(this.baseUrl + requestParam.url, requestParam.data);
   }
 
   delete(requestParam: RequestParam) {
-    return this.http.delete(requestParam.url);
+    return this.http.delete(this.baseUrl + requestParam.url);
   }
   private addParam() {
   }

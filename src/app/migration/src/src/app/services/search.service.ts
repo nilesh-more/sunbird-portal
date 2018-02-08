@@ -1,46 +1,40 @@
+import * as  urlConfig from './../config/url.config.json';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from './data/data.service';
+import { LearnerService } from './learner/learner.service';
+import { UserService } from './user/user.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
-import { UserService } from './user/user.service';
-
+const urlsConfig = (<any>urlConfig);
 @Injectable()
 
 /**
  * @class SearchService
  * @desc  get data based on request params
  */
-export class SearchService extends DataService {
-
-    serchUrl = ''
-
+export class SearchService {
     /**
      * @function constructor
      * @param  {HttpClient} publichttp
      */
-    constructor(public http: HttpClient, public UserService: UserService) {
-        super(http)
-        this.serchUrl = ''
+    constructor(public http: HttpClient, 
+        public UserService: UserService, 
+        public learner: LearnerService) {
     }
 
     /**
-     * @function getMyContent
-     * @desc get content by user id
-     * @param {} status getMyContent
-     * @param {} contentType
-     * @param {} params
-     * @return object
+     * Get list of my courses / content
      */
-    getMyContent(status, contentType, params) {
+    getMyContent(status: Array<any>, contentType: Array<any>, params: any) {
         const option = {
-            url: 'private/service/v1/content/composite/v1/search',
+            url: urlsConfig.URLS.COURSE.SEARCH,
             data: {
                 request:{
                     filters: {
                         status: status,
-                        createdBy: this.UserService.userid,
+                        createdBy: params.userId ? params.userId : this.UserService.userid,
                         contentType: contentType
                     },
                     sort_by: {
@@ -50,7 +44,7 @@ export class SearchService extends DataService {
             }
         };
 
-        return this.post(option)
+        return this.learner.post(option)
             .map((data: any) => {
                 if (data && data.responseCode === 'OK') {
                     return data
@@ -76,7 +70,7 @@ export class SearchService extends DataService {
             data: apiRequest
         };
 
-        return this.post(option)
+        return this.learner.post(option)
             .map((data: any) => {
                 if (data && data.responseCode === 'OK') {
                     return data

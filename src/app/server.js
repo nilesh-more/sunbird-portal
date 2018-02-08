@@ -193,6 +193,57 @@ app.all('/private/service/v1/content/*',
       }
     }
   }))
+app.post('/learner/content/v1/media/upload',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      return require('url').parse(learnerURL + '/content/v1/media/upload').path
+    },
+    userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+      let data = JSON.parse(proxyResData.toString('utf8'))
+      if (data.responseCode === 'OK') {
+        data.success = true
+      }
+      return JSON.stringify(data)
+    }
+  }))
+
+app.all('/learner/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(learnerURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(learnerURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(learnerURL + urlParam).path
+      }
+    }
+  }))
+
+app.all('/content/*',
+  proxyUtils.verifyToken(),
+  permissionsHelper.checkPermission(),
+  proxy(contentURL, {
+    limit: reqDataLimitOfContentUpload,
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqPathResolver: function (req) {
+      let urlParam = req.params['0']
+      let query = require('url').parse(req.url).query
+      if (query) {
+        return require('url').parse(contentURL + urlParam + '?' + query).path
+      } else {
+        return require('url').parse(contentURL + urlParam).path
+      }
+    }
+  }))
 
 // Local proxy for content and learner service
 require('./proxy/localProxy.js')(app)
@@ -252,7 +303,7 @@ require('./helpers/shareUrlHelper.js')(app)
 // Resource bundles apis
 
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '50mb' }), require('./helpers/resourcebundles')(express))
+  bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express))
 
 // redirect to home if nothing found
 app.all('*', function (req, res) {
