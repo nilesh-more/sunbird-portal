@@ -1,7 +1,8 @@
+import { LearnerService } from './../../services/learner/learner.service';
 import { Injectable } from '@angular/core';
 import { DataService } from '../../services/data/data.service'
 import { HttpClient } from '@angular/common/http';
-import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service'
+import { DashboardUtilsService } from '../../dashboard/datasource/dashboard-utils.service';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -18,8 +19,9 @@ export class CourseConsumptionService {
      * @desc create instance of injected service(s) 
      */
     constructor(
-        public http: HttpClient,
-        public DashboardUtils: DashboardUtilsService
+        private http: HttpClient,
+        private DashboardUtils: DashboardUtilsService,
+        private LearnerService: LearnerService
         ) {
         // super(http)
     }
@@ -35,7 +37,7 @@ export class CourseConsumptionService {
             url: this.DashboardUtils.constructApiUrl(apiReq, 'COURSE_CONSUMPTION')
         };
     
-        return this.get(option)
+        return this.LearnerService.get(option)
             .map((data: any) => {
                 console.log('Dashboard data received: in datasource', data)
                 if (data && data.responseCode === 'OK') {

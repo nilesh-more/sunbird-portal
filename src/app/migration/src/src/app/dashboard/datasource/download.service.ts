@@ -6,14 +6,16 @@ import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
+import { LearnerService } from './../../services/learner/learner.service';
 
 @Injectable()
-export class DownloadService extends DataService  {
+export class DownloadService  {
     constructor(
         public http: HttpClient,
-        public DashboardUtils: DashboardUtilsService
+        public DashboardUtils: DashboardUtilsService,
+        private LearnerService: LearnerService
         ) {
-        super(http)
+        
     }
 
 	/**
@@ -24,7 +26,7 @@ export class DownloadService extends DataService  {
         const option = {
             url: this.DashboardUtils.constructDownloadReportUrl(apiReq, datasetType)
         }
-        return this.get(option)
+        return this.LearnerService.get(option)
             .map((data: any) => {
                 if (data && data.responseCode === 'OK') {
                     return data.result
