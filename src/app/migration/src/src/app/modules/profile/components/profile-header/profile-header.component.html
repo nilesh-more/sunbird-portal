@@ -1,0 +1,55 @@
+<br>
+<br>
+<div *ngIf='user'class="ui grid padding-topBottom-10 courseStructureHeader">
+  <div class="one wide column"></div>
+  <div class=" ten wide column">
+      <div class="ui grid">
+          <div class="eight wide column">
+              <div class="profileheader ui link items">
+                  <div class="ui grid">
+                      <div class="two wide column padding-top-none">
+                        <div class="userAvtarWrap field link ui small circular image header-image-profile">
+                          <img class="ui small circular image header-image-profile" src="{{user.avatar || '/common/images/user_logo.png'}}" (click)="user.openImageBrowser();">
+                          <div class="img-description-layer ui small circular image header-image-profile">
+                              <label for="iconImageInput"><i class="edit icon" for="iconImageInput" ></i></label>
+                          </div>
+                          <input type="file" style='display: none' accept="image/x-png,image/gif,image/jpeg,image/jpg" class="content-input ui small circular image header-image-profile" id="iconImageInput" 
+                          (change)="updateAvatar($event.target.files)"required="" />
+                        </div>
+                      </div>
+                      <div class="ten wide column profile-header-text padding-top-none">
+                          <div class="content">
+                              <div class="sectionHeading header">{{user.firstName}} &nbsp;{{user.lastName}}</div>
+                              <div class="meta profileViewSubHeader padding-bottom-10">
+                                  <span *ngIf="user.currentJobLocation">{{user.currentJobLocation?.orgName}}</span>
+                                  <span  *ngIf="user.location.length && user.currentJobLocation">,</span>
+                                  <span  *ngIf="user.location">{{user.location}}</span>
+                              </div>
+                              <div class="meta">
+                                  <div class="ui label" *ngIf="user.userName">Username: {{user.userName}}
+                                  </div>
+                                  <a class="ui link label" *ngIf="user.rootOrg.orgName && user.rootOrg.contactDetail.length > 0"
+                                  href="mailto:{{user.rootOrg.contactDetail[0].email}}" title="Contact Admin">{{user.rootOrg.orgName}} <i class="mail outline icon"></i>
+                                  <!-- && user.rootOrg.contactDetail[0].email -->
+                                  </a>
+                                  <br>
+                                  <div class="ui label profile-headerLabelCard" *ngIf="user.lastLoginTime"> Last login time: {{user.lastLoginTime | date:'medium'}}</div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="profilesettings four wide column"  >
+              <!-- *ngIf="!user.isError && !user.loader.showLoader" -->
+              <!-- <bulk-upload></bulk-upload> -->
+          </div>
+      </div>
+      <div class="ui grid">
+          <div class="two wide column padding-top-none">
+          <div class="profileImageSizeText">Max upload size 4MB</div>
+          </div>
+      </div>
+  </div>
+  <div class="one wide column"></div>
+</div>

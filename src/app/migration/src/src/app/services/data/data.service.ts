@@ -5,7 +5,7 @@ import { UUID } from 'angular2-uuid';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
+// import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 
@@ -25,29 +25,38 @@ export class DataService {
 
   get(requestParam: RequestParam) {
     const httpOptions = {
-      headers: this.getHeader(),
+      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
       params: (<any>requestParam.param)
     };
     return this.http.get(this.baseUrl + requestParam.url, httpOptions)
-
+    .flatMap((data: any) => {
+      if (data.responseCode !== 'OK') {
+        return Observable.throw(data);
+      }
+      return Observable.of(data);
+    });
   }
 
   post(requestParam: RequestParam) {
     const httpOptions = {
-      headers: this.getHeader(),
+      headers: (<any>requestParam.header) ? (<any>requestParam.header) : this.getHeader(),
       params: (<any>requestParam.param)
     };
-    return this.http.post(this.baseUrl + requestParam.url, requestParam.data , httpOptions);
+    return this.http.post(this.baseUrl + requestParam.url, requestParam.data , httpOptions)
+    .flatMap((data: any) => {
+      if (data.responseCode !== 'OK') {
+        return Observable.throw(data);
+      }
+      return Observable.of(data);
+    });
   }
 
-  update(requestParam: RequestParam) {
+  patch(requestParam: RequestParam) {
     return this.http.patch(this.baseUrl + requestParam.url, requestParam.data);
   }
 
   delete(requestParam: RequestParam) {
     return this.http.delete(this.baseUrl + requestParam.url);
-  }
-  private addParam() {
   }
   private getHeader() {
     return {

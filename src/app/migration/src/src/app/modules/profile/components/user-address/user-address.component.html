@@ -1,0 +1,40 @@
+<div class="ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{resourceService.frmelmnts.lbl.address}} </span>
+            <a class="addeditprofile"><profile-visibility   update="true" field="address"></profile-visibility></a>
+            <a class="addeditprofile cursor-pointer" *ngIf="!addressForm && user.address.length" (click)="addressForm=true ;isNewAddress=false ">{{resourceService.frmelmnts.btn.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="!addressForm " (click)="addressForm=true ;isNewAddress=true ;newAddress={} ">{{resourceService.frmelmnts.btn.add}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="addressForm" (click)="cancelEditAddress()">{{resourceService.frmelmnts.btn.close}}</a>
+        </div>
+
+        <div *ngIf="!addressForm" class="profileitems ui relaxed divided items">
+            <div class="item" *ngFor="let address of user.address">
+    
+                <img class="ui avatar image" src="assets/common/images/location.png">
+                <div class="content">
+                    <p class="header capitalizeTextInfo">{{address.addType}}</p>
+                    <div class="description"> {{address.addressLine1}}<span *ngIf="address.addressLine2"> , </span>{{address.addressLine2}}
+    
+                        <p>{{address.city}}<span *ngIf="address.state"> , </span>{{address.state}}
+                            <span *ngIf="address.country">, </span>{{address.country}}
+                            <span *ngIf="address.zipcode">, </span>{{address.zipcode}}</p>
+                    </div>
+                </div>
+                <div class="right-floated">
+                    <div class="metadata">
+                        <a (click)="address.isDeleted=true;deleteAddress(address)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div ng-if="addressForm" class="addressheader ui relaxed divided list">
+            <div class="edit-address-form" ng-if="!profileCtrl.isNewAddress ">
+                <div class=" ui " ng-repeat="address in profileCtrl.address track by $index " ng-include=" 'views/profile/editProfile/address.html' "></div>
+                <button class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editAddress(profileCtrl.address)" ;>{{resourceService.frmelmnts.btn.save}}</button>
+            </div>
+            <div class="add-address-form" ng-if="profileCtrl.isNewAddress ">
+                <div class="ui " ng-include=" 'views/profile/editProfile/addAddress.html' "></div>
+            </div>
+        </div> -->
+    </div>

@@ -1,0 +1,57 @@
+<div class="margin-top-20 ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading"> {{resourceService.frmelmnts.lbl.experience}} </span>
+            <a class="addeditprofile"><profile-visibility   update="true" field="jobProfile"></profile-visibility></a>
+            <a class="addeditprofile cursor-pointer" *ngIf="!experienceForm && user.jobProfile.length" (click)="experienceForm=true ;isNewExperience=false ;">{{resourceService.frmelmnts.btn.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="!experienceForm  " (click)="experienceForm=true ; isNewExperience=true ;newExperience={} ">{{resourceService.frmelmnts.btn.add}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="experienceForm" (click)="cancelEditExperience()">{{resourceService.frmelmnts.btn.close}}</a>
+        </div>
+        <div *ngIf="!experienceForm " class="profileitems ui relaxed divided items ">
+            <div class="item " *ngFor="let experience of user.jobProfile">
+                <img class="ui avatar image" src="assets/common/images/businessman.png">
+                <div class="content">
+                    <a class=" header ">{{experience.jobName}}</a>
+                    <div class="description ">
+                        <p class="margin-bottom-0"> {{experience.role}} 
+                            <span *ngIf="experience.role">&nbsp;,&nbsp;
+                            </span>{{experience.orgName}}
+                        </p><br>
+                        <p class="margin-bottom-0">
+                            <span class="margin-bottom-0" *ngIf="experience.subject.length ">
+                                {{resourceService.frmelmnts.lbl.subjectstaught}} : 
+                            </span>
+                            <span *ngIf="experience.subject.length ">
+                            <span *ngFor="let sub of experience.subject; let last = last ">{{sub}}
+                                    <!-- | orderBy:'toString()' -->
+                            <span *ngIf="!last ">,</span></span></span>
+                        </p>
+                        <br>
+                        <p *ngIf="experience.joiningDate ">{{resourceService.frmelmnts.lbl.tcfrom}} : 
+                            {{experience.joiningDate}} &nbsp;
+                            <span *ngIf="experience.endDate && experience.isCurrentJob!==true">, &nbsp;
+                                {{resourceService.frmelmnts.lbl.tcto}} : {{experience.endDate}}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="right-floated ">
+                    <div class="metadata ">
+                        <a (click)="experience.isDeleted=true;deleteExperience(experience)"> <i class="trash outline icon trashIcon-fontSize "></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div ng-if="profileCtrl.experienceForm " class="profileitems ui relaxed divided items ">
+            <div class="edit-experience-form " ng-if="!profileCtrl.isNewExperience ">
+                <div class=" ui " ng-repeat="experience in profileCtrl.experience track by $index " ng-include=" 'views/profile/editProfile/experience.html' "></div>
+                <div class="ui warning message " ng-if="profileCtrl.isCurrentJobExist ">
+                    <i class="close icon "></i>
+                    <p>You already have a current job, please change that to not a current job</p>
+                </div>
+                <button ng-hide="profileCtrl.isCurrentJobExist " ng-class="{ 'disabled' : profileCtrl.disableSave}" class="ui primary button margin-top-15 " ng-click="profileCtrl.editExperience(profileCtrl.experience) " ;>{{resourceService.frmelmnts.btn.save}}</button>
+            </div>
+            <div class="add-experience-form " ng-if="profileCtrl.isNewExperience ">
+                <div class="ui " ng-include=" 'views/profile/editProfile/addExperience.html' "></div>
+            </div>
+        </div> -->
+    </div>

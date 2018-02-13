@@ -1,22 +1,18 @@
 import { LearnerService } from './../learner/learner.service';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
-import { HttpParams } from '@angular/common/http/src/params';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash';
-import { HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as  urlConfig from './../../config/url.config.json';
 const urlConFig = (<any>urlConfig);
 @Injectable()
 export class UserService {
   public userid: string;
-  private userProfile: object = {};
-  public _userData$ = new BehaviorSubject<any>(undefined);
+  private userProfile: any = {};
+  private _userData$ = new BehaviorSubject<any>(undefined);
   public readonly userData$: Observable<any> = this._userData$.asObservable();
-  constructor(public http: HttpClient, public learner: LearnerService) {
+  constructor(public learner: LearnerService) {
 
     this.userid =  (<HTMLInputElement>document.getElementById('userId')).value;
     this.userid = this.userid === '<%=userId%>' ? 'userId' : this.userid;
@@ -58,9 +54,9 @@ export class UserService {
         }
       });
       this.userProfile = profileData;
-      this.userProfile['userRoles'] = userRoles;
+      this.userProfile.userRoles = userRoles;
+      this.processProfileData();
       this._userData$.next({err: null, userProfile: { ...this.userProfile } });
-      // this.processProfileData (this.profileData);
       // this.updateProfileImage();
     } else {
       // toasterService.error($rootScope.messages.fmsg.m0005)
@@ -75,34 +71,29 @@ export class UserService {
   //     this._userData$.next({err: null, userProfile: { ...this.userProfile }});
   //   }, 6000);
   // }
+  formateDate(userDetails) {
+    if (userDetails.length) {
+      userDetails.forEach(function (element) {
+        if (element.updatedDate) {
+          element.updatedDate = new Date(element.updatedDate)
+        }
+      }, this);
+    }
+  }
    processProfileData () {
-      // const profileData = this.userProfile;
-
-      // profile.user = profileData
-      // // temp mock data
-      // profile.user.profileVisibility = profileData.profileVisibility
-      // profile.fullName = profileData.firstName + ' ' + profileData.lastName
-      // profile.email = profileData.email
-      // profileData.dob = profileData.dob ? new Date(profileData.dob) : profileData.dob
-      // profile.formateDate(profileData.jobProfile)
-      // profile.formateDate(profileData.address)
-      // profile.formateDate(profileData.education)
-      // // if (profileData.education.length) {
-      // //   profileData.education.forEach(function (education) {
-      // //     education.yearOfPassing = education.yearOfPassing === 0 ? '' : education.yearOfPassing
-      // //     education.percentage = education.percentage === 0 ? '' : education.percentage
-      // //   })
-      // // }
-      // if (profile.isAvatarUpdate) {
-      //   $rootScope.avatar = profileData.avatar
+    const profileData: any  = this.userProfile;
+    this.userProfile.fullName = profileData.firstName + ' ' + profileData.lastName;
+    this.userProfile.dob = profileData.dob ? new Date(profileData.dob) : profileData.dob;
+      this.formateDate(this.userProfile.jobProfile);
+      this.formateDate(this.userProfile.address);
+      this.formateDate(this.userProfile.education);
+      // if (profileData.education.length) {
+      //   profileData.education.forEach(function (education) {
+      //     education.yearOfPassing = education.yearOfPassing === 0 ? '' : education.yearOfPassing
+      //     education.percentage = education.percentage === 0 ? '' : education.percentage
+      //   })
       // }
-      // profile.address = angular.copy(profileData.address)
 
-      // profile.education = angular.copy(profileData.education)
-      // profile.experience = angular.copy(profileData.jobProfile)
-      // if (profile.user.lastLoginTime > 0) {
-      //   profile.lastLoginTime = angular.copy(profile.user.lastLoginTime)
-      // }
       // if (profile.user.badges) {
       //   profile.getUserBadges()
       // }

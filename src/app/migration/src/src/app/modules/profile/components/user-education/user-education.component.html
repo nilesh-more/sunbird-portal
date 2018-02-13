@@ -1,0 +1,47 @@
+<div class="ui raised segment">
+        <div class="header announcementCard-header">
+            <span class="header cardsHeading">{{resourceService.frmelmnts.lbl.education}} </span>
+            <a class="addeditprofile"><profile-visibility   update="true" field="education"></profile-visibility></a>
+            <a class="addeditprofile cursor-pointer" *ngIf="!educationForm && user.education.length" (click)="educationForm=true ;isNewEducation=false ">{{resourceService.frmelmnts.btn.edit}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="!educationForm " (click)="educationForm=true ;isNewEducation=true ;newEducation={} ">{{resourceService.frmelmnts.btn.add}}</a>
+            <a class="addeditprofile cursor-pointer" *ngIf="educationForm" (click)="cancelEditEducation()">{{resourceService.frmelmnts.btn.close}}</a>
+        </div>
+        <div *ngIf="!educationForm" class="profileitems ui relaxed divided items">
+            <div class="item" *ngFor="let education of user.education">
+    
+                <img class="ui avatar image" src="assets/common/images/businessman.png">
+                <div class="content">
+                    <a class=" header">{{education.degree}}</a>
+                    <div class="description">
+                        {{education.grade}}
+                        <span *ngIf="education.name && education.grade">,&nbsp</span> {{education.name}}
+                        <span *ngIf="education.boardOrUniversity && education.yearOfPassing">,&nbsp</span> {{education.boardOrUniversity}}
+                        <br/>
+    
+                        <span *ngIf="education.yearOfPassing "> {{education.yearOfPassing}}</span>
+                        <span *ngIf="education.percentage && education.yearOfPassing">,&nbsp</span>
+                        <span *ngIf="education.percentage">{{education.percentage}}</span>
+    
+    
+    
+    
+                    </div>
+                </div>
+                <div class="right-floated ">
+                    <div class="metadata">
+                        <a (click)="education.isDeleted=true;deleteEducation(user.education)"> <i class="trash outline icon trashIcon-fontSize"></i></a>
+                        <!-- commented in 1<span class="date">{{education.updatedDate|date: "dd/MM/yyyy"  }}</span> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div ng-if="profileCtrl.educationForm" class="profileitems ui relaxed divided items">
+            <div class="edit-education-form" ng-if="!profileCtrl.isNewEducation ">
+                <div class=" ui " ng-repeat="education in profileCtrl.user.education track by $index " ng-include=" 'views/profile/editProfile/education.html' "></div>
+                <button class="ui primary button margin-top-15" ng-class="{ 'disabled' : profileCtrl.disableSave}" ng-click="profileCtrl.editEducation(profileCtrl.user.education)" ;>{{resourceService.frmelmnts.btn.save}} </button>
+            </div>
+            <div class="add-education-form" ng-if="profileCtrl.isNewEducation ">
+                <div class="ui " ng-include=" 'views/profile/editProfile/addEducation.html' "></div>
+            </div>
+        </div> -->
+</div>

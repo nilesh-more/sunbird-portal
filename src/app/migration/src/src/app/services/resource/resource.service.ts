@@ -2,6 +2,9 @@ import * as  urlConfig from './../../config/url.config.json';
 import { DataService } from '../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 const urlConFig = (<any>urlConfig);
 @Injectable()
 export class ResourceService extends DataService {
@@ -11,7 +14,6 @@ export class ResourceService extends DataService {
     super(http , urlConFig.URLS.RESOURCEBUNDLES_PREFIX);
     this.getResource().subscribe(
       (data: any) => {
-        console.log(data);
           this.messages = data.result.messages;
           this.frmelmnts = data.result.frmelmnts;
       },

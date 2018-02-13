@@ -18,7 +18,7 @@ export class MainHeaderComponent implements OnInit {
   userRoles: any;
   roleconFig = (<any>roleConfig);
   workSpaceRole = this.roleconFig.headerDropdownRoles.workSpaceRole;
-  adminDashBoard = this.roleconFig.headerDropdownRoles.adminDashBoard;
+  adminDashboard = this.roleconFig.headerDropdownRoles.adminDashboard;
   announcementRole = this.roleconFig.headerDropdownRoles.announcementRole;
   myActivityRole = this.roleconFig.headerDropdownRoles.myActivityRole;
   orgSetupRole = this.roleconFig.headerDropdownRoles.orgSetupRole;
@@ -30,7 +30,6 @@ export class MainHeaderComponent implements OnInit {
   ngOnInit() {
     this.userService.userData$.subscribe(
       user => {
-        console.log(this.userProfile);
         if (user) {
           if (!user.err) {
             this.userProfile = user.userProfile;
