@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// Components
 import { AuthGuardComponent } from './../random/auth-guard/auth-guard.component';
 import { ProfileComponent } from './components/profile/profile/profile.component';
 import { CommunityListComponent } from './components/community-list/community-list.component';
-import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component'
-import { OrganisationComponent } from './dashboard/organisation/organisation.component';
-// Services
 import { RouteResolveService } from './services/route-resolve/route-resolve.service';
 import { AuthGuard } from './auth-guards/auth-guard.service';
 
@@ -33,26 +29,6 @@ const appRoutes: Routes = [
         ],
         data: {
             breadcrumb: ['Home', 'auth']
-        }
-    },
-    {
-        path: 'migration/course-creator-dashboard',
-        component: CourseConsumptionDashboardComponent,
-        canActivate: [
-            'CanActivate',
-        ],
-        data: {
-            breadcrumb: ['Home', 'Profile', 'Course Creator Dashboard']
-        }
-    },
-    {
-        path: 'migration/org-dashboard',
-        component: OrganisationComponent,
-        canActivate: [
-            'CanActivate',
-        ],
-        data: {
-            breadcrumb: ['Home', 'Profile', 'Organisation Dashboard']
         }
     }
 ];

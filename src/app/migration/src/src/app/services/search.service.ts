@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from './data/data.service';
 import { LearnerService } from './learner/learner.service';
+import { ContentService } from './content/content.service';
 import { UserService } from './user/user.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
@@ -21,15 +22,16 @@ export class SearchService {
      */
     constructor(public http: HttpClient, 
         public UserService: UserService, 
-        public learner: LearnerService) {
+        public ContentService: ContentService) {
     }
 
     /**
      * Get list of my courses / content
      */
     getMyContent(status: Array<any>, contentType: Array<any>, params: any) {
+        params.userId = 'b14e7747-e66d-49f3-8152-7a6706f0b530';
         const option = {
-            url: urlsConfig.URLS.COURSE.SEARCH,
+            url: urlsConfig.URLS.COMPOSITE.SEARCH,
             data: {
                 request:{
                     filters: {
@@ -44,7 +46,7 @@ export class SearchService {
             }
         };
 
-        return this.learner.post(option)
+        return this.ContentService.post(option)
             .map((data: any) => {
                 if (data && data.responseCode === 'OK') {
                     return data
@@ -70,7 +72,7 @@ export class SearchService {
             data: apiRequest
         };
 
-        return this.learner.post(option)
+        return this.ContentService.post(option)
             .map((data: any) => {
                 if (data && data.responseCode === 'OK') {
                     return data

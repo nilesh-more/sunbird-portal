@@ -24,17 +24,7 @@ import { ProfileHeaderComponent } from './components/profile/profile-header/prof
 import { ProfileViewComponent } from './components/profile/profile-view/profile-view.component';
 import { AuthGuard } from './auth-guards/auth-guard.service';
 import { LearnerService } from './services/learner/learner.service';
-// Dashboards component
-import { CourseConsumptionDashboardComponent } from './dashboard/course-consumption/course-consumption.component';
-import { OrganisationComponent } from './dashboard/organisation/organisation.component';
-// Dashboard service
-import { CourseConsumptionService } from './dashboard/datasource/course-consumption.service';
-import { OrganisationService } from './dashboard/datasource/organisation.service';
-import { DownloadService } from './dashboard/datasource/download.service';
-import { DashboardUtilsService } from './dashboard/datasource/dashboard-utils.service'
-import { SearchService } from './services/search.service';
-import { RendererService } from './dashboard/renderer/renderer.service';
-import { LineChartService } from './dashboard/renderer/graph/lineChart.service';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -49,17 +39,15 @@ import { LineChartService } from './dashboard/renderer/graph/lineChart.service';
     ProfileComponent,
     AppLoaderComponent,
     ProfileHeaderComponent,
-    ProfileViewComponent,
-    CourseConsumptionDashboardComponent,
-    OrganisationComponent
+    ProfileViewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     SuiModule,
-    FormsModule,
-    ChartsModule
+    FormsModule, 
+    DashboardModule
   ],
   providers: [
     RouteResolveService,
@@ -69,14 +57,7 @@ import { LineChartService } from './dashboard/renderer/graph/lineChart.service';
     ResourceService,
     LearnerService,
     ContentService,
-    AnnouncementService,
-    CourseConsumptionService,
-    OrganisationService,
-    DownloadService,
-    DashboardUtilsService,
-    RendererService,
-    LineChartService,
-    SearchService
+    AnnouncementService
   ],
     entryComponents: [AppComponent],
     bootstrap: [AppComponent]

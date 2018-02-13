@@ -1,9 +1,0 @@
-span.dashBoardMenuItem.active {
-    color: #007AFF;
-    font-weight: bold;
-    font-family: 'sunbirdboldfont';
-}
-.disabledDownloadButton {
-    opacity: 0.65;
-    pointer-events: none;
-}

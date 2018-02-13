@@ -1,56 +1,75 @@
 <div class="ui grid " [hidden]="showLoader">
     <div class="one wide column"></div>
     <div class="ten wide column">
-        <div class="ui grid">
+        <div class="ui grid margin-top-20">
             <div class="nine wide column">
-                <span class="dashBoardSectionHeading" *ngIf="orgArray.length === 1"><i class="bar chart icon"></i> &nbsp;  {{orgArray[0].orgName}}</span>
-                <div class="ui dropdown" suiDropdown *ngIf="orgArray.length > 1">
-                    <span class="dashBoardSectionHeading padding-right-10"><i class="bar chart icon"></i></span>
+                <!-- If user is member of only one organisation -->
+                <span class="dashBoardSectionHeading" *ngIf="myOrganisations && myOrganisations.length === 1">
+                    <i class="bar chart icon"></i> &nbsp;  {{myOrganisations[0].orgName}}
+                </span>
+                <!-- If user is member of multiple organisations -->
+                <div class="ui dropdown" suiDropdown *ngIf="myOrganisations && myOrganisations.length > 1">
+                    <span class="dashBoardSectionHeading padding-right-10">
+                        <i class="bar chart icon"></i>
+                    </span>
                     <div class="text dashBoardSectionHeading">{{SelectedOrg || 'Select Organization'}}</div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
                     <div class="menu" suiDropdownMenu>
-                        <div class="item" [ngClass]="{'active': item.organisationId === identifier }" *ngFor="let item of orgArray" (click)="onAfterOrgChange(item.organisationId, item.orgName);">{{item.orgName}}</div>
+                        <div class="item" [ngClass]="{'active': organisation.identifier === identifier }" *ngFor="let organisation of myOrganisations" (click)="onAfterOrgChange(organisation.identifier, organisation.orgName);">
+                            {{organisation.orgName}}
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="right floated three wide column padding-right-dropdown padding-right-10" *ngIf="!showOrgWarningDiv">
+            <!-- Dataset types - Creation, Consumption -->
+            <div class="right floated three wide column padding-right-dropdown padding-right-10" 
+                *ngIf="!isMultipleOrgs && myOrganisations && myOrganisations.length > 0">
                 <div class="ui dropdown float-ContentRight" suiDropdown>
-                    <div class="text dashBoardSectionHeading">{{SelectedDataSet || 'Creation'}}</div>
+                    <div class="text dashBoardSectionHeading">
+                        {{datasetType === 'creation' ? 'Creation' : 'Consumption'}}
+                    </div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
                     <div class="menu" suiDropdownMenu>
-                        <div class="active item" [ngClass]="{'active': datasetType === 'ORG_CREATION' }" (click)="onAfterDatasetChange('ORG_CREATION'); SelectedDataSet = 'Creation'">Creation</div>
-                        <div class="item" [ngClass]="{'active': datasetType === 'ORG_CONSUMPTION' }" (click)="onAfterDatasetChange('ORG_CONSUMPTION'); SelectedDataSet = 'Consumption'">Consumption</div>
+                        <div class="active item" [ngClass]="{'active': datasetType === 'creation' }" (click)="onAfterDatasetChange('creation'); SelectedDataSet = 'Creation'">Creation</div>
+                        <div class="item" [ngClass]="{'active': datasetType === 'consumption' }" (click)="onAfterDatasetChange('consumption'); SelectedDataSet = 'Consumption'">Consumption</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="ui grid" *ngIf="!showOrgWarningDiv">
-            <div class="twelve wide column">
+        <div class="ui grid" *ngIf="!isMultipleOrgs">
+            <div class="twelve wide column" *ngIf="myOrganisations && myOrganisations.length > 0">
                 <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
-
-        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="showOrgWarningDiv">
+        <div class="ui warning message tweleve wide column margin-top-20" 
+            *ngIf="isMultipleOrgs" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
             <div class="header">
                 No organization selected!
             </div>
             Please select a organization from the above list
         </div>
 
-        <div class="ui icon message margin-top-20" [ngStyle]="{'display':showLoader === true ? '' : 'none' }" *ngIf="!showOrgWarningDiv">
+        <div class="ui icon message margin-top-20" *ngIf="showLoader">
             <i class="notched circle loading icon"></i>
             <div class="content">
                 <div class="header">Please wait.</div>
                 <p>We are fetching details</p>
             </div>
         </div>
+        <div *ngIf="showError" class="margin-top-20">
+            <div class="ui negative message">
+                <div class="header">
+                    Something went wrong,
+                </div>
+                <p>There was an problem retrieving dashboard data, please try in some time....</p>
+            </div>
+        </div>
 
-        <div>
-            <div class="consumption-data-holder margin-top-20" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
+        <div *ngIf="showDashboard && !invalidUrl" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
+            <div class="consumption-data-holder margin-top-20">
                 <div class="ui three cards">
                     <div class="card" *ngFor="let block of blockData">
                         <div class="content center aligned">
@@ -61,20 +80,27 @@
                 </div>
             </div>
 
-            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" [ngStyle]="{'display':showDataDiv === true ? 'block' : 'none' }">
+            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" 
+                [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
                 <div class="column">
                     <div class="regular slider padding-top-30 course-graph-holder">
                         <div *ngFor="let block of graphData;let graphIndex = index;">
                             <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
                                 <div class="ui segment">
-                                    <canvas baseChart width="300" height="90" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
-                                        [colors]="block.chartColors" [legend]="true" [chartType]="'line'" (chartHover)="chartHovered($event)"
-                                        (chartClick)="chartClicked($event)">
+                                    <canvas baseChart 
+                                        width="300" 
+                                        height="90" 
+                                        [datasets]="block.yaxesData" 
+                                        [labels]="block.xaxesData" 
+                                        [options]="block.chartOptions"
+                                        [colors]="block.chartColors" 
+                                        [legend]="true" 
+                                        [chartType]="chartType">
                                     </canvas>
                                 </div>
                             </div>
                         </div>
-                        <div class="corse-graph-navigation-btn" *ngIf="graphData.length-1 > 0">
+                        <div class="corse-graph-navigation-btn" *ngIf="graphData && graphData.length-1 > 0">
                             <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }">
                                 <i class="left arrow icon"></i>
                             </button>
@@ -85,12 +111,15 @@
                     </div>
                 </div>
             </div>
-            <div class="twelve wide column margin-top-20 " *ngIf="showDataDiv">
+            <div class="twelve wide column margin-top-20 ">
                 <p class="text-align-right dashBoardCardText">Download this view as:
                     <a href="javascript:void(0);" [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline padding-left-10"
                         (click)="downloadReport();">CSV</a>
                 </p>
             </div>
+        </div>
+        <div *ngIf="invalidUrl">
+            Opps... invalid url
         </div>
     </div>
 </div>
