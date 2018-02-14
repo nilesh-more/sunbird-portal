@@ -1,6 +1,5 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-// import { OrgCreationComponent } from './components/org-creation/org-creation.component';
 import { OrganisationComponent } from './components/organisation/organisation.component';
 import { CourseConsumptionComponent } from './components/course-consumption/course-consumption.component';
 

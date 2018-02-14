@@ -36,7 +36,12 @@
                 </div>
             </div>
         </div>
-
+        <div class="ui info message" *ngIf="myOrganisations && myOrganisations.length === 0">
+            <div class="header">Oops...</div>
+            <ul class="list">
+                <li>No Organisation found</li>
+            </ul>
+        </div>
         <div class="ui grid" *ngIf="!isMultipleOrgs">
             <div class="twelve wide column" *ngIf="myOrganisations && myOrganisations.length > 0">
                 <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -117,9 +122,6 @@
                         (click)="downloadReport();">CSV</a>
                 </p>
             </div>
-        </div>
-        <div *ngIf="invalidUrl">
-            Opps... invalid url
         </div>
     </div>
 </div>

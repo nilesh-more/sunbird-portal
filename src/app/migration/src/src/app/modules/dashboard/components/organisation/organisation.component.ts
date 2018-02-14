@@ -22,7 +22,7 @@ export class OrganisationComponent implements OnInit {
 	graphData: any;
 	blockData: Array<any> = [];
 	showGraph: number = 0;
-	myOrganisations: any;
+	myOrganisations: Array<any> = [];
 
 	// Graph settings - chartType = line/bar/radar/pie etc 
 	lineChartLegend: boolean = true;
@@ -140,8 +140,9 @@ export class OrganisationComponent implements OnInit {
 		this.UserService.userData$.subscribe(
 			user => {
 				if (user){
-					orgIds = user.userProfile.organisationIds;
-          // orgIds = ['01229679766115942443', '0123150108807004166']
+					orgIds = user.userProfile.organisationIds || [];
+					console.log('orgIdssss', user.userProfile)
+          			// orgIds = ['01229679766115942443', '0123150108807004166']
 					if (orgIds && orgIds.length){
 						// Get org name
 						this.SearchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
@@ -166,8 +167,8 @@ export class OrganisationComponent implements OnInit {
 							}
 						);
 					} else {
-            this.showLoader = false;
-          }
+            			this.showLoader = false;
+          			}
 				}
 			},
 			err =>{
