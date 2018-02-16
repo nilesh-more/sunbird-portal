@@ -47,14 +47,35 @@ export class UserService {
   private setUserProfile(res) {
     if (res && res.responseCode === 'OK') {
        const profileData = res.result.response;
+       const orgRoleMap = {};
+       let organisationIds = [];
+       // const organisationNames = [];
       let userRoles = profileData.roles;
-      _.forEach(profileData.organisations, (org) => {
-        if (org.roles && _.isArray(org.roles)) {
-          userRoles = _.union(userRoles, org.roles);
-        }
-      });
+      if (profileData.organisations) {
+        _.forEach(profileData.organisations, (org) => {
+          if (org.roles && _.isArray(org.roles)) {
+            userRoles = _.union(userRoles, org.roles);
+            if (org.organisationId === profileData.rootOrgId &&
+             (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
+              _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {
+              profileData.rootOrgAdmin = true;
+            }
+            orgRoleMap[org.organisationId] = org.roles;
+          }
+          if (org.organisationId) {
+            organisationIds.push(org.organisationId);
+          }
+          // if (org.orgName) {
+          //   organisationNames.push(org.orgName);
+          // }
+        });
+      }
+      organisationIds = _.uniq(organisationIds);
       this.userProfile = profileData;
       this.userProfile.userRoles = userRoles;
+      this.userProfile.orgRoleMap = orgRoleMap;
+      this.userProfile.organisationIds = organisationIds;
+      // this.userProfile.organisationNames = organisationNames;
       this.processProfileData();
       this._userData$.next({err: null, userProfile: { ...this.userProfile } });
       // this.updateProfileImage();
