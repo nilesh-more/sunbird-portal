@@ -3,18 +3,17 @@ import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { UserService } from './../../../../services/user/user.service';
 import { RendererService } from './../../services/renderer/renderer.service';
-import { DashboardService } from './../../services/dashboard.service';
 import { SearchService } from './../../../../services/search/search.service';
 import { OrganisationService } from './../../services/organisation/organisation.service';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-organisation',
-  templateUrl: './organisation.component.html',
-  styleUrls: ['./organisation.component.css']
+	selector: 'app-organisation',
+	templateUrl: './organisation.component.html',
+	styleUrls: ['./organisation.component.css']
 })
 export class OrganisationComponent implements OnInit {
-  	// Variable(s) to make api request
+	// Variable(s) to make api request
 	timePeriod: string = '7d';
 	identifier: string = '';
 	datasetType: string = 'creation';
@@ -48,23 +47,22 @@ export class OrganisationComponent implements OnInit {
 		private UserService: UserService,
 		private SearchService: SearchService,
 		private RendererService: RendererService,
-    	private DashboardService: DashboardService,
 		private OrgService: OrganisationService) {
-			this.ActivatedRoute.params.subscribe(params => {
-				let orgArray = this.SearchService.getOrganisation();
-				if (orgArray && orgArray.length) {
-					this.myOrganisations = orgArray;
-					this.validateIdentifier(params.id)
-				} else {
-					this.getMyOrganisations();
-				}
-
-				if (params.id && params.timePeriod) {
-					this.datasetType = params.datasetType;
-					this.showDashboard = false;
-					this.getDashboardData(params.timePeriod, params.id);					
-				}
+		this.ActivatedRoute.params.subscribe(params => {
+			let orgArray = this.SearchService.getOrganisation();
+			if (orgArray && orgArray.length) {
+				this.myOrganisations = orgArray;
+				this.validateIdentifier(params.id)
+			} else {
+				this.getMyOrganisations();
 			}
+
+			if (params.id && params.timePeriod) {
+				this.datasetType = params.datasetType;
+				this.showDashboard = false;
+				this.getDashboardData(params.timePeriod, params.id);
+			}
+		}
 		);
 	}
 
@@ -83,7 +81,7 @@ export class OrganisationComponent implements OnInit {
 				identifier: this.identifier,
 				timePeriod: this.timePeriod
 			},
-      		dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
+			dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
 		}
 
 		this.OrgService.getDashboardData(params).subscribe(
@@ -103,35 +101,35 @@ export class OrganisationComponent implements OnInit {
 	 * Function to validate identifier
 	 */
 	validateIdentifier(identifier: string) {
-		if (identifier){
+		if (identifier) {
 			let selectedOrg = _.find(this.myOrganisations, ['identifier', identifier]);
-			if (selectedOrg && selectedOrg.identifier){
+			if (selectedOrg && selectedOrg.identifier) {
 				this.SelectedOrg = selectedOrg.orgName;
 			} else {
-		 		this.Route.navigate(['migration/groups'])
+				this.Route.navigate(['migration/groups'])
 			}
 		}
 	}
 
-   /**
-   * Function to get selected course id
-   */
+	/**
+	* Function to get selected course id
+	*/
 	onAfterFilterChange(timePeriod: string) {
 		if (this.timePeriod === timePeriod) return false
- 		this.Route.navigate(['migration/dashboard/organisation', this.datasetType, this.identifier, timePeriod])
+		this.Route.navigate(['migration/dashboard/organisation', this.datasetType, this.identifier, timePeriod])
 	}
 
-  /**
-   * Function to change dataset. Dataset is required to contruct dashboard api url
-   */
+	/**
+	 * Function to change dataset. Dataset is required to contruct dashboard api url
+	 */
 	onAfterDatasetChange(datasetType: string) {
 		if (this.datasetType === datasetType) return false
- 		this.Route.navigate(['migration/dashboard/organisation', datasetType, this.identifier, this.timePeriod])
+		this.Route.navigate(['migration/dashboard/organisation', datasetType, this.identifier, this.timePeriod])
 	}
 
-  /**
-   * Graph navigation. TODO - add more desc
-   */  
+	/**
+	 * Graph navigation. TODO - add more desc
+	 */
 	graphNavigation(step: string) {
 		step === 'next' ? this.showGraph++ : this.showGraph--
 	}
@@ -141,60 +139,64 @@ export class OrganisationComponent implements OnInit {
 	 */
 	onAfterOrgChange(identifier, orgName) {
 		if (this.identifier === identifier) return false
- 		this.Route.navigate(['migration/dashboard/organisation', this.datasetType, identifier, this.timePeriod])
+		this.Route.navigate(['migration/dashboard/organisation', this.datasetType, identifier, this.timePeriod])
 	}
 
 	/**
-	 * Function to get logged in organisation list
+	 * Function to get logged user organisation list
 	 */
 	getMyOrganisations() {
 		let orgIds = []
 		// Get logged in user organisation id's
 		this.UserService.userData$.subscribe(
 			user => {
-				if (user){
-					// orgIds = user.userProfile.organisationIds || [];
-          			orgIds = ['01229679766115942443', '0123150108807004166']
-					if (orgIds && orgIds.length){
-						// Get org name
-						this.SearchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
-							data => {
-								this.myOrganisations = data.result.response.content;
-								this.SearchService.setOrganisation(this.myOrganisations);
-								this.isMultipleOrgs = orgIds.length > 1 ? true : false;
-
-								if (this.identifier){
-									this.isMultipleOrgs = false;
-									this.validateIdentifier(this.identifier)
-								}
-
-								if (this.myOrganisations.length === 1) {
-									this.identifier = this.myOrganisations[0].identifier;
- 									this.Route.navigate(['migration/dashboard/organisation', this.datasetType, this.identifier, this.timePeriod])
-								}
-
-								this.showLoader = false;
-							},
-							err => {
-								this.setError(true)
-							}
-						);
-					} else {
-            			this.setError(false)
-          			}
+				if (user && user.userProfile){
+					orgIds = user.userProfile.organisationIds || [];																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				;
+					this.getOrgDetails(orgIds)
 				}
 			},
-			err =>{
+			err => {
 				this.setError(true)
 			}
 		);
 	}
 
-  ngOnInit() {
-  }
+	/**
+	 * Function to get organisation details
+	 */
+	getOrgDetails(orgIds: Array<any>) {
+		// Check orgids
+		if(orgIds && orgIds.length) {
+			this.SearchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
+				data => {
+					this.myOrganisations = data.result.response.content;
+					this.SearchService.setOrganisation(this.myOrganisations);
+					this.isMultipleOrgs = orgIds.length > 1 ? true : false;
 
-  setError(flag: boolean){
-	this.showError = flag;
-	this.showLoader = false;
-  }
+					if (this.identifier) {
+						this.isMultipleOrgs = false;
+						this.validateIdentifier(this.identifier)
+					}
+
+					if (this.myOrganisations.length === 1) {
+						this.identifier = this.myOrganisations[0].identifier;
+						this.Route.navigate(['migration/dashboard/organisation', this.datasetType, this.identifier, this.timePeriod])
+					}
+
+					this.showLoader = false;
+				},
+				err => {
+					this.setError(true)
+				}
+			);
+		}
+	}
+
+	ngOnInit() {
+	}
+
+	setError(flag: boolean) {
+		this.showError = flag;
+		this.showLoader = false;
+	}
 }

@@ -2,9 +2,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// Third party modules
+// Modules
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
+import { AppCommonModule } from './../common/common.module';
 // Components
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { CourseConsumptionComponent } from './components/course-consumption/course-consumption.component';
@@ -24,7 +25,8 @@ import { OrganisationService } from './services/organisation/organisation.servic
     DashboardRoutingModule,
     FormsModule,
     ChartsModule,
-    SuiModule
+    SuiModule,
+    AppCommonModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent],
   providers: [ 

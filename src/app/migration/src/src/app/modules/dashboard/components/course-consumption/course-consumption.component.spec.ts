@@ -119,14 +119,7 @@ describe('CourseConsumptionComponent', () => {
     expect(response).toBeFalsy();
   }); 
 
-  it('should call onAfterFilterChange function - but should not change time period', () => {
-    component.timePeriod = '7d';
-    let response = component.onAfterFilterChange('7d')
-    fixture.detectChanges();
-    expect(response).toBeFalsy();
-  }); 
-
-  it('should validateIdentifier', () => {
+  it('should validate identifier and load dashboard data', () => {
     component.invalidUrl = false;
     component.myCoursesList = [{identifier: 'do_123'}]
     component.validateIdentifier('do_123')
@@ -134,7 +127,7 @@ describe('CourseConsumptionComponent', () => {
     expect(component.invalidUrl).toBeFalsy();
   }); 
 
-  it('should validateIdentifier', () => {
+  it('should throw invalidate identifier error', () => {
     component.invalidUrl = false;
     component.myCoursesList = [{identifier: 'do_1231'}]
     component.validateIdentifier('do_123')
@@ -142,6 +135,13 @@ describe('CourseConsumptionComponent', () => {
     expect(component.invalidUrl).toBe(true);
   }); 
 
+  it('should call onAfterFilterChange function - but should not change time period', () => {
+    component.timePeriod = '7d';
+    let response = component.onAfterFilterChange('7d')
+    fixture.detectChanges();
+    expect(response).toBeFalsy();
+  }); 
+  
   it('should call onAfterFilterChange function - and display last 14 days data', () => {
     component.timePeriod = '7d';
     let response = component.onAfterFilterChange('14d')
