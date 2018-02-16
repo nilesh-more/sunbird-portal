@@ -15,6 +15,8 @@ import { DashboardUtilsService } from './services/dashboard-utils.service';
 import { DashboardService } from './services/dashboard.service';
 import { RendererService } from './services/renderer/renderer.service';
 import { LineChartService } from './services/renderer/graphs/line-chart.service';
+import { CourseConsumptionService } from './services/course/course-consumption.service';
+import { OrganisationService } from './services/organisation/organisation.service';
 
 @NgModule({
   imports: [
@@ -30,6 +32,6 @@ import { LineChartService } from './services/renderer/graphs/line-chart.service'
     DashboardUtilsService, 
     SearchService, 
     LineChartService, 
-    DashboardService]
+    DashboardService, CourseConsumptionService, OrganisationService]
 })
 export class DashboardModule { }

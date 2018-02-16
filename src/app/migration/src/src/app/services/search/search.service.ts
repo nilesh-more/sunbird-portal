@@ -1,9 +1,9 @@
 import { Injectable, Input } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
-import { Observable } from 'rxjs/Observable';
 import * as  urlConfig from '../../config/url.config.json';
 const urlsConfig = (<any>urlConfig);
 
@@ -20,17 +20,17 @@ interface RequestParam {
  * Service to search content/courses/textbook
  */
 export class SearchService {
+	searchedContentList: any;
+	searchedOrganisationList: any;
 
-	contentList: any;
-	contentCreateByMe: any;
-	organisationList: any;
 	/**
 	 * Constructor to create object of injected service(s)
 	 */
 	constructor(private UserService: UserService, private ContentService: ContentService) { }
 
 	/**
-	 * Function to search content
+	 * Function to search content by user id.
+	 * It takes content status,type,userId as a param and trigger content service to get result 
 	 */
 	searchContentByUserId(requestParam: RequestParam) {
 		// TODO: before pushing remove this hardcode user id 
@@ -47,33 +47,32 @@ export class SearchService {
 					},
 					sort_by: {
 						lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
-					},
-					limit: 100
+					}
 				}
 			}
 		};
 
-		return this.ContentService.post(option)
-			.map((data: any) => {
-				if (data && data.responseCode === 'OK') {
-					return data
-				} else {
-					return Observable.throw(data)
-				}
-			})
-			.catch((err) => {
-				return Observable.throw(err)
-			})
+		return this.ContentService.post(option);
 	}
 
-    public setContent(data: any): void {
-        this.contentList = data;
+	/**
+	 * Function to set result of searchContentByUserId()
+	 */
+    public setSearchedContent(data: any): void {
+        this.searchedContentList = data;
     }
 
-    public getContent(): any {
-        return this.contentList;
+	/**
+	 * Function to get searched content list
+	 */
+    public getSearchedContent(): any {
+        return this.searchedContentList;
     }
 
+	/**
+	 * Function to get organisation details. 
+	 * It takes orgId(s) as param and trigger content service to get organisation(s) details
+	 */
 	getOrganisationDetails(requestParam: RequestParam){
 		const option = {
 			url: urlsConfig.URLS.ADMIN.ORG_SEARCH,
@@ -86,25 +85,14 @@ export class SearchService {
 			}
 		};
 
-		return this.ContentService.post(option)
-			.map((data: any) => {
-				if (data && data.responseCode === 'OK') {
-					return data
-				} else {
-					return Observable.throw(data)
-				}
-			})
-			.catch((err) => {
-				return Observable.throw(err)
-			})
-
+		return this.ContentService.post(option);
 	}
 
     public setOrganisation(data: any): void {
-        this.organisationList = data;
+        this.searchedOrganisationList = data;
     }
 
     public getOrganisation(): any {
-        return this.organisationList;
+        return this.searchedOrganisationList;
     }
 }

@@ -5,6 +5,7 @@ import { UserService } from './../../../../services/user/user.service';
 import { RendererService } from './../../services/renderer/renderer.service';
 import { DashboardService } from './../../services/dashboard.service';
 import { SearchService } from './../../../../services/search/search.service';
+import { OrganisationService } from './../../services/organisation/organisation.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -13,7 +14,7 @@ import * as _ from 'lodash';
   styleUrls: ['./organisation.component.css']
 })
 export class OrganisationComponent implements OnInit {
-  // Variable(s) to make api request
+  	// Variable(s) to make api request
 	timePeriod: string = '7d';
 	identifier: string = '';
 	datasetType: string = 'creation';
@@ -23,6 +24,7 @@ export class OrganisationComponent implements OnInit {
 	blockData: Array<any> = [];
 	showGraph: number = 0;
 	myOrganisations: Array<any> = [];
+	SelectedOrg: string;
 
 	// Graph settings - chartType = line/bar/radar/pie etc 
 	lineChartLegend: boolean = true;
@@ -32,15 +34,13 @@ export class OrganisationComponent implements OnInit {
 	showLoader: boolean = true;
 	showError: boolean = false;
 	showDashboard: boolean = false;
-	invalidUrl: boolean = false;
 
 	// Variables to control view
 	isMultipleOrgs: boolean = false;
-	SelectedOrg: string;
 	disabledClass: boolean = false;
 
 	/**
-   * Constructor to create object of injected service
+   * Constructor to create object of injected service(s) and handle routes
 	 */
 	constructor(
 		private Route: Router,
@@ -48,13 +48,14 @@ export class OrganisationComponent implements OnInit {
 		private UserService: UserService,
 		private SearchService: SearchService,
 		private RendererService: RendererService,
-    	private DashboardService: DashboardService) {
+    	private DashboardService: DashboardService,
+		private OrgService: OrganisationService) {
 			this.ActivatedRoute.params.subscribe(params => {
 				let orgArray = this.SearchService.getOrganisation();
 				if (orgArray && orgArray.length) {
-						this.myOrganisations = orgArray;
+					this.myOrganisations = orgArray;
+					this.validateIdentifier(params.id)
 				} else {
-					console.log('making search api call');
 					this.getMyOrganisations();
 				}
 
@@ -69,7 +70,7 @@ export class OrganisationComponent implements OnInit {
 
 	/**
 	 * Function to get selected org creation / consumption data
-   * This function internally calls the dashboard service
+   	 * This function internally calls the dashboard service
 	 */
 	getDashboardData(timePeriod: string, identifier: string) {
 		this.showLoader = true;
@@ -85,22 +86,34 @@ export class OrganisationComponent implements OnInit {
       		dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
 		}
 
-		this.DashboardService.getOrgDashboardData(params).subscribe(
+		this.OrgService.getDashboardData(params).subscribe(
 			data => {
 				this.blockData = data.numericData;
 				this.graphData = this.RendererService.visualizer(data, this.chartType);
-				this.showLoader = false;
 				this.showDashboard = true;
-				this.showError = false;
+				this.setError(false)
 			},
 			err => {
-				this.showLoader = false;
-				this.showError = true;
+				this.setError(true)
 			}
 		);
 	}
 
-  /**
+	/**
+	 * Function to validate identifier
+	 */
+	validateIdentifier(identifier: string) {
+		if (identifier){
+			let selectedOrg = _.find(this.myOrganisations, ['identifier', identifier]);
+			if (selectedOrg && selectedOrg.identifier){
+				this.SelectedOrg = selectedOrg.orgName;
+			} else {
+		 		this.Route.navigate(['migration/groups'])
+			}
+		}
+	}
+
+   /**
    * Function to get selected course id
    */
 	onAfterFilterChange(timePeriod: string) {
@@ -140,9 +153,8 @@ export class OrganisationComponent implements OnInit {
 		this.UserService.userData$.subscribe(
 			user => {
 				if (user){
-					orgIds = user.userProfile.organisationIds || [];
-					console.log('orgIdssss', user.userProfile)
-          			// orgIds = ['01229679766115942443', '0123150108807004166']
+					// orgIds = user.userProfile.organisationIds || [];
+          			orgIds = ['01229679766115942443', '0123150108807004166']
 					if (orgIds && orgIds.length){
 						// Get org name
 						this.SearchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
@@ -153,6 +165,7 @@ export class OrganisationComponent implements OnInit {
 
 								if (this.identifier){
 									this.isMultipleOrgs = false;
+									this.validateIdentifier(this.identifier)
 								}
 
 								if (this.myOrganisations.length === 1) {
@@ -163,16 +176,16 @@ export class OrganisationComponent implements OnInit {
 								this.showLoader = false;
 							},
 							err => {
-								this.showError = true;
+								this.setError(true)
 							}
 						);
 					} else {
-            			this.showLoader = false;
+            			this.setError(false)
           			}
 				}
 			},
 			err =>{
-				this.showError = true;
+				this.setError(true)
 			}
 		);
 	}
@@ -180,4 +193,8 @@ export class OrganisationComponent implements OnInit {
   ngOnInit() {
   }
 
+  setError(flag: boolean){
+	this.showError = flag;
+	this.showLoader = false;
+  }
 }

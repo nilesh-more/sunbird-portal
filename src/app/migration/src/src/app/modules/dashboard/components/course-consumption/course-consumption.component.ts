@@ -1,10 +1,11 @@
+import { HttpParams } from '@angular/common/http/src/params';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
+// import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { SearchService } from './../../../../services/search/search.service';
 import { RendererService } from './../../services/renderer/renderer.service';
-import { DashboardService } from './../../services/dashboard.service';
+import { CourseConsumptionService } from './../../services/course/course-consumption.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -41,13 +42,13 @@ export class CourseConsumptionComponent implements OnInit {
 	 * Constructor to create injected service(s) object
 	 */
 	constructor(private Route: Router,
+		private ConsumptionService: CourseConsumptionService,
 		private ActivatedRoute: ActivatedRoute,
 		private SearchService: SearchService,
-		private RendererService: RendererService,
-		private DashboardService: DashboardService) {
+		private RendererService: RendererService) {
 			this.ActivatedRoute.params.subscribe(params => {
 				// Get content
-				let myCourses = this.SearchService.getContent()
+				let myCourses = this.SearchService.getSearchedContent()
 				if (myCourses && myCourses.length){
 					this.myCoursesList = myCourses
 					this.validateIdentifier(params.id)
@@ -78,7 +79,7 @@ export class CourseConsumptionComponent implements OnInit {
 				timePeriod: this.timePeriod
 			}
 		}
-		this.DashboardService.getCourseConsumptionData(params)
+		this.ConsumptionService.getDashboardData(params)
 			.subscribe(data => {
 				this.blockData = data.numericData;
 				this.graphData = this.RendererService.visualizer(data, this.chartType)
@@ -97,7 +98,7 @@ export class CourseConsumptionComponent implements OnInit {
 	validateIdentifier(identifier: string) {
 		if (identifier){
 			let selectedCourse = _.find(this.myCoursesList, ['identifier', identifier]);
-			if (selectedCourse.identifier){
+			if (selectedCourse && selectedCourse.identifier){
 				this.courseName = selectedCourse.name;
 				this.selectedCourse = selectedCourse;
 			} else {
@@ -112,14 +113,16 @@ export class CourseConsumptionComponent implements OnInit {
 	 */
 	getMyContent() {
 		const searchParams = {
-			status: ['Live', 'Draft'], contentType: ['Course', 'Textbook'], 
+			status: ['Live', 'Draft'], 
+			contentType: ['Course', 'Textbook'], 
 			params: { lastUpdatedOn: 'desc' }
 		}
+		// Api call to get content
 		this.SearchService.searchContentByUserId(searchParams).subscribe(
 			data => {
 				if (data.result.count && data.result.content) {
 					this.myCoursesList = data.result.content;
-					this.SearchService.setContent(this.myCoursesList)
+					this.SearchService.setSearchedContent(this.myCoursesList)
 					if (this.identifier){
 						this.validateIdentifier(this.identifier)
 					}

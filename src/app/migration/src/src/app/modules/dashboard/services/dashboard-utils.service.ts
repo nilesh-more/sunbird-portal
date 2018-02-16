@@ -17,14 +17,6 @@ export class DashboardUtilsService {
   }
 
   /**
-   * Construct dashboard creation / consumption api url.
-   * Remove this
-   */
-  constructApiUrl (req, dataset: string){
-      return this.datasetType[dataset] + '/' + req.identifier + '?period=' + req.timePeriod
-  }
-
-  /**
    * Construct dashboard creation / consumption download api url. 
    * Remove this
    */

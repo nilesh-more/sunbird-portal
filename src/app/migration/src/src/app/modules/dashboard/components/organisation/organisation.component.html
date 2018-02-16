@@ -23,7 +23,7 @@
             </div>
             <!-- Dataset types - Creation, Consumption -->
             <div class="right floated three wide column padding-right-dropdown padding-right-10" 
-                *ngIf="!isMultipleOrgs && myOrganisations && myOrganisations.length > 0">
+                *ngIf="identifier && myOrganisations && myOrganisations.length > 0">
                 <div class="ui dropdown float-ContentRight" suiDropdown>
                     <div class="text dashBoardSectionHeading">
                         {{datasetType === 'creation' ? 'Creation' : 'Consumption'}}
@@ -36,13 +36,13 @@
                 </div>
             </div>
         </div>
-        <div class="ui info message" *ngIf="myOrganisations && myOrganisations.length === 0">
+        <!--<div class="ui info message" *ngIf="myOrganisations && myOrganisations.length === 0 && !showLoader">
             <div class="header">Oops...</div>
             <ul class="list">
                 <li>No Organisation found</li>
             </ul>
-        </div>
-        <div class="ui grid" *ngIf="!isMultipleOrgs">
+        </div>-->
+        <div class="ui grid" *ngIf="identifier">
             <div class="twelve wide column" *ngIf="myOrganisations && myOrganisations.length > 0">
                 <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }">LAST 7 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }">LAST 14 DAYS</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class="ui warning message tweleve wide column margin-top-20" 
-            *ngIf="isMultipleOrgs" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+            *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
             <div class="header">
                 No organization selected!
             </div>
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <div *ngIf="showDashboard && !invalidUrl" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
+        <div *ngIf="showDashboard && myOrganisations && myOrganisations.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
             <div class="consumption-data-holder margin-top-20">
                 <div class="ui three cards">
                     <div class="card" *ngFor="let block of blockData">
