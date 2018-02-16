@@ -116,8 +116,8 @@ export class CourseConsumptionComponent implements OnInit {
 	 */
 	getMyContent() {
 		const searchParams = {
-			status: ['Live', 'Draft'], 
-			contentType: ['Course', 'Textbook'], 
+			status: ['Live'], 
+			contentType: ['Course'], 
 			params: { lastUpdatedOn: 'desc' }
 		}
 		// Api call to get content
