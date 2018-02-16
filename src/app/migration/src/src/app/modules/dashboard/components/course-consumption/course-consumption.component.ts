@@ -1,11 +1,11 @@
 import { HttpParams } from '@angular/common/http/src/params';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-// import { ActivatedRouteSnapshot } from '@angular/router/src/router_state';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { SearchService } from './../../../../services/search/search.service';
 import { RendererService } from './../../services/renderer/renderer.service';
 import { CourseConsumptionService } from './../../services/course/course-consumption.service';
+import { ResourceService } from './../../../../services/resource/resource.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -45,7 +45,10 @@ export class CourseConsumptionComponent implements OnInit {
 		private ConsumptionService: CourseConsumptionService,
 		private ActivatedRoute: ActivatedRoute,
 		private SearchService: SearchService,
-		private RendererService: RendererService) {
+		private RendererService: RendererService,
+		public resourceService: ResourceService) {
+			console.log('resources', this.resourceService.frmelmnts)
+			console.log('resources-all', this.resourceService)
 			this.ActivatedRoute.params.subscribe(params => {
 				// Get content
 				let myCourses = this.SearchService.getSearchedContent()
