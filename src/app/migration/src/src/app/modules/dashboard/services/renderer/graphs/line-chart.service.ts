@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
-
 @Injectable()
+
+/**
+ * Service to prepare line chart data - xAxes,yAxes,lineColor,chartOption data
+ */
 export class LineChartService {
 
-  constructor() { }
+    /**
+     * Constructor
+     */
+    constructor() { }
 
     /**
-     * Parse line chart data - data, color, chart options
+     * Construct line chart data
      */
     parseLineChart(res) {
         var chartList = []
@@ -58,7 +64,7 @@ export class LineChartService {
     }
 
     /**
-     * Function to get line chart data
+     * Get line chart value and lable
      */
     getLineData(bucketData) {
         let values: Array<any> = []
@@ -89,7 +95,7 @@ export class LineChartService {
     }
 
     /**
-     * Function to generate random color
+     * Function to generate random color for line chart
      */
     getRandomColor() {
         var letters = '0123456789ABCDEF'

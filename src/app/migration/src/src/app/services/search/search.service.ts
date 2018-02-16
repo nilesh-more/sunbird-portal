@@ -33,9 +33,6 @@ export class SearchService {
 	 * It takes content status,type,userId as a param and trigger content service to get result 
 	 */
 	searchContentByUserId(requestParam: RequestParam) {
-		// TODO: before pushing remove this hardcode user id 
-		requestParam.params.userId = 'b14e7747-e66d-49f3-8152-7a6706f0b530';
-
 		const option = {
 			url: urlsConfig.URLS.COMPOSITE.SEARCH,
 			data: {
@@ -88,10 +85,16 @@ export class SearchService {
 		return this.ContentService.post(option);
 	}
 
+	/**
+	 * Function Set serched organisation(s) list
+	 */
     public setOrganisation(data: any): void {
         this.searchedOrganisationList = data;
     }
 
+	/**
+	 * Get searched organisation list
+	 */
     public getOrganisation(): any {
         return this.searchedOrganisationList;
     }

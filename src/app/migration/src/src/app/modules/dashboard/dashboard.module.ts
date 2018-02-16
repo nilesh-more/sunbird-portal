@@ -13,7 +13,6 @@ import { OrganisationComponent } from './components/organisation/organisation.co
 // Services
 import { SearchService } from './../../services/search/search.service';
 import { DashboardUtilsService } from './services/dashboard-utils.service';
-import { DashboardService } from './services/dashboard.service';
 import { RendererService } from './services/renderer/renderer.service';
 import { LineChartService } from './services/renderer/graphs/line-chart.service';
 import { CourseConsumptionService } from './services/course/course-consumption.service';
@@ -34,6 +33,7 @@ import { OrganisationService } from './services/organisation/organisation.servic
     DashboardUtilsService, 
     SearchService, 
     LineChartService, 
-    DashboardService, CourseConsumptionService, OrganisationService]
+    CourseConsumptionService, 
+    OrganisationService]
 })
 export class DashboardModule { }

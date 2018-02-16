@@ -3,14 +3,24 @@ import { LineChartService } from './graphs/line-chart.service';
 import * as _ from 'lodash';
 
 @Injectable()
+/**
+ * RendererService to display graph 
+ */
 export class RendererService {
 
-  constructor(private LineChartService: LineChartService) { }
+    /**
+     * Constructor to create injected service(s) object
+     */
+    constructor(private LineChartService: LineChartService) { }
 
-  visualizer(data, chartType: string) {
-      switch (chartType) {
-          case 'line':
-              return this.LineChartService.parseLineChart(data)
-      }
-  }
+    /**
+     * Mapper function to call graph type services - lineChartService/barChartService.
+     * Currently it supports only lineChart
+     */
+    visualizer(data, chartType: string) {
+        switch (chartType) {
+            case 'line':
+                return this.LineChartService.parseLineChart(data)
+        }
+    }
 }

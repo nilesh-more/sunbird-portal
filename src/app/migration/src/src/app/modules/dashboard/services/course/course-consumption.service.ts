@@ -15,14 +15,22 @@ interface RequestParam {
 }
 
 @Injectable()
-export class CourseConsumptionService {
 
+/**
+ * Service to get course consumption data
+ */
+export class CourseConsumptionService {
   blockData: any;
+
+  /**
+   * Constructor to create injected service object
+   */
   constructor(private LearnerService: LearnerService, private DashboardUtil: DashboardUtilsService) {
   }
 
   /**
    * Function to get course consumption data.
+   * Internally calls the learner service to make api call 
    */
   getDashboardData(requestParam: RequestParam) {
     const paramOptions = {
@@ -39,7 +47,7 @@ export class CourseConsumptionService {
   }
 
   /**
-   * Function to parse api response
+   * Function to parse course consumption api response
    */
   parseApiResponse(data: any) {
     this.blockData = [];

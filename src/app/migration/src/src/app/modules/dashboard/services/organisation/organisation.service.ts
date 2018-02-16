@@ -16,11 +16,17 @@ interface RequestParam {
 }
 
 @Injectable()
+/**
+ * Service to get organisation creation and consumption data
+ */
 export class OrganisationService {
   contentStatus: {};
   graphSeries: Array<any> = []
   blockData: Array<any> = []
 
+  /**
+   * Constructor to create injected service(s) object
+   */
   constructor(private LearnerService: LearnerService, private DashboardUtil: DashboardUtilsService) {
     this.contentStatus = {
       'org.creation.content[@status=published].count': ' LIVE',
@@ -30,7 +36,8 @@ export class OrganisationService {
   }
 
   /**
-   * Function to get organisation creation, consumption dashboard data 
+   * Function to get organisation creation, consumption dashboard data.
+   * Internally calls the learner service to make api call  
    */
   getDashboardData(requestParam: RequestParam) {
     const paramOptions = {
@@ -51,7 +58,7 @@ export class OrganisationService {
   }
 
   /**
-   * Function to parse dashboard api response
+   * Function to parse organisation creation and consumption api response
    */
   parseApiResponse(data: any, dataset: string) {
     this.graphSeries = [];

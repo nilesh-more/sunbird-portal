@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 })
 
 /**
- * Dashboard data
+ * Component to display course consumption dashboard
  */
 export class CourseConsumptionComponent implements OnInit {
 	// Variable(s) to make api request
@@ -47,8 +47,6 @@ export class CourseConsumptionComponent implements OnInit {
 		private SearchService: SearchService,
 		private RendererService: RendererService,
 		public resourceService: ResourceService) {
-			console.log('resources', this.resourceService.frmelmnts)
-			console.log('resources-all', this.resourceService)
 			this.ActivatedRoute.params.subscribe(params => {
 				// Get content
 				let myCourses = this.SearchService.getSearchedContent()
@@ -106,6 +104,8 @@ export class CourseConsumptionComponent implements OnInit {
 				this.selectedCourse = selectedCourse;
 			} else {
 				this.invalidUrl = true;
+				// TODO: Need to redirect to home page
+				this.Route.navigate(['migration/groups'])
 			}
 		}
 	}
@@ -147,7 +147,7 @@ export class CourseConsumptionComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get selected course data
+	 * Function to change course selection
 	 */
 	onAfterCourseChange(course: any) {
 		if (this.identifier === course.identifier) return false
@@ -155,7 +155,7 @@ export class CourseConsumptionComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get selected filter data
+	 * Function to change filter and get dashboard data
 	 */
 	onAfterFilterChange(timePeriod: string) {
 		if (this.timePeriod === timePeriod) return false

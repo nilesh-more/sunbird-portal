@@ -12,34 +12,34 @@ import * as _ from 'lodash';
 	templateUrl: './organisation.component.html',
 	styleUrls: ['./organisation.component.css']
 })
+
+/**
+ * Component to display Organisation creation, consumption dashboard
+ */
 export class OrganisationComponent implements OnInit {
 	// Variable(s) to make api request
 	timePeriod: string = '7d';
 	identifier: string = '';
 	datasetType: string = 'creation';
-
 	// Variables to render chart and block data
 	graphData: any;
 	blockData: Array<any> = [];
 	showGraph: number = 0;
 	myOrganisations: Array<any> = [];
 	SelectedOrg: string;
-
 	// Graph settings - chartType = line/bar/radar/pie etc 
 	lineChartLegend: boolean = true;
 	chartType: string = 'line';
-
 	// Flags to show loader/error/canvas
 	showLoader: boolean = true;
 	showError: boolean = false;
 	showDashboard: boolean = false;
-
 	// Variables to control view
 	isMultipleOrgs: boolean = false;
 	disabledClass: boolean = false;
 
 	/**
-   * Constructor to create object of injected service(s) and handle routes
+   	 * Constructor to create object of injected service(s) and handle routes
 	 */
 	constructor(
 		private Route: Router,
@@ -49,11 +49,13 @@ export class OrganisationComponent implements OnInit {
 		private RendererService: RendererService,
 		private OrgService: OrganisationService) {
 		this.ActivatedRoute.params.subscribe(params => {
+			// Get already searched org list
 			let orgArray = this.SearchService.getOrganisation();
 			if (orgArray && orgArray.length) {
 				this.myOrganisations = orgArray;
 				this.validateIdentifier(params.id)
 			} else {
+				// If org list not found then make api call
 				this.getMyOrganisations();
 			}
 
@@ -106,13 +108,14 @@ export class OrganisationComponent implements OnInit {
 			if (selectedOrg && selectedOrg.identifier) {
 				this.SelectedOrg = selectedOrg.orgName;
 			} else {
+				// TODO: Need to redirect to home page
 				this.Route.navigate(['migration/groups'])
 			}
 		}
 	}
 
 	/**
-	* Function to get selected course id
+	* Function to change filter and get selected filter data
 	*/
 	onAfterFilterChange(timePeriod: string) {
 		if (this.timePeriod === timePeriod) return false
@@ -143,7 +146,7 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get logged user organisation list
+	 * Function to get logged user organisationIds
 	 */
 	getMyOrganisations() {
 		let orgIds = []
@@ -162,7 +165,8 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get organisation details
+	 * Function to get organisation(s) details. 
+	 * This function internally calls the search service
 	 */
 	getOrgDetails(orgIds: Array<any>) {
 		// Check orgids
@@ -192,11 +196,13 @@ export class OrganisationComponent implements OnInit {
 		}
 	}
 
-	ngOnInit() {
-	}
-
+	/**
+	 * Function to set error flag
+	 */
 	setError(flag: boolean) {
 		this.showError = flag;
 		this.showLoader = false;
+	}
+	ngOnInit() {
 	}
 }
