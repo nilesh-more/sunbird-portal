@@ -1,3 +1,4 @@
+import { Ng2IziToastModule } from 'ng2-izitoast';
 import { BadgesService } from './services/badges/badges.service';
 import { AppCommonModule } from './modules/common/common.module';
 import { ProfileModule } from './modules/profile/profile.module';
