@@ -15,15 +15,15 @@
                     <div class="text dashBoardSectionHeading">{{SelectedOrg || 'Select Organization'}}</div>
                     <span class="dashBoardSectionHeading"><i class="dropdown icon"></i></span>
                     <div class="menu" suiDropdownMenu>
-                        <div class="item" [ngClass]="{'active': organisation.identifier === identifier }" *ngFor="let organisation of myOrganisations" (click)="onAfterOrgChange(organisation.identifier, organisation.orgName);">
+                        <div class="item" [ngClass]="{'active': organisation.identifier === identifier }" *ngFor="let organisation of myOrganisations"
+                            (click)="onAfterOrgChange(organisation.identifier, organisation.orgName);">
                             {{organisation.orgName}}
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Dataset types - Creation, Consumption -->
-            <div class="right floated three wide column padding-right-dropdown padding-right-10" 
-                *ngIf="identifier && myOrganisations && myOrganisations.length > 0">
+            <div class="right floated three wide column padding-right-dropdown padding-right-10" *ngIf="identifier && myOrganisations && myOrganisations.length > 0">
                 <div class="ui dropdown float-ContentRight" suiDropdown>
                     <div class="text dashBoardSectionHeading">
                         {{datasetType === 'creation' ? 'Creation' : 'Consumption'}}
@@ -44,8 +44,7 @@
                 <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }">LAST 5 WEEKS</span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
-        <div class="ui warning message tweleve wide column margin-top-20" 
-            *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
             <div class="header">
                 No organization selected!
             </div>
@@ -80,22 +79,14 @@
                 </div>
             </div>
 
-            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" 
-                [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
+            <div class="ui one column grid margin-top-20" *ngIf="graphData && graphData.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
                 <div class="column">
                     <div class="regular slider padding-top-30 course-graph-holder">
                         <div *ngFor="let block of graphData;let graphIndex = index;">
                             <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
                                 <div class="ui segment">
-                                    <canvas baseChart 
-                                        width="300" 
-                                        height="90" 
-                                        [datasets]="block.yaxesData" 
-                                        [labels]="block.xaxesData" 
-                                        [options]="block.chartOptions"
-                                        [colors]="block.chartColors" 
-                                        [legend]="true" 
-                                        [chartType]="chartType">
+                                    <canvas baseChart width="300" height="90" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
+                                        [colors]="block.chartColors" [legend]="true" [chartType]="chartType">
                                     </canvas>
                                 </div>
                             </div>
@@ -116,6 +107,20 @@
                     <a href="javascript:void(0);" [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline padding-left-10"
                         (click)="downloadReport();">CSV</a>
                 </p>
+            </div>
+            <!-- Download-->
+            <div *ngIf="downloadComplete">
+                <sui-modal [isClosable]="true" (dismissed)="downloadComplete = false" #modal>
+                    <div class="header">
+                        <div class="ui grid">
+                            <div class="eleven wide column"><span class="ui header">Thank you!</span></div>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <p>Your request has been received successfully. File will be sent to your registered email address later.
+                            Please, do check your emails regularly.</p>
+                    </div>
+                </sui-modal>
             </div>
         </div>
     </div>

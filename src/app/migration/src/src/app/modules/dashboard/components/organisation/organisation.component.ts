@@ -5,6 +5,7 @@ import { UserService } from './../../../../services/user/user.service';
 import { RendererService } from './../../services/renderer/renderer.service';
 import { SearchService } from './../../../../services/search/search.service';
 import { OrganisationService } from './../../services/organisation/organisation.service';
+import { DownloadService } from './../../services/download/download.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -37,11 +38,13 @@ export class OrganisationComponent implements OnInit {
 	// Variables to control view
 	isMultipleOrgs: boolean = false;
 	disabledClass: boolean = false;
+	downloadComplete: boolean = false;
 
 	/**
    	 * Constructor to create object of injected service(s) and handle routes
 	 */
 	constructor(
+		private DownloadService: DownloadService,
 		private Route: Router,
 		private ActivatedRoute: ActivatedRoute,
 		private UserService: UserService,
@@ -153,9 +156,9 @@ export class OrganisationComponent implements OnInit {
 		// Get logged in user organisation id's
 		this.UserService.userData$.subscribe(
 			user => {
-				if (user && user.userProfile){
-					orgIds = user.userProfile.organisationIds || [];																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				;
-					this.getOrgDetails(orgIds)
+				if (user && user.userProfile) {
+					orgIds = user.userProfile.organisationIds || [];;
+					this.getOrgDetails(['01229679766115942443', '0123150108807004166'])
 				}
 			},
 			err => {
@@ -170,7 +173,7 @@ export class OrganisationComponent implements OnInit {
 	 */
 	getOrgDetails(orgIds: Array<any>) {
 		// Check orgids
-		if(orgIds && orgIds.length) {
+		if (orgIds && orgIds.length) {
 			this.SearchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
 				data => {
 					this.myOrganisations = data.result.response.content;
@@ -204,5 +207,27 @@ export class OrganisationComponent implements OnInit {
 		this.showLoader = false;
 	}
 	ngOnInit() {
+	}
+
+	downloadReport() {
+		this.disabledClass = true;
+		const option = {
+			data: { identifier: this.identifier, timePeriod: this.timePeriod },
+			dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
+		}
+
+		this.DownloadService.downloadReport(option).subscribe(
+			data => {
+				this.downloadComplete = true;
+				this.disabledClass = false;
+			},
+			err => {
+				this.disabledClass = false;
+			}
+		);
+	}
+
+	alert(): void {
+		console.log('Your message here');
 	}
 }
