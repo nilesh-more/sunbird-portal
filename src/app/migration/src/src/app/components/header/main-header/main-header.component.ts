@@ -1,4 +1,3 @@
-import { ToasterService } from './../../../modules/common/services/toaster.service';
 import { UserService } from './../../../services/user/user.service';
 import { PermissionService } from './../../../services/permission/permission.service';
 import { ResourceService } from './../../../services/resource/resource.service';
@@ -25,11 +24,10 @@ export class MainHeaderComponent implements OnInit {
   orgSetupRole = this.roleconFig.headerDropdownRoles.orgSetupRole;
   constructor(public resourceService: ResourceService,
     public permissionService: PermissionService,
-    private userService: UserService, private ToasterService: ToasterService) {
+    private userService: UserService) {
   }
 
   ngOnInit() {
-    this.ToasterService.error('fuck');
 
     this.userService.userData$.subscribe(
       user => {
