@@ -17,7 +17,7 @@ interface RequestParam {
 
 @Injectable()
 /**
- * Service to get organisation creation and consumption data
+ * Service to get organization creation and consumption data
  */
 export class OrganisationService {
   contentStatus: {};
@@ -36,7 +36,7 @@ export class OrganisationService {
   }
 
   /**
-   * Function to get organisation creation, consumption dashboard data.
+   * Function to get organization creation, consumption dashboard data.
    * Internally calls the learner service to make api call  
    */
   getDashboardData(requestParam: RequestParam) {
@@ -58,7 +58,7 @@ export class OrganisationService {
   }
 
   /**
-   * Function to parse organisation creation and consumption api response
+   * Function to parse organization creation and consumption api response
    */
   parseApiResponse(data: any, dataset: string) {
     this.graphSeries = [];

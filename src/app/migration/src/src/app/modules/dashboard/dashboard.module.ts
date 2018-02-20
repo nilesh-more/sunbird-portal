@@ -9,14 +9,14 @@ import { AppCommonModule } from './../common/common.module';
 // Components
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { CourseConsumptionComponent } from './components/course-consumption/course-consumption.component';
-import { OrganisationComponent } from './components/organisation/organisation.component';
+import { OrganisationComponent } from './components/organization/organization.component';
 // Services
 import { SearchService } from './../../services/search/search.service';
 import { DashboardUtilsService } from './services/dashboard-utils.service';
 import { RendererService } from './services/renderer/renderer.service';
 import { LineChartService } from './services/renderer/graphs/line-chart.service';
 import { CourseConsumptionService } from './services/course/course-consumption.service';
-import { OrganisationService } from './services/organisation/organisation.service';
+import { OrganisationService } from './services/organization/organization.service';
 import { DownloadService } from './services/download/download.service';
 
 @NgModule({

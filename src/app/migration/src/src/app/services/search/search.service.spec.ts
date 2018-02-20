@@ -31,7 +31,7 @@ describe('SearchService', () => {
     expect(service.searchedContentList).toEqual(data);
   }));
 
-  it('should set searched organisation result', inject([SearchService], (service: SearchService) => {
+  it('should set searched organization result', inject([SearchService], (service: SearchService) => {
     service.searchedOrganisationList = undefined;
     let data = [{id: 'do_123', name: 'Sunbird'}];
     service.setOrganisation(data);
@@ -63,7 +63,7 @@ describe('SearchService', () => {
     expect(ContentService.post).toHaveBeenCalled();
   }));
 
-  it('should return searched organisation result as undefined', inject([SearchService], (service: SearchService) => {
+  it('should return searched organization result as undefined', inject([SearchService], (service: SearchService) => {
     expect(service).toBeTruthy();
     let response = service.getOrganisation();
     expect(response).toBeUndefined()

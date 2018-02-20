@@ -1,6 +1,6 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { OrganisationComponent } from './components/organisation/organisation.component';
+import { OrganisationComponent } from './components/organization/organization.component';
 import { CourseConsumptionComponent } from './components/course-consumption/course-consumption.component';
 
 const routes: Routes = [
@@ -14,7 +14,7 @@ const routes: Routes = [
     path: 'migration/org-dashboard', component: OrganisationComponent
   },
   {
-    path: 'migration/dashboard/organisation/:datasetType/:id/:timePeriod', component: OrganisationComponent
+    path: 'migration/dashboard/organization/:datasetType/:id/:timePeriod', component: OrganisationComponent
   }
 ];
 

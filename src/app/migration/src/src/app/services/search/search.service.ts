@@ -67,8 +67,8 @@ export class SearchService {
     }
 
 	/**
-	 * Function to get organisation details. 
-	 * It takes orgId(s) as param and trigger content service to get organisation(s) details
+	 * Function to get organization details. 
+	 * It takes orgId(s) as param and trigger content service to get organization(s) details
 	 */
 	getOrganisationDetails(requestParam: RequestParam){
 		const option = {
@@ -86,14 +86,14 @@ export class SearchService {
 	}
 
 	/**
-	 * Function Set serched organisation(s) list
+	 * Function Set serched organization(s) list
 	 */
     public setOrganisation(data: any): void {
         this.searchedOrganisationList = data;
     }
 
 	/**
-	 * Get searched organisation list
+	 * Get searched organization list
 	 */
     public getOrganisation(): any {
         return this.searchedOrganisationList;

@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
-// Import Observable modules/properties to throw error(s)
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
-// Import service(s)
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { DashboardUtilsService } from './../dashboard-utils.service';
-// Lodash
 import * as _ from 'lodash';
 
 interface RequestParam {
