@@ -109,8 +109,8 @@
                 </p>
             </div>
             <!-- Download-->
-            <div *ngIf="showDownloadModal">
-                <sui-modal [isClosable]="true" (dismissed)="showDownloadModal = false" #modal>
+            <div *ngIf="showDownloadSuccessModal">
+                <sui-modal [isClosable]="true" (dismissed)="showDownloadSuccessModal = false" #modal>
                     <div class="header">
                         <div class="ui grid">
                             <div class="eleven wide column">

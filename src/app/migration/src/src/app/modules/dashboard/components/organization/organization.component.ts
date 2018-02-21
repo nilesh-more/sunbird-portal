@@ -103,9 +103,9 @@ export class OrganisationComponent implements OnInit {
 	disabledClass: boolean = false;
 
 	/**
-	 * To show download confirmation modal
+	 * To show download successful confirmation modal
 	 */
-	showDownloadModal: boolean = false;
+	showDownloadSuccessModal: boolean = false;
 
 	/**
 	 * Default method of OrganisationService class
@@ -295,9 +295,9 @@ export class OrganisationComponent implements OnInit {
 			dataset: this.datasetType === 'creation' ? 'ORG_CREATION' : 'ORG_CONSUMPTION'
 		}
 
-		this.downloadService.downloadReport(option).subscribe(
+		this.downloadService.getReport(option).subscribe(
 			data => {
-				this.showDownloadModal = true;
+				this.showDownloadSuccessModal = true;
 				this.disabledClass = false;
 			},
 			err => {

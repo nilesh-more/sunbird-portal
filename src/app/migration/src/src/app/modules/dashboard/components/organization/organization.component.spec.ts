@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
+import { AppCommonModule } from './../../../common/common.module';
 // Services
 import { OrganisationComponent } from './organization.component';
 import { ContentService } from './../../../../services/content/content.service';
@@ -18,6 +19,8 @@ import { SearchService } from './../../../../services/search/search.service';
 import { DashboardUtilsService } from './../../services/dashboard-utils.service';
 import { RendererService } from './../../services/renderer/renderer.service';
 import { LineChartService } from './../../services/renderer/graphs/line-chart.service';
+import { DownloadService } from './../../services/download/download.service';
+import { ResourceService } from './../../../../services/resource/resource.service';
 
 describe('OrganisationComponent', () => {
   let component: OrganisationComponent;
@@ -33,7 +36,7 @@ describe('OrganisationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ OrganisationComponent ],
-      imports:[HttpClientTestingModule, FormsModule, SuiModule, ChartsModule],
+      imports:[HttpClientTestingModule, FormsModule, SuiModule, ChartsModule, AppCommonModule],
       providers: [LearnerService, 
         LineChartService, 
         OrganisationService, 
@@ -43,6 +46,8 @@ describe('OrganisationComponent', () => {
         LineChartService,
         ContentService,
         UserService,
+        DownloadService,
+        ResourceService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }
         ]
@@ -201,4 +206,26 @@ describe('OrganisationComponent', () => {
     fixture.detectChanges();
     expect(component.showGraph).toEqual(1)
   });
+
+  it('should download dashboard report', inject([DownloadService], (DownloadService) => {
+    component.datasetType = 'creation';
+    component.identifier = 'do_123';
+    component.timePeriod = '7d';
+    const mockRes = { "id": "api.sunbird.dashboard.org.creation", "ver": "v1", "ts": "2018-02-21 06:41:32:574+0000", "params": { "resmsgid": null, "msgid": "1ef681f0-a158-46eb-b2eb-ee4c74b4fecd", "err": null, "status": "success", "errmsg": null }, "responseCode": "OK", "result": { "requestId": "0124452555998003206" } };
+    spyOn(DownloadService, 'getReport').and.callFake(() => Observable.of(mockRes));
+    component.downloadReport()
+    fixture.detectChanges();
+    expect(component.showDownloadSuccessModal).toEqual(true)
+    expect(component.disabledClass).toEqual(false)
+  }));
+
+  it('should not download dashboard report', inject([DownloadService], (DownloadService) => {
+    component.datasetType = 'creation';
+    component.identifier = 'do_123';
+    component.timePeriod = '7d';
+    spyOn(DownloadService, 'getReport').and.callFake(() => Observable.throw({}));
+    component.downloadReport()
+    fixture.detectChanges();
+    expect(component.disabledClass).toEqual(false)
+  }));
 });

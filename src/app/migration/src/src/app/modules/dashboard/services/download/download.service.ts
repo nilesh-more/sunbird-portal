@@ -36,7 +36,7 @@ export class DownloadService {
 	 * 
 	 * @param {object} requestParam identifier and time period
 	 */
-  downloadReport(requestParam: RequestParam) {
+  getReport(requestParam: RequestParam) {
     const requestBody = {
       url: this.DashboardUtil.constructDownloadReportApiUrl(requestParam.data, requestParam.dataset)
     };
