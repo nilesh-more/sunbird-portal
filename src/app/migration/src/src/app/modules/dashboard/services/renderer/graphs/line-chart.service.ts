@@ -1,31 +1,38 @@
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
+/**
+ * Service to prepare line chart data - x, y axes data, lineColor,chartOption data
+ */
 @Injectable()
 
 /**
- * Service to prepare line chart data - xAxes,yAxes,lineColor,chartOption data
+ * @class LineChartService
  */
 export class LineChartService {
 
     /**
-     * Constructor
+	 * Default method of OrganisationService class
      */
     constructor() { }
 
     /**
-     * Construct line chart data
+     * Get chart data
+     * 
+     * @param {any} data data
+     * 
+     * @return {object} line chart data
      */
-    parseLineChart(res) {
+    parseLineChart(data: any) {
         var chartList = []
         var groupList = {}
         var i = 0
-        _.forEach(res.bucketData, (bucketData, key) => {
+        _.forEach(data.bucketData, (bucketData, key) => {
             let groupData: object = {}
-            let yAxesLabel: string = res.name
+            let yAxesLabel: string = data.name
             let legendLabel: string = ''
 
-            if (res.series === '') {
+            if (data.series === '') {
                 legendLabel = bucketData.name
                 groupData['legend'] = [bucketData.name]
 
@@ -35,8 +42,8 @@ export class LineChartService {
                     yAxesLabel = bucketData.name
                 }
             } else {
-                groupData['legend'] = res.series
-                legendLabel = res.series[i]
+                groupData['legend'] = data.series
+                legendLabel = data.series[i]
             }
             var chartData = this.getLineData(bucketData)
 
@@ -65,8 +72,10 @@ export class LineChartService {
 
     /**
      * Get line chart value and lable
+     * 
+     * @param {any} bucketData line chart value and lable
      */
-    getLineData(bucketData) {
+    getLineData(bucketData: any) {
         let values: Array<any> = []
         let labels: Array<any> = []
         _.forEach(bucketData.buckets, function (bucketValue, bucketKey) {
@@ -77,9 +86,11 @@ export class LineChartService {
     }
 
     /**
-     * Function to get chart options
+     * Get chart options
+     * 
+     * @param {string} labelString get chart option
      */
-    getChartOption(labelString) {
+    getChartOption(labelString: string) {
         return {
             legend: { display: true },
             scales: {
@@ -95,7 +106,7 @@ export class LineChartService {
     }
 
     /**
-     * Function to generate random color for line chart
+     * Generate random color
      */
     getRandomColor() {
         var letters = '0123456789ABCDEF'
@@ -107,9 +118,11 @@ export class LineChartService {
     }
 
     /**
-     * Function to get line chart color
+     * Get line chart color
+     * 
+     * @param {number} legendCount legendCount
      */
-    getChartColors(legendCount) {
+    getChartColors(legendCount: number) {
         var colorArray = []
         for (var i = 0; i < legendCount; i++) {
             var randColor = this.getRandomColor()

@@ -1,97 +1,129 @@
-// Import NG core modules
 import { Injectable } from '@angular/core';
-// rxjs packages
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
-import { Observable } from 'rxjs/Observable';
-// Import service(s)
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { DashboardUtilsService } from './../dashboard-utils.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 import * as  urlConfig from '../../config/url.config.json';
 import * as _ from 'lodash';
 
+/**
+ * Interface to hold api request data and dataset 
+ */
 interface RequestParam {
-  data: object;
-  dataset?: string;
+	data: object;
+	dataset?: string;
 }
 
-@Injectable()
 /**
- * Service to get organization creation and consumption data
+ * Service to get organization admin dashboard data
+ * 
+ * It responsible to make http call 
+ */
+@Injectable()
+
+/**
+ * @class OrganisationService
  */
 export class OrganisationService {
-  contentStatus: {};
-  graphSeries: Array<any> = []
-  blockData: Array<any> = []
 
-  /**
-   * Constructor to create injected service(s) object
-   */
-  constructor(private LearnerService: LearnerService, private DashboardUtil: DashboardUtilsService) {
-    this.contentStatus = {
-      'org.creation.content[@status=published].count': ' LIVE',
-      'org.creation.content[@status=draft].count': ' Created',
-      'org.creation.content[@status=review].count': ' IN REVIEW'
-    }
-  }
+	/**
+	 * Contains content status
+	 * 
+	 * Used to construct readable graph legend 
+	 */
+	contentStatus: object = {};
 
-  /**
-   * Function to get organization creation, consumption dashboard data.
-   * Internally calls the learner service to make api call  
-   */
-  getDashboardData(requestParam: RequestParam) {
-    const paramOptions = {
-      url: this.DashboardUtil.constructDashboardApiUrl(requestParam.data, requestParam.dataset)
-    };
+	/**
+	 * Contains graph series data
+	 */
+	graphSeries: Array<any> = []
 
-    return this.LearnerService.get(paramOptions)
-      .map((data: any) => {
-        if (data && data.responseCode === 'OK') {
-          return this.parseApiResponse(data, requestParam.dataset);
-        } else {
-          return Observable.throw(data)
-        }
-      })
-      .catch((err) => {
-        return Observable.throw(err)
-      })
-  }
+	/**
+	 * Contains parsed snapshot data
+	 * 
+	 * Snapshot data - authors and reviewers count 
+	 */
+	blockData: Array<any> = []
 
-  /**
-   * Function to parse organization creation and consumption api response
-   */
-  parseApiResponse(data: any, dataset: string) {
-    this.graphSeries = [];
-    this.blockData = [];
+	/**
+	 * Default method of OrganisationService class
+	 * 
+	 * @param LearnerService 
+	 * @param DashboardUtil 
+	 */
+	constructor(private LearnerService: LearnerService, private DashboardUtil: DashboardUtilsService) {
+		this.contentStatus = {
+			'org.creation.content[@status=published].count': ' LIVE',
+			'org.creation.content[@status=draft].count': ' Created',
+			'org.creation.content[@status=review].count': ' IN REVIEW'
+		}
+	}
 
-    _.forEach(data.result.snapshot, (numericData, key) => {
-      switch (key) {
-        case 'org.creation.authors.count':
-        case 'org.creation.reviewers.count':
-        case 'org.creation.content.count':
-          this.blockData.push(numericData)
-          break
-        case 'org.consumption.content.time_spent.sum':
-        case 'org.consumption.content.time_spent.average':
-          this.blockData.push(this.DashboardUtil.secondToMinConversion(numericData))
-          break
-        default:
-          if (dataset === 'ORG_CREATION') {
-            this.graphSeries.push(numericData.value + this.contentStatus[key])
-          } else {
-            this.blockData.push(numericData)
-          }
-      }
-    })
+	/**
+	 * To get organization creation and consumption data by making api call
+	 * 
+	 * @param {object} requestParam identifier, time period, and dataset type
+	 * 
+	 * @return {object} api response
+	 */
+	getDashboardData(requestParam: RequestParam) {
+		const paramOptions = {
+			url: this.DashboardUtil.constructDashboardApiUrl(requestParam.data, requestParam.dataset)
+		};
 
-    if (dataset === 'ORG_CREATION') {
-      return {
-        bucketData: data.result.series, numericData: this.blockData, series: this.graphSeries,
-        name: data.result.period === '5w' ? 'Content created per week' : 'Content created per day',
-      }
-    } else {
-      return { bucketData: data.result.series, numericData: this.blockData, series: '' }
-    }
-  }
+		return this.LearnerService.get(paramOptions)
+			.map((data: any) => {
+				if (data && data.responseCode === 'OK') {
+					return this.parseApiResponse(data, requestParam.dataset);
+				} else {
+					return Observable.throw(data)
+				}
+			})
+			.catch((err) => {
+				return Observable.throw(err)
+			})
+	}
 
+	/**
+	 * Converts org consumption time-spent count and completion count from second to min(s) or hr(s)
+	 * 
+	 * @param {any}    data    identifier and time period
+	 * @param {string} dataset dataset type creation, consumption 
+	 * 
+	 * @return {object} api response
+	 */
+	parseApiResponse(data: any, dataset: string) {
+		this.graphSeries = [];
+		this.blockData = [];
+
+		_.forEach(data.result.snapshot, (numericData, key) => {
+			switch (key) {
+				case 'org.creation.authors.count':
+				case 'org.creation.reviewers.count':
+				case 'org.creation.content.count':
+					this.blockData.push(numericData)
+					break
+				case 'org.consumption.content.time_spent.sum':
+				case 'org.consumption.content.time_spent.average':
+					this.blockData.push(this.DashboardUtil.secondToMinConversion(numericData))
+					break
+				default:
+					if (dataset === 'ORG_CREATION') {
+						this.graphSeries.push(numericData.value + this.contentStatus[key])
+					} else {
+						this.blockData.push(numericData)
+					}
+			}
+		})
+
+		if (dataset === 'ORG_CREATION') {
+			return {
+				bucketData: data.result.series, numericData: this.blockData, series: this.graphSeries,
+				name: data.result.period === '5w' ? 'Content created per week' : 'Content created per day',
+			}
+		} else {
+			return { bucketData: data.result.series, numericData: this.blockData, series: '' }
+		}
+	}
 }

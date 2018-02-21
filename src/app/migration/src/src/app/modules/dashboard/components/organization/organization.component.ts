@@ -9,6 +9,11 @@ import { DownloadService } from './../../services/download/download.service';
 import { ResourceService } from './../../../../services/resource/resource.service';
 import * as _ from 'lodash';
 
+/**
+ * The Organization component
+ * 
+ * Display organization creation, consumption dashboard data
+ */
 @Component({
 	selector: 'app-organization',
 	templateUrl: './organization.component.html',
@@ -16,33 +21,103 @@ import * as _ from 'lodash';
 })
 
 /**
- * Component to display Organisation creation, consumption dashboard
+ * @class OrganisationComponent
  */
 export class OrganisationComponent implements OnInit {
-	// Variable(s) to make api request
+	
+	/**
+	 * Contains time period - last 7days, 14days, and 5weeks
+	 */
 	timePeriod: string = '7d';
+
+	/**
+	 * Contains selected course identifier
+	 * 
+	 * Identifier is needed to construct dashboard api url
+	 */
 	identifier: string = '';
+
+	/**
+	 * Dataset type
+	 */
 	datasetType: string = 'creation';
-	// Variables to render chart and block data
+
+	/**
+	 * Contains course consumption line chart data
+	 */
 	graphData: any;
+
+	/**
+	 * Contains dashboard block data
+	 */
 	blockData: Array<any> = [];
+
+	/**
+	 * Contains Graph index to switch between two graphs
+	 */
 	showGraph: number = 0;
+
+	/**
+	 * Organization list
+	 */
 	myOrganizations: Array<any> = [];
+
+	/**
+	 * Selected organization
+	 */
 	SelectedOrg: string;
-	// Graph settings - chartType = line/bar/radar/pie etc 
+
+	/**
+	 * To display graph legend
+	 */
 	lineChartLegend: boolean = true;
+
+	/**
+	 * Chart type
+	 */
 	chartType: string = 'line';
-	// Flags to show loader/error/canvas
+
+	/**
+	 * To show / hide loader
+	 */
 	showLoader: boolean = true;
+
+	/**
+	 * To show error
+	 */
 	showError: boolean = false;
+
+	/**
+	 * To show dashboard canvas
+	 */
 	showDashboard: boolean = false;
-	// Variables to control view
+
+	/**
+	 * To show / hide organization dropdwon
+	 */
 	isMultipleOrgs: boolean = false;
+
+	/**
+	 * Disabled class
+	 */
 	disabledClass: boolean = false;
+
+	/**
+	 * To show download confirmation modal
+	 */
 	showDownloadModal: boolean = false;
 
 	/**
-   	 * Constructor to create object of injected service(s) and handle routes
+	 * Default method of OrganisationService class
+	 * 
+	 * @param downloadService 
+	 * @param route 
+	 * @param activatedRoute 
+	 * @param userService 
+	 * @param searchService 
+	 * @param rendererService 
+	 * @param orgService 
+	 * @param resourceService 
 	 */
 	constructor(
 		private downloadService: DownloadService,
@@ -54,7 +129,6 @@ export class OrganisationComponent implements OnInit {
 		private orgService: OrganisationService,
 		public resourceService: ResourceService) {
 		this.activatedRoute.params.subscribe(params => {
-			console.log(this.resourceService)
 			// Get already searched org list
 			let orgArray = this.searchService.getOrganisation();
 			if (orgArray && orgArray.length) {
@@ -76,6 +150,11 @@ export class OrganisationComponent implements OnInit {
 
 	/**
 	 * Function to get dashboard data for given time period and organization identifier
+	 * 
+	 * @param {string} timePeriod timePeriod: last 7d/14d/5w
+	 * @param {string} identifier organization unique identifier
+	 * 
+	 * @example getDashboardData(7d, do_xxxxx)
 	 */
 	getDashboardData(timePeriod: string, identifier: string) {
 		this.showLoader = true;
@@ -106,7 +185,12 @@ export class OrganisationComponent implements OnInit {
 
 	/**
 	 * This function is used to validate given organization identifier.
-	 * User gets redirect to home page if url contains invalid url or valid identifier but logged in user is a not member of given identifier
+	 * 
+	 * User gets redirect to home page if url contains invalid identifier or valid identifier but logged-in user is not a member of given identifier
+	 * 
+	 * @param {string} identifier organization unique identifier
+	 * 
+	 * @example validateIdentifier(do_xxxxx)
 	 */
 	validateIdentifier(identifier: string) {
 		if (identifier) {
@@ -121,8 +205,13 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to change time filter and get selected time period data. 
-	 * As of now dashboard supports only to show last 7 days, 14 days, and 5 weeks data
+	 * Change time period filter.
+	 * 
+	 * As of now dashboard supports only to show last 7 days, 14 days, and 5 weeks data.
+	 * 
+	 * @param {string} timePeriod timePeriod: last 7d / 14d / 5w
+	 * 
+	 * @example onAfterFilterChange(7d)
 	 */
 	onAfterFilterChange(timePeriod: string) {
 		if (this.timePeriod === timePeriod) return false
@@ -130,7 +219,11 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to switch dashboard type - from creation to consumption and vice versa 
+	 * To change dashboard type
+	 * 
+	 * @param {string} datasetType creation and consumption
+	 * 
+	 * @example onAfterDatasetChange(creation)
 	 */
 	onAfterDatasetChange(datasetType: string) {
 		if (this.datasetType === datasetType) return false
@@ -138,22 +231,35 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function used to switch graph - from Number of user per day to Time spent by day and vice versa
+	 * To change graph - from Number of user per day to Time spent by day and vice versa
+	 * 
+	 * @param {string} step next / previous
+	 * 
+	 * @example graphNavigation(next)
 	 */
 	graphNavigation(step: string) {
 		step === 'next' ? this.showGraph++ : this.showGraph--
 	}
 
 	/**
-	 * Function to change organization
+	 * To change organization selection
+	 * 
+	 * @param {string} identifier organization identifier
+	 * @param {string} orgName    organization name
+	 * 
+	 * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization)
 	 */
-	onAfterOrgChange(identifier, orgName) {
+	onAfterOrgChange(identifier: string, orgName: string) {
 		if (this.identifier === identifier) return false
 		this.route.navigate(['migration/dashboard/organization', this.datasetType, identifier, this.timePeriod])
 	}
 
 	/**
-	 * Function to set error flag
+	 * To set error 
+	 * 
+	 * @param {boolean} flag show error
+	 * 
+	 * @example setError(true)
 	 */
 	setError(flag: boolean) {
 		this.showError = flag;
@@ -161,7 +267,7 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get logged user organization ids list
+	 * Get logged user organization ids list
 	 */
 	getMyOrganisations() {
 		let orgIds = []
@@ -180,7 +286,7 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to download selected organization report
+	 * Download dashboard report
 	 */
 	downloadReport() {
 		this.disabledClass = true;
@@ -201,8 +307,11 @@ export class OrganisationComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get organization details. 
-	 * It takes organization id(s) as a parameter and hit composite search api
+	 * To get organization details.
+	 * 
+	 * @param {Array<any>} orgIds orgids list
+	 * 
+	 * @example getOrgDetails([do_xxxxx])
 	 */
 	getOrgDetails(orgIds: Array<any>) {
 		if (orgIds && orgIds.length) {
@@ -231,6 +340,11 @@ export class OrganisationComponent implements OnInit {
 		}
 	}
 
+	/**
+	 * Angular life cycle hook
+	 * 
+	 * It indicates that angular is done creating the component
+	 */
 	ngOnInit() {
 	}
 }

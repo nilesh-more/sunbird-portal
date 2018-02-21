@@ -43,7 +43,7 @@
         </div>
         <!-- Loader -->
         <div class="twelve wide column margin-top-20" *ngIf="showLoader">
-            <app-loader></app-loader>
+            <app-loader [data]=''></app-loader>
         </div>
         <!-- Select course div -->
         <div class="ui warning message tweleve wide column" *ngIf="myCoursesList && myCoursesList.length > 1 && !showLoader" 
@@ -52,7 +52,7 @@
             {{resourceService?.frmelmnts?.lbl?.dashboardnocourseselecteddesc}}
         </div>
         <!-- Empty course -->
-        <div *ngIf="!showLoader">
+        <div *ngIf="!showLoader" class="margin-top-20">
             <div class="ui info message" *ngIf="myCoursesList && myCoursesList.length === 0">
                 <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
                 <ul class="list">

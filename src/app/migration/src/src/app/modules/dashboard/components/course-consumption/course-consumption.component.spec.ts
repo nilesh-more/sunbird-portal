@@ -19,7 +19,6 @@ import { RendererService } from './../../services/renderer/renderer.service';
 import { ContentService } from './../../../../services/content/content.service';
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { ResourceService } from './../../../../services/resource/resource.service';
-// 
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
@@ -162,21 +161,17 @@ describe('CourseConsumptionComponent', () => {
   }));
 
   it('should validate identifier and load dashboard data', inject([Router], (Router) => {
-    component.invalidUrl = false;
     component.myCoursesList = [{ identifier: 'do_123' }]
     component.validateIdentifier('do_123')
     fixture.detectChanges();
-    expect(component.invalidUrl).toBeFalsy();
     expect(component.myCoursesList.length).toBeGreaterThanOrEqual(1)
     expect(Router.navigate).not.toHaveBeenCalled()
   }));
 
   it('should throw invalidate identifier error', inject([Router], (Router) => {
-    component.invalidUrl = false;
     component.myCoursesList = [{ identifier: 'do_1231' }]
     component.validateIdentifier('do_123')
     fixture.detectChanges();
-    expect(component.invalidUrl).toBe(true);
     expect(component.myCoursesList.length).toBeGreaterThanOrEqual(1)
     expect(Router.navigate).toHaveBeenCalledWith(['migration/groups']);
   }));

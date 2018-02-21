@@ -2,58 +2,79 @@ import { Injectable } from '@angular/core';
 import * as  urlConfig from '../../../config/url.config.json';
 const urlsConfig = (<any>urlConfig);
 
-@Injectable()
 /**
- * Common dashboard helper service
+ * Dashboard utils service
+ * 
+ * It contains all dashboard related common function
+ */
+@Injectable()
+
+/**
+ * @class DashboardUtilsService
  */
 export class DashboardUtilsService {
-  datasetType: {}
 
-  /**
-   * Constructor
-   */
-  constructor() {
-    // Get creation,consumption api urls
-    this.datasetType = {
-      'ORG_CREATION': urlsConfig.URLS.DASHBOARD.ORG_CREATION,
-      'ORG_CONSUMPTION': urlsConfig.URLS.DASHBOARD.ORG_CONSUMPTION,
-      'COURSE_PROGRESS': urlsConfig.URLS.DASHBOARD.COURSE_PROGRESS,
-      'COURSE_CONSUMPTION': urlsConfig.URLS.DASHBOARD.COURSE_CONSUMPTION
-    }
-  }
+	/**
+	 * Dataset types to hold course and organization api urls 
+	 */
+	datasetType: object = {}
 
-  /**
-   * Construct dashboard creation / consumption download api url. 
-   */
-  constructDownloadReportApiUrl(req, dataset: string) {
-    return this.datasetType[dataset] + '/' + req.identifier + '/export?period=' +
-      req.timePeriod + '&format=csv';
-  }
+	/**
+	 * Default method of DashboardUtilsService class
+	 */
+	constructor() {
+		this.datasetType = {
+			'ORG_CREATION': urlsConfig.URLS.DASHBOARD.ORG_CREATION,
+			'ORG_CONSUMPTION': urlsConfig.URLS.DASHBOARD.ORG_CONSUMPTION,
+			'COURSE_PROGRESS': urlsConfig.URLS.DASHBOARD.COURSE_PROGRESS,
+			'COURSE_CONSUMPTION': urlsConfig.URLS.DASHBOARD.COURSE_CONSUMPTION
+		}
+	}
 
-  /**
-   * Function to construct dashboard api url based on identifier and time period
-   */
-  constructDashboardApiUrl(req, dataset: string) {
-    return this.datasetType[dataset] + '/' + req.identifier + '?period=' + req.timePeriod
-  }
+	/**
+	 * Construct download report api url
+	 * 
+	 * @param {object} data    content identifier and time period 
+	 * @param {string} dataset dashboard type creation and consumption
+	 * 
+	 * @return {string} constructed download report url
+	 */
+	constructDownloadReportApiUrl(data, dataset: string) {
+		return this.datasetType[dataset] + '/' + data.identifier + '/export?period=' +
+			data.timePeriod + '&format=csv';
+	}
 
-  /**
-   * Time conversion from second to min(s)
-   */
-  secondToMinConversion(numericData) {
-    let num
-    if (numericData.value < 60) {
-      numericData.value += ' second(s)'
-    } else if (numericData.value >= 60 && numericData.value <= 3600) {
-      num = numericData.value / 60
-      numericData.value = num.toFixed(2) + ' min(s)'
-    } else if (numericData.value >= 3600) {
-      num = numericData.value / 3600
-      numericData.value = num.toFixed(2) + ' hour(s)'
-    } else {
-      return numericData
-    }
+	/**
+	 * Construct dashboard api url
+	 * 
+	 * @param {object} data    identifier and time period
+	 * @param {string} dataset dashboard type creation and consumption
+	 * 
+	 * @return {string} constructed dashboard api url
+	 */
+	constructDashboardApiUrl(data, dataset: string) {
+		return this.datasetType[dataset] + '/' + data.identifier + '?period=' + data.timePeriod
+	}
 
-    return numericData
-  }
+	/**
+	 * Convert second(s) into min(s) or hr(s)
+	 * 
+	 * @param {any} numericData dashboard snapshot numeric data
+	 */
+	secondToMinConversion(numericData: any) {
+		let num
+		if (numericData.value < 60) {
+			numericData.value += ' second(s)'
+		} else if (numericData.value >= 60 && numericData.value <= 3600) {
+			num = numericData.value / 60
+			numericData.value = num.toFixed(2) + ' min(s)'
+		} else if (numericData.value >= 3600) {
+			num = numericData.value / 3600
+			numericData.value = num.toFixed(2) + ' hour(s)'
+		} else {
+			return numericData
+		}
+
+		return numericData
+	}
 }

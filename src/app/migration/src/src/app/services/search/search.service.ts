@@ -7,6 +7,9 @@ import 'rxjs/add/observable/throw';
 import * as  urlConfig from '../../config/url.config.json';
 const urlsConfig = (<any>urlConfig);
 
+/**
+ * Interface
+ */
 interface RequestParam {
 	status?: any;
 	contentType?: any;
@@ -14,23 +17,37 @@ interface RequestParam {
 	orgid?: any;
 }
 
+/**
+ * Service to search content 
+ */
 @Injectable()
 
 /**
- * Service to search content/courses/textbook
+ * @class SearchService
  */
 export class SearchService {
+	/**
+	 * Contains searched content list 
+	 */
 	searchedContentList: any;
+
+	/**
+	 * Contains searched organization list
+	 */
 	searchedOrganisationList: any;
 
 	/**
-	 * Constructor to create object of injected service(s)
+	 * Default method of OrganisationService class
+	 * 
+	 * @param UserService 
+	 * @param ContentService 
 	 */
 	constructor(private UserService: UserService, private ContentService: ContentService) { }
 
 	/**
-	 * Function to search content by user id.
-	 * It takes content status,type,userId as a param and trigger content service to get result 
+	 * Search content by user id.
+	 * 
+	 * @param {requestParam} requestParam api request data
 	 */
 	searchContentByUserId(requestParam: RequestParam) {
 		const option = {
@@ -53,22 +70,25 @@ export class SearchService {
 	}
 
 	/**
-	 * Function to set result of searchContentByUserId()
+	 * Set result of searchContentByUserId()
+	 * 
+	 * @param {any} data api response
 	 */
     public setSearchedContent(data: any): void {
         this.searchedContentList = data;
     }
 
 	/**
-	 * Function to get searched content list
+	 * Get searched content list
 	 */
     public getSearchedContent(): any {
         return this.searchedContentList;
     }
 
 	/**
-	 * Function to get organization details. 
-	 * It takes orgId(s) as param and trigger content service to get organization(s) details
+	 * Get organization details.
+	 * 
+	 * @param {requestParam} requestParam api request data
 	 */
 	getOrganisationDetails(requestParam: RequestParam){
 		const option = {
@@ -86,7 +106,9 @@ export class SearchService {
 	}
 
 	/**
-	 * Function Set serched organization(s) list
+	 * Set serched organization(s) list
+	 * 
+	 * @param {data} data api response
 	 */
     public setOrganisation(data: any): void {
         this.searchedOrganisationList = data;
