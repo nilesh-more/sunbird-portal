@@ -198,10 +198,6 @@ export class CourseConsumptionComponent implements OnInit {
 				if (data.result.count && data.result.content) {
 					this.myCoursesList = data.result.content;
 					this.searchService.setSearchedContent(this.myCoursesList)
-					if (this.identifier) {
-						this.validateIdentifier(this.identifier)
-					}
-
 					if (data.result.content.length === 1) {
 						this.identifier = data.result.content[0].identifier;
 						this.courseName = data.result.content[0].name;
@@ -210,7 +206,10 @@ export class CourseConsumptionComponent implements OnInit {
 						this.isMultipleCourses = true;
 					}
 				}
-				this.showLoader = false
+				this.showLoader = false;
+				if (this.identifier) {
+					this.validateIdentifier(this.identifier)
+				}
 			},
 			err => {
 				this.showError = true

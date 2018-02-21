@@ -43,7 +43,7 @@
         </div>
         <!-- Loader -->
         <div class="twelve wide column margin-top-20" *ngIf="showLoader">
-            <app-loader [data]=''></app-loader>
+            <app-loader></app-loader>
         </div>
         <!-- Select course div -->
         <div class="ui warning message tweleve wide column" *ngIf="myCoursesList && myCoursesList.length > 1 && !showLoader" 
@@ -61,7 +61,7 @@
             </div>
         </div>
         <!-- Actual dashboard data -->
-        <div class="consumption-data-holder" *ngIf="showDashboard" [ngStyle]="{'display':showLoader ? 'none' : '' }">
+        <div class="consumption-data-holder" *ngIf="showDashboard && myCoursesList && myCoursesList.length > 0" [ngStyle]="{'display':showLoader ? 'none' : '' }">
             <div class="ui four cards">
                 <div class="card" *ngFor="let block of blockData">
                     <div class="content center aligned">

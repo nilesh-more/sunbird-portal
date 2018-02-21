@@ -24,7 +24,7 @@ import * as _ from 'lodash';
  * @class OrganisationComponent
  */
 export class OrganisationComponent implements OnInit {
-	
+
 	/**
 	 * Contains time period - last 7days, 14days, and 5weeks
 	 */
@@ -276,7 +276,7 @@ export class OrganisationComponent implements OnInit {
 			user => {
 				if (user && user.userProfile) {
 					orgIds = user.userProfile.organisationIds || [];;
-					this.getOrgDetails(['01229679766115942443', '0123150108807004166'])
+					this.getOrgDetails(orgIds)
 				}
 			},
 			err => {
@@ -317,20 +317,21 @@ export class OrganisationComponent implements OnInit {
 		if (orgIds && orgIds.length) {
 			this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
 				data => {
-					this.myOrganizations = data.result.response.content;
-					this.searchService.setOrganisation(this.myOrganizations);
-					this.isMultipleOrgs = orgIds.length > 1 ? true : false;
+					if (data.result.response.content) {
+						this.myOrganizations = data.result.response.content;
+						this.searchService.setOrganisation(this.myOrganizations);
+						this.isMultipleOrgs = orgIds.length > 1 ? true : false;
+
+						if (this.myOrganizations.length === 1) {
+							this.identifier = this.myOrganizations[0].identifier;
+							this.route.navigate(['migration/dashboard/organization', this.datasetType, this.identifier, this.timePeriod])
+						}
+					}
 
 					if (this.identifier) {
 						this.isMultipleOrgs = false;
 						this.validateIdentifier(this.identifier)
 					}
-
-					if (this.myOrganizations.length === 1) {
-						this.identifier = this.myOrganizations[0].identifier;
-						this.route.navigate(['migration/dashboard/organization', this.datasetType, this.identifier, this.timePeriod])
-					}
-
 					this.showLoader = false;
 				},
 				err => {
