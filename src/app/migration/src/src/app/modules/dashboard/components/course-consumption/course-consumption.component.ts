@@ -110,7 +110,7 @@ export class CourseConsumptionComponent implements OnInit {
 		private activatedRoute: ActivatedRoute,
 		private searchService: SearchService,
 		private rendererService: RendererService,
-		public resourceService: ResourceService) {
+		private resourceService: ResourceService) {
 		this.activatedRoute.params.subscribe(params => {
 			// Get content
 			let myCourses = this.searchService.getSearchedContent()
@@ -134,8 +134,8 @@ export class CourseConsumptionComponent implements OnInit {
 	/**
 	 * Function to get dashboard data for given time period and course unique identifier
 	 * 
-	 * @param {string}     timePeriod  timePeriod: last 7d/14d/5w
-	 * @param {identifier} identifier  course unique identifier
+	 * @param {string} timePeriod  timePeriod: last 7d/14d/5w
+	 * @param {string} identifier  course unique identifier
 	 * 
 	 * @example getDashboardData(7d, do_xxxxx)
 	 */
@@ -185,7 +185,7 @@ export class CourseConsumptionComponent implements OnInit {
 	}
 
 	/**
-	 * Function to get published course(s) of logged-in user
+	 * Get published course(s) of logged-in user
 	 */
 	getMyContent() {
 		const searchParams = {
@@ -252,6 +252,11 @@ export class CourseConsumptionComponent implements OnInit {
 		step === 'next' ? this.showGraph++ : this.showGraph--
 	}
 
+	/**
+	 * Angular life cycle hook
+	 * 
+	 * It indicates that angular is done creating the component
+	 */
 	ngOnInit() {
 	}
 }

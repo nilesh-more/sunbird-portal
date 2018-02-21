@@ -10,7 +10,7 @@ import { ResourceService } from './../../../../services/resource/resource.servic
 import * as _ from 'lodash';
 
 /**
- * The Organization component
+ * The organization component
  * 
  * Display organization creation, consumption dashboard data
  */
@@ -110,7 +110,7 @@ export class OrganisationComponent implements OnInit {
 	/**
 	 * Default method of OrganisationService class
 	 * 
-	 * @param downloadService 
+	 * @param downloadService
 	 * @param route 
 	 * @param activatedRoute 
 	 * @param userService 
@@ -127,7 +127,7 @@ export class OrganisationComponent implements OnInit {
 		private searchService: SearchService,
 		private rendererService: RendererService,
 		private orgService: OrganisationService,
-		public resourceService: ResourceService) {
+		private resourceService: ResourceService) {
 		this.activatedRoute.params.subscribe(params => {
 			// Get already searched org list
 			let orgArray = this.searchService.getOrganisation();
@@ -270,13 +270,12 @@ export class OrganisationComponent implements OnInit {
 	 * Get logged user organization ids list
 	 */
 	getMyOrganisations() {
-		let orgIds = []
-		// Get logged in user organization id's
 		this.userService.userData$.subscribe(
 			user => {
-				if (user && user.userProfile) {
-					orgIds = user.userProfile.organisationIds || [];;
-					this.getOrgDetails(orgIds)
+				if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
+					this.getOrgDetails(user.userProfile.organisationIds)
+				} else {
+					this.validateIdentifier(this.identifier)
 				}
 			},
 			err => {
@@ -309,7 +308,7 @@ export class OrganisationComponent implements OnInit {
 	/**
 	 * To get organization details.
 	 * 
-	 * @param {Array<any>} orgIds orgids list
+	 * @param {any} orgIds orgids list
 	 * 
 	 * @example getOrgDetails([do_xxxxx])
 	 */
