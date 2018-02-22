@@ -5,19 +5,14 @@ import { FormsModule } from '@angular/forms';
 // Modules
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
-import { AppCommonModule } from './../common/common.module';
-// Components
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { CourseConsumptionComponent } from './components/course-consumption/course-consumption.component';
-import { OrganisationComponent } from './components/organization/organization.component';
-// Services
+
+// Custome component(s) and services
+import { OrganisationComponent, CourseConsumptionComponent,
+  CourseConsumptionService, DashboardUtilsService, OrganisationService,
+  RendererService, LineChartService, DownloadService, AppCommonModule } from './index';
+
 import { SearchService } from './../../services/search/search.service';
-import { DashboardUtilsService } from './services/dashboard-utils.service';
-import { RendererService } from './services/renderer/renderer.service';
-import { LineChartService } from './services/renderer/graphs/line-chart.service';
-import { CourseConsumptionService } from './services/course/course-consumption.service';
-import { OrganisationService } from './services/organization/organization.service';
-import { DownloadService } from './services/download/download.service';
 
 @NgModule({
   imports: [
@@ -29,12 +24,12 @@ import { DownloadService } from './services/download/download.service';
     AppCommonModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent],
-  providers: [ 
-    RendererService, 
-    DashboardUtilsService, 
-    SearchService, 
-    LineChartService, 
-    CourseConsumptionService, 
+  providers: [
+    RendererService,
+    DashboardUtilsService,
+    SearchService,
+    LineChartService,
+    CourseConsumptionService,
     OrganisationService, DownloadService]
 })
 export class DashboardModule { }

@@ -1,6 +1,5 @@
 import { LineChartService } from './graphs/line-chart.service';
 import { TestBed, inject } from '@angular/core/testing';
-
 import { RendererService } from './renderer.service';
 
 describe('RendererService', () => {

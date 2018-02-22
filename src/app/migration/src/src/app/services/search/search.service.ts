@@ -11,14 +11,14 @@ const urlsConfig = (<any>urlConfig);
  * Interface
  */
 interface RequestParam {
-	status?: any;
-	contentType?: any;
-	params?: any;
-	orgid?: any;
+  status?: any;
+  contentType?: any;
+  params?: any;
+  orgid?: any;
 }
 
 /**
- * Service to search content 
+ * Service to search content
  */
 @Injectable()
 
@@ -26,98 +26,98 @@ interface RequestParam {
  * @class SearchService
  */
 export class SearchService {
-	/**
-	 * Contains searched content list 
-	 */
-	searchedContentList: any;
+  /**
+   * Contains searched content list
+   */
+  searchedContentList: any;
 
-	/**
+  /**
 	 * Contains searched organization list
 	 */
-	searchedOrganisationList: any;
+  searchedOrganisationList: any;
 
-	/**
+  /**
 	 * Default method of OrganisationService class
-	 * 
-	 * @param UserService 
-	 * @param ContentService 
+	 *
+	 * @param UserService
+	 * @param ContentService
 	 */
-	constructor(private UserService: UserService, private ContentService: ContentService) { }
+  constructor(private userService: UserService, private contentService: ContentService) { }
 
-	/**
+  /**
 	 * Search content by user id.
-	 * 
+	 *
 	 * @param {requestParam} requestParam api request data
 	 */
-	searchContentByUserId(requestParam: RequestParam) {
-		const option = {
-			url: urlsConfig.URLS.COMPOSITE.SEARCH,
-			data: {
-				request: {
-					filters: {
-						status: requestParam.status || ['Live'],
-						createdBy: requestParam.params.userId ? requestParam.params.userId : this.UserService.userid,
-						contentType: requestParam.contentType || ['Course']
-					},
-					sort_by: {
-						lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
-					}
-				}
-			}
-		};
+  searchContentByUserId(requestParam: RequestParam) {
+    const option = {
+      url: urlsConfig.URLS.COMPOSITE.SEARCH,
+      data: {
+        request: {
+          filters: {
+            status: requestParam.status || ['Live'],
+            createdBy: requestParam.params.userId ? requestParam.params.userId : this.userService.userid,
+            contentType: requestParam.contentType || ['Course']
+          },
+          sort_by: {
+            lastUpdatedOn: requestParam.params.lastUpdatedOn || 'desc'
+          }
+        }
+      }
+    };
 
-		return this.ContentService.post(option);
-	}
+    return this.contentService.post(option);
+  }
 
-	/**
+  /**
 	 * Set result of searchContentByUserId()
-	 * 
+	 *
 	 * @param {any} data api response
 	 */
-    public setSearchedContent(data: any): void {
-        this.searchedContentList = data;
-    }
+  public setSearchedContent(data: any): void {
+    this.searchedContentList = data;
+  }
 
-	/**
+  /**
 	 * Get searched content list
 	 */
-    public getSearchedContent(): any {
-        return this.searchedContentList;
-    }
+  public getSearchedContent(): any {
+    return this.searchedContentList;
+  }
 
-	/**
+  /**
 	 * Get organization details.
-	 * 
+	 *
 	 * @param {requestParam} requestParam api request data
 	 */
-	getOrganisationDetails(requestParam: RequestParam){
-		const option = {
-			url: urlsConfig.URLS.ADMIN.ORG_SEARCH,
-			data: {
-				request: {
-					filters: {
-						id: requestParam.orgid,
-					}
-				}
-			}
-		};
+  getOrganisationDetails(requestParam: RequestParam) {
+    const option = {
+      url: urlsConfig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: {
+          filters: {
+            id: requestParam.orgid,
+          }
+        }
+      }
+    };
 
-		return this.ContentService.post(option);
-	}
+    return this.contentService.post(option);
+  }
 
-	/**
+  /**
 	 * Set serched organization(s) list
-	 * 
+	 *
 	 * @param {data} data api response
 	 */
-    public setOrganisation(data: any): void {
-        this.searchedOrganisationList = data;
-    }
+  public setOrganisation(data: any): void {
+    this.searchedOrganisationList = data;
+  }
 
-	/**
+  /**
 	 * Get searched organization list
 	 */
-    public getOrganisation(): any {
-        return this.searchedOrganisationList;
-    }
+  public getOrganisation(): any {
+    return this.searchedOrganisationList;
+  }
 }

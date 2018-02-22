@@ -13,8 +13,8 @@ interface RequestParam {
 
 /**
  * Service to download dashboard report
- * 
- * It responsible to make http call 
+ *
+ * It responsible to make http call
  */
 @Injectable()
 
@@ -25,22 +25,22 @@ export class DownloadService {
 
   /**
 	 * Default method of DownloadService class
-   * 
-   * @param LearnerService 
-   * @param DashboardUtil 
+   *
+   * @param learnerService
+   * @param dashboardUtil
    */
-  constructor(private LearnerService: LearnerService, private DashboardUtil: DashboardUtilsService) { }
+  constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService) { }
 
-	/**
+  /**
 	 * Download dashboard report
-	 * 
+	 *
 	 * @param {object} requestParam identifier and time period
 	 */
   getReport(requestParam: RequestParam) {
     const requestBody = {
-      url: this.DashboardUtil.constructDownloadReportApiUrl(requestParam.data, requestParam.dataset)
+      url: this.dashboardUtil.constructDownloadReportApiUrl(requestParam.data, requestParam.dataset)
     };
 
-    return this.LearnerService.get(requestBody)
+    return this.learnerService.get(requestBody);
   }
 }
