@@ -31,7 +31,6 @@
     "core-js": "^2.4.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
-    "ng2-breadcrumbs": "^0.1.281",
     "ng2-charts": "^1.6.0",
     "ng2-semantic-ui": "^0.9.6",
     "rxjs": "^5.5.2",
