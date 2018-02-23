@@ -50,7 +50,7 @@
                 </span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
-        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
             <div class="header">
                 {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselected}}
             </div>
@@ -60,13 +60,6 @@
         <div *ngIf="showLoader" class="margin-top-20">
             <app-loader></app-loader>
         </div>
-        <div *ngIf="showError" class="margin-top-20">
-            <div class="ui negative message">
-                <div class="header">Something went wrong,</div>
-                <p>{{resourceService?.messages?.fmsg?.m0075}}</p>
-            </div>
-        </div>
-
         <div *ngIf="showDashboard && myOrganizations && myOrganizations.length > 0" [ngStyle]="{'display': showDashboard === true ? 'block' : 'none' }">
             <div class="consumption-data-holder margin-top-20">
                 <div class="ui three cards">

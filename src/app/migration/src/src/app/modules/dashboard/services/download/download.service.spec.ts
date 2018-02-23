@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
-import { DownloadService, LearnerService, DashboardUtilsService } from './../';
+import { DownloadService, DashboardUtilsService } from './../';
+import { LearnerService } from './../../../../services';
 
 describe('DownloadService', () => {
   beforeEach(() => {

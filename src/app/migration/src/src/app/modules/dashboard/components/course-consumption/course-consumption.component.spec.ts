@@ -7,15 +7,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
+import { Observable } from 'rxjs/Rx';
+import * as _ from 'lodash';
 // SB components and service
 import { CourseConsumptionComponent, DashboardUtilsService, LineChartService,
   CourseConsumptionService, RendererService, AppCommonModule
 } from './../../index';
-import { ResourceService, UserService, SearchService, ContentService } from './../../../../services';
-
-
-import { Observable } from 'rxjs/Observable';
-import * as _ from 'lodash';
+import { ResourceService, UserService, SearchService, ContentService, LearnerService } from './../../../../services';
 
 describe('CourseConsumptionComponent', () => {
   let component: CourseConsumptionComponent;

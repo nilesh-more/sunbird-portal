@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as  urlConfig from '../../../config/url.config.json';
 const urlsConfig = (<any>urlConfig);
+import * as moment from 'moment';
 
 /**
  * Dashboard utils service
@@ -62,15 +63,13 @@ export class DashboardUtilsService {
 	 * @param {any} numericData dashboard snapshot numeric data
 	 */
   secondToMinConversion(numericData: any) {
-    let num;
+    numericData.value = +numericData.value;
     if (numericData.value < 60) {
-      numericData.value += ' second(s)';
+      numericData.value = Math.floor(moment.duration(numericData.value, 'seconds').seconds()) + ' second(s)';
     } else if (numericData.value >= 60 && numericData.value <= 3600) {
-      num = numericData.value / 60;
-      numericData.value = num.toFixed(2) + ' min(s)';
+      numericData.value = Math.floor(moment.duration(numericData.value, 'seconds').minutes()) + ' min(s)';
     } else if (numericData.value >= 3600) {
-      num = numericData.value / 3600;
-      numericData.value = num.toFixed(2) + ' hour(s)';
+      numericData.value = Math.floor(moment.duration(numericData.value, 'seconds').asHours()) + ' hour(s)';
     } else {
       return numericData;
     }

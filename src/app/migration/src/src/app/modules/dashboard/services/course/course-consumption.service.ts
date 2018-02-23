@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { LearnerService } from './../../../../services/learner/learner.service';
-import { DashboardUtilsService } from './../dashboard-utils.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
+import { LearnerService } from './../../../../services/learner/learner.service';
+import { DashboardUtilsService } from './../dashboard-utils.service';
 
 /**
  * Interface to hold api request data and dataset

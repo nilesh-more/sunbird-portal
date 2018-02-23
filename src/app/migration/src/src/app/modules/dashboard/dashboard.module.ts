@@ -6,13 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { SuiModule } from 'ng2-semantic-ui';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-
 // Custome component(s) and services
 import { OrganisationComponent, CourseConsumptionComponent,
   CourseConsumptionService, DashboardUtilsService, OrganisationService,
   RendererService, LineChartService, DownloadService, AppCommonModule } from './index';
-
-import { SearchService } from './../../services/search/search.service';
+import { SearchService } from './../../services/';
 
 @NgModule({
   imports: [

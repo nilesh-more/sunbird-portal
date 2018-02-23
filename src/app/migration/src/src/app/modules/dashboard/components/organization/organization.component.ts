@@ -280,11 +280,10 @@ export class OrganisationComponent implements OnInit {
   getMyOrganisations() {
     this.userService.userData$.subscribe(
       user => {
-        this.getOrgDetails(['01229679766115942443', '0123150108807004166', '01230801634741452824']);
         if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
           this.getOrgDetails(user.userProfile.organisationIds);
         } else {
-          this.validateIdentifier(this.identifier);
+          // this.validateIdentifier(this.identifier);
         }
       },
       err => {

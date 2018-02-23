@@ -30,7 +30,7 @@
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'adminDashboard' href="/private/index#!/org-dashboard">{{resourceService.frmelmnts?.lnk.dashboard}}</a>
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'announcementRole' href="/private/index#!/announcement/outbox/list/1" >{{resourceService.frmelmnts?.lnk.announcement}}</a>
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'workSpaceRole' href="/private/index#!/workspace/content/create" >{{resourceService.frmelmnts?.lnk.workSpace}}</a>
-                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'myActivityRole' href="/migration/course-creator-dashboard" >{{resourceService.frmelmnts?.lnk.myactivity}}</a>
+                <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'myActivityRole' [routerLink]="['/migration/my-activity']" >{{resourceService.frmelmnts?.lnk.myactivity}}</a>
                 <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]= 'orgSetupRole' href="/private/index#!/course-creator-dashboard" >Setup</a>
                 <a class="item" href="#" (click)='logout()'>{{resourceService.frmelmnts?.lnk?.logout}}</a>
             </div>

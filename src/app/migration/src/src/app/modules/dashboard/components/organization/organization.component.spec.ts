@@ -13,7 +13,7 @@ import {
   OrganisationComponent, OrganisationService, DashboardUtilsService, RendererService,
   LineChartService, DownloadService, AppCommonModule
 } from './../../index';
-import { ResourceService, UserService, SearchService, ContentService } from './../../../../services';
+import { ResourceService, UserService, SearchService, ContentService, LearnerService } from './../../../../services';
 
 describe('OrganisationComponent', () => {
   let component: OrganisationComponent;
