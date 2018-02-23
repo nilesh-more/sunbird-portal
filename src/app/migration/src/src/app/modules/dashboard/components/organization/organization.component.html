@@ -50,7 +50,7 @@
                 </span>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
         </div>
-        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
+        <div class="ui warning message tweleve wide column margin-top-20" *ngIf="!identifier && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
             <div class="header">
                 {{resourceService?.frmelmnts?.lbl?.dashboardnoorgselected}}
             </div>
