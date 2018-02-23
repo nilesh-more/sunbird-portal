@@ -75,7 +75,7 @@
                 <div class="column">
                     <div class="regular slider padding-top-30 course-graph-holder">
                         <div *ngFor="let block of graphData;let graphIndex = index;">
-                            <div [ngStyle]="{'display':showGraph === graphIndex ? '' : 'none' }">
+                            <div [ngStyle]="{'display':showGraph === graphIndex ? 'block' : 'none' }">
                                 <div class="ui segment">
                                     <canvas baseChart width="300" height="90" [datasets]="block.yaxesData" [labels]="block.xaxesData" [options]="block.chartOptions"
                                         [colors]="block.chartColors" [legend]="true" [chartType]="chartType">

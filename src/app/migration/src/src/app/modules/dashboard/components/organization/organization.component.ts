@@ -283,7 +283,7 @@ export class OrganisationComponent implements OnInit {
         if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
           this.getOrgDetails(user.userProfile.organisationIds);
         } else {
-          // this.validateIdentifier(this.identifier);
+          this.route.navigate(['migration/groups']);
         }
       },
       err => {
