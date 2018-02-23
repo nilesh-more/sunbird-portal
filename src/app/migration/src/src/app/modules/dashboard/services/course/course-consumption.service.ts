@@ -27,28 +27,28 @@ interface RequestParam {
 export class CourseConsumptionService {
 
   /**
-	 * Contains parsed snapshot data
-	 *
-	 * Snapshot data - authors and reviewers count
-	 */
+   * Contains parsed snapshot data
+   *
+   * Snapshot data - authors and reviewers count
+   */
   blockData: any;
 
   /**
-	 * Constructor - default method of CourseConsumptionService class
-	 *
-	 * @param learnerService
-	 * @param dashboardUtil
-	 */
+   * Constructor - default method of CourseConsumptionService class
+   *
+   * @param learnerService
+   * @param dashboardUtil
+   */
   constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService) {
   }
 
   /**
-	 * To get course consumption data by making api call
-	 *
-	 * @param {object} requestParam identifier and time period
-	 *
-	 * @return {object} api response
-	 */
+   * To get course consumption data by making api call
+   *
+   * @param {object} requestParam identifier and time period
+   *
+   * @return {object} api response
+   */
   getDashboardData(requestParam: RequestParam) {
     const paramOptions = {
       url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, 'COURSE_CONSUMPTION')
@@ -64,12 +64,12 @@ export class CourseConsumptionService {
   }
 
   /**
-	 * Converts course consumption time spent count and completion count from second to min(s) or hr(s)
-	 *
-	 * @param {any} data api response
-	 *
-	 * @return {object} parsed api response
-	 */
+   * Converts course consumption time spent count and completion count from second to min(s) or hr(s)
+   *
+   * @param {any} data api response
+   *
+   * @return {object} parsed api response
+   */
   parseApiResponse(data: any) {
     this.blockData = [];
     _.forEach(data.result.snapshot, (numericData, key) => {

@@ -24,99 +24,99 @@ import { ResourceService, UserService, SearchService } from './../../../../servi
 export class OrganisationComponent implements OnInit {
 
   /**
-	 * Contains time period - last 7days, 14days, and 5weeks
-	 */
+   * Contains time period - last 7days, 14days, and 5weeks
+   */
   timePeriod = '7d';
 
   /**
-	 * Contains selected course identifier
-	 *
-	 * Identifier is needed to construct dashboard api url
-	 */
+   * Contains selected course identifier
+   *
+   * Identifier is needed to construct dashboard api url
+   */
   identifier = '';
 
   /**
-	 * Dataset type
-	 */
+   * Dataset type
+   */
   datasetType = 'creation';
 
   /**
-	 * Contains course consumption line chart data
-	 */
+   * Contains course consumption line chart data
+   */
   graphData: any;
 
   /**
-	 * Contains dashboard block data
-	 */
+   * Contains dashboard block data
+   */
   blockData: Array<any> = [];
 
   /**
-	 * Contains Graph index to switch between two graphs
-	 */
+   * Contains Graph index to switch between two graphs
+   */
   showGraph = 0;
 
   /**
-	 * Organization list
-	 */
+   * Organization list
+   */
   myOrganizations: Array<any> = [];
 
   /**
-	 * Selected organization
-	 */
+   * Selected organization
+   */
   SelectedOrg: string;
 
   /**
-	 * To display graph legend
-	 */
+   * To display graph legend
+   */
   lineChartLegend = true;
 
   /**
-	 * Chart type
-	 */
+   * Chart type
+   */
   chartType = 'line';
 
   /**
-	 * To show / hide loader
-	 */
+   * To show / hide loader
+   */
   showLoader = true;
 
   /**
-	 * To show error
-	 */
+   * To show error
+   */
   showError = false;
 
   /**
-	 * To show dashboard canvas
-	 */
+   * To show dashboard canvas
+   */
   showDashboard = false;
 
   /**
-	 * To show / hide organization dropdwon
-	 */
+   * To show / hide organization dropdwon
+   */
   isMultipleOrgs = false;
 
   /**
-	 * Disabled class
-	 */
+   * Disabled class
+   */
   disabledClass = false;
 
   /**
-	 * To show download successful confirmation modal
-	 */
+   * To show download successful confirmation modal
+   */
   showDownloadSuccessModal = false;
 
   /**
-	 * Default method of OrganisationService class
-	 *
-	 * @param downloadService
-	 * @param route
-	 * @param activatedRoute
-	 * @param userService
-	 * @param searchService
-	 * @param rendererService
-	 * @param orgService
-	 * @param resourceService
-	 */
+   * Default method of OrganisationService class
+   *
+   * @param downloadService
+   * @param route
+   * @param activatedRoute
+   * @param userService
+   * @param searchService
+   * @param rendererService
+   * @param orgService
+   * @param resourceService
+   */
   constructor(
     private downloadService: DownloadService,
     private route: Router,
@@ -147,13 +147,13 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * Function to get dashboard data for given time period and organization identifier
-	 *
-	 * @param {string} timePeriod timePeriod: last 7d/14d/5w
-	 * @param {string} identifier organization unique identifier
-	 *
-	 * @example getDashboardData(7d, do_xxxxx)
-	 */
+   * Function to get dashboard data for given time period and organization identifier
+   *
+   * @param {string} timePeriod timePeriod: last 7d/14d/5w
+   * @param {string} identifier organization unique identifier
+   *
+   * @example getDashboardData(7d, do_xxxxx)
+   */
   getDashboardData(timePeriod: string, identifier: string) {
     this.showLoader = true;
     this.isMultipleOrgs = false;
@@ -183,14 +183,14 @@ export class OrganisationComponent implements OnInit {
 
   /**
    * This function is used to validate given organization identifier.
-	 *
-	 * User gets redirect to home page if url contains invalid identifier or
-	 * valid identifier but logged-in user is not a member of given identifier
-	 *
-	 * @param {string} identifier organization unique identifier
-	 *
-	 * @example validateIdentifier(do_xxxxx)
-	 */
+   *
+   * User gets redirect to home page if url contains invalid identifier or
+   * valid identifier but logged-in user is not a member of given identifier
+   *
+   * @param {string} identifier organization unique identifier
+   *
+   * @example validateIdentifier(do_xxxxx)
+   */
   validateIdentifier(identifier: string) {
     if (identifier) {
       const selectedOrg = _.find(this.myOrganizations, ['identifier', identifier]);
@@ -204,14 +204,14 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * Change time period filter.
-	 *
-	 * As of now dashboard supports only to show last 7 days, 14 days, and 5 weeks data.
-	 *
-	 * @param {string} timePeriod timePeriod: last 7d / 14d / 5w
-	 *
-	 * @example onAfterFilterChange(7d)
-	 */
+   * Change time period filter.
+   *
+   * As of now dashboard supports only to show last 7 days, 14 days, and 5 weeks data.
+   *
+   * @param {string} timePeriod timePeriod: last 7d / 14d / 5w
+   *
+   * @example onAfterFilterChange(7d)
+   */
   onAfterFilterChange(timePeriod: string) {
     if (this.timePeriod === timePeriod) {
       return false;
@@ -221,39 +221,39 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * To change dashboard type
-	 *
-	 * @param {string} datasetType creation and consumption
-	 *
-	 * @example onAfterDatasetChange(creation)
-	 */
+   * To change dashboard type
+   *
+   * @param {string} datasetType creation and consumption
+   *
+   * @example onAfterDatasetChange(creation)
+   */
   onAfterDatasetChange(datasetType: string) {
     if (this.datasetType === datasetType) {
-       return false;
+      return false;
     }
 
     this.route.navigate(['migration/dashboard/organization', datasetType, this.identifier, this.timePeriod]);
   }
 
   /**
-	 * To change graph - from Number of user per day to Time spent by day and vice versa
-	 *
-	 * @param {string} step next / previous
-	 *
-	 * @example graphNavigation(next)
-	 */
+   * To change graph - from Number of user per day to Time spent by day and vice versa
+   *
+   * @param {string} step next / previous
+   *
+   * @example graphNavigation(next)
+   */
   graphNavigation(step: string) {
     step === 'next' ? this.showGraph++ : this.showGraph--;
   }
 
   /**
-	 * To change organization selection
-	 *
-	 * @param {string} identifier organization identifier
-	 * @param {string} orgName    organization name
-	 *
-	 * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization)
-	 */
+   * To change organization selection
+   *
+   * @param {string} identifier organization identifier
+   * @param {string} orgName    organization name
+   *
+   * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization)
+   */
   onAfterOrgChange(identifier: string, orgName: string) {
     if (this.identifier === identifier) {
       return false;
@@ -263,20 +263,20 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * To set error
-	 *
-	 * @param {boolean} flag show error
-	 *
-	 * @example setError(true)
-	 */
+   * To set error
+   *
+   * @param {boolean} flag show error
+   *
+   * @example setError(true)
+   */
   setError(flag: boolean) {
     this.showError = flag;
     this.showLoader = false;
   }
 
   /**
-	 * Get logged user organization ids list
-	 */
+   * Get logged user organization ids list
+   */
   getMyOrganisations() {
     this.userService.userData$.subscribe(
       user => {
@@ -293,8 +293,8 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * Download dashboard report
-	 */
+   * Download dashboard report
+   */
   downloadReport() {
     this.disabledClass = true;
     const option = {
@@ -314,12 +314,12 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * To get organization details.
-	 *
-	 * @param {any} orgIds orgids list
-	 *
-	 * @example getOrgDetails([do_xxxxx])
-	 */
+   * To get organization details.
+   *
+   * @param {any} orgIds orgids list
+   *
+   * @example getOrgDetails([do_xxxxx])
+   */
   getOrgDetails(orgIds: Array<any>) {
     if (orgIds && orgIds.length) {
       this.searchService.getOrganisationDetails({ orgid: orgIds }).subscribe(
@@ -349,10 +349,10 @@ export class OrganisationComponent implements OnInit {
   }
 
   /**
-	 * Angular life cycle hook
-	 *
-	 * It indicates that angular is done creating the component
-	 */
+   * Angular life cycle hook
+   *
+   * It indicates that angular is done creating the component
+   */
   ngOnInit() {
   }
 }

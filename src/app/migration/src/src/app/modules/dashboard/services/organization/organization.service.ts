@@ -7,8 +7,6 @@ import { LearnerService } from './../../../../services/learner/learner.service';
 import { DashboardUtilsService } from './../dashboard-utils.service';
 import * as _ from 'lodash';
 
-// import { LearnerService } from './../..';
-
 /**
  * Interface to hold api request data and dataset
  */
@@ -30,30 +28,30 @@ interface RequestParam {
 export class OrganisationService {
 
   /**
-	 * Contains content status
-	 *
-	 * Used to construct readable graph legend
-	 */
+   * Contains content status
+   *
+   * Used to construct readable graph legend
+   */
   contentStatus: object = {};
 
   /**
-	 * Contains graph series data
-	 */
+   * Contains graph series data
+   */
   graphSeries: Array<any> = [];
 
   /**
-	 * Contains parsed snapshot data
-	 *
-	 * Snapshot data - authors and reviewers count
-	 */
+   * Contains parsed snapshot data
+   *
+   * Snapshot data - authors and reviewers count
+   */
   blockData: Array<any> = [];
 
   /**
-	 * Default method of OrganisationService class
-	 *
-	 * @param learnerService
-	 * @param DashboardUtil
-	 */
+   * Default method of OrganisationService class
+   *
+   * @param learnerService
+   * @param DashboardUtil
+   */
   constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService) {
     this.contentStatus = {
       'org.creation.content[@status=published].count': ' LIVE',
@@ -63,12 +61,12 @@ export class OrganisationService {
   }
 
   /**
-	 * To get organization creation and consumption data by making api call
-	 *
-	 * @param {object} requestParam identifier, time period, and dataset type
-	 *
-	 * @return {object} api response
-	 */
+   * To get organization creation and consumption data by making api call
+   *
+   * @param {object} requestParam identifier, time period, and dataset type
+   *
+   * @return {object} api response
+   */
   getDashboardData(requestParam: RequestParam) {
     const paramOptions = {
       url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, requestParam.dataset)
@@ -88,13 +86,13 @@ export class OrganisationService {
   }
 
   /**
-	 * Converts org consumption time-spent count and completion count from second to min(s) or hr(s)
-	 *
-	 * @param {any}    data    identifier and time period
-	 * @param {string} dataset dataset type creation, consumption
-	 *
-	 * @return {object} api response
-	 */
+   * Converts org consumption time-spent count and completion count from second to min(s) or hr(s)
+   *
+   * @param {any}    data    identifier and time period
+   * @param {string} dataset dataset type creation, consumption
+   *
+   * @return {object} api response
+   */
   parseApiResponse(data: any, dataset: string) {
     this.graphSeries = [];
     this.blockData = [];

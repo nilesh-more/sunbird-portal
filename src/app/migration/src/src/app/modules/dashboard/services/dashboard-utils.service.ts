@@ -16,13 +16,13 @@ import * as moment from 'moment';
 export class DashboardUtilsService {
 
   /**
-	 * Dataset types to hold course and organization api urls
-	 */
+   * Dataset types to hold course and organization api urls
+   */
   datasetType: object = {};
 
   /**
-	 * Default method of DashboardUtilsService class
-	 */
+   * Default method of DashboardUtilsService class
+   */
   constructor() {
     this.datasetType = {
       'ORG_CREATION': urlsConfig.URLS.DASHBOARD.ORG_CREATION,
@@ -33,35 +33,35 @@ export class DashboardUtilsService {
   }
 
   /**
-	 * Construct download report api url
-	 *
-	 * @param {object} data    content identifier and time period
-	 * @param {string} dataset dashboard type creation and consumption
-	 *
-	 * @return {string} constructed download report url
-	 */
+   * Construct download report api url
+   *
+   * @param {object} data    content identifier and time period
+   * @param {string} dataset dashboard type creation and consumption
+   *
+   * @return {string} constructed download report url
+   */
   constructDownloadReportApiUrl(data, dataset: string) {
     return this.datasetType[dataset] + '/' + data.identifier + '/export?period=' +
       data.timePeriod + '&format=csv';
   }
 
   /**
-	 * Construct dashboard api url
-	 *
-	 * @param {object} data    identifier and time period
-	 * @param {string} dataset dashboard type creation and consumption
-	 *
-	 * @return {string} constructed dashboard api url
-	 */
+   * Construct dashboard api url
+   *
+   * @param {object} data    identifier and time period
+   * @param {string} dataset dashboard type creation and consumption
+   *
+   * @return {string} constructed dashboard api url
+   */
   constructDashboardApiUrl(data, dataset: string) {
     return this.datasetType[dataset] + '/' + data.identifier + '?period=' + data.timePeriod;
   }
 
   /**
-	 * Convert second(s) into min(s) or hr(s)
-	 *
-	 * @param {any} numericData dashboard snapshot numeric data
-	 */
+   * Convert second(s) into min(s) or hr(s)
+   *
+   * @param {any} numericData dashboard snapshot numeric data
+   */
   secondToMinConversion(numericData: any) {
     numericData.value = +numericData.value;
     if (numericData.value < 60) {

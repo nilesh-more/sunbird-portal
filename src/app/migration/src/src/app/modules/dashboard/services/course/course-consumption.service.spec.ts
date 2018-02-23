@@ -7,7 +7,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Rx';
 // Import service(s)
-// import { DashboardUtilsService } from './../dashboard-utils.service';
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { CourseConsumptionService, DashboardUtilsService } from './..';
 

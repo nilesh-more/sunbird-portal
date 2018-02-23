@@ -24,7 +24,7 @@ interface RequestParam {
 export class DownloadService {
 
   /**
-	 * Default method of DownloadService class
+   * Default method of DownloadService class
    *
    * @param learnerService
    * @param dashboardUtil
@@ -32,10 +32,10 @@ export class DownloadService {
   constructor(private learnerService: LearnerService, private dashboardUtil: DashboardUtilsService) { }
 
   /**
-	 * Download dashboard report
-	 *
-	 * @param {object} requestParam identifier and time period
-	 */
+   * Download dashboard report
+   *
+   * @param {object} requestParam identifier and time period
+   */
   getReport(requestParam: RequestParam) {
     const requestBody = {
       url: this.dashboardUtil.constructDownloadReportApiUrl(requestParam.data, requestParam.dataset)
