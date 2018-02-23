@@ -21,89 +21,89 @@ import { ResourceService, UserService, SearchService } from './../../../../servi
 export class CourseConsumptionComponent implements OnInit {
 
   /**
-	 * Contains time period - last 7days, 14days, and 5weeks
-	 */
+   * Contains time period - last 7days, 14days, and 5weeks
+   */
   timePeriod = '7d';
 
   /**
-	 * Contains selected course identifier
-	 *
-	 * Identifier is needed to construct dashboard api url
-	 */
+   * Contains selected course identifier
+   *
+   * Identifier is needed to construct dashboard api url
+   */
   identifier = '';
 
   /**
-	 * Contains list of published course(s) of logged-in user
-	 */
+   * Contains list of published course(s) of logged-in user
+   */
   myCoursesList: Array<any> = [];
 
   /**
-	 * Contains course name of selected course
-	 */
+   * Contains course name of selected course
+   */
   courseName = '';
 
   /**
-	 * Selected course details
-	 */
+   * Selected course details
+   */
   selectedCourse: any;
 
   /**
-	 * Contains course consumption line chart data
-	 */
+   * Contains course consumption line chart data
+   */
   graphData: any;
 
   /**
-	 * Contains dashboard block data
-	 */
+   * Contains dashboard block data
+   */
   blockData: Array<any> = [];
 
   /**
-	 * Contains Graph index to switch between two graphs
-	 */
+   * Contains Graph index to switch between two graphs
+   */
   showGraph = 0;
 
   /**
-	 * To show / hide loader
-	 */
+   * To show / hide loader
+   */
   showLoader = true;
 
   /**
-	 * To show error
-	 */
+   * To show error
+   */
   showError = false;
 
   /**
-	 * Contains boolean value to hide / show course selection dropdown
-	 */
+   * Contains boolean value to hide / show course selection dropdown
+   */
   isMultipleCourses = false;
 
   /**
-	 * To display graph legend
-	 */
+   * To display graph legend
+   */
   chartLegend = true;
 
   /**
-	 * Chart type
-	 */
+   * Chart type
+   */
   chartType = 'line';
 
   /**
-	 * To hide show graph canvas
-	 */
+   * To hide show graph canvas
+   */
   showDashboard = false;
 
   /**
-	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of CourseConsumptionComponent class
-	 *
-	 * @param route
-	 * @param consumptionService
-	 * @param activatedRoute
-	 * @param searchService
-	 * @param rendererService
-	 * @param resourceService
-	 */
+   * Constructor to create injected service(s) object
+   *
+   * Default method of CourseConsumptionComponent class
+   *
+   * @param route
+   * @param consumptionService
+   * @param activatedRoute
+   * @param searchService
+   * @param rendererService
+   * @param resourceService
+   */
   constructor(private route: Router,
     private consumptionService: CourseConsumptionService,
     private activatedRoute: ActivatedRoute,
@@ -131,13 +131,13 @@ export class CourseConsumptionComponent implements OnInit {
   }
 
   /**
-	 * Function to get dashboard data for given time period and course unique identifier
-	 *
-	 * @param {string} timePeriod  timePeriod: last 7d/14d/5w
-	 * @param {string} identifier  course unique identifier
-	 *
-	 * @example getDashboardData(7d, do_xxxxx)
-	 */
+   * Function to get dashboard data for given time period and course unique identifier
+   *
+   * @param {string} timePeriod  timePeriod: last 7d/14d/5w
+   * @param {string} identifier  course unique identifier
+   *
+   * @example getDashboardData(7d, do_xxxxx)
+   */
   getDashboardData(timePeriod: string, identifier: string) {
     this.showLoader = true;
     this.timePeriod = timePeriod ? timePeriod : '7d';
@@ -162,15 +162,15 @@ export class CourseConsumptionComponent implements OnInit {
   }
 
   /**
-	 * This function is used to validate given course identifier.
-	 *
-	 * User gets redirect to home page if url contains invalid identifier or
+   * This function is used to validate given course identifier.
+   *
+   * User gets redirect to home page if url contains invalid identifier or
    * valid identifier but logged-in user is not a owner of that identifier
-	 *
-	 * @param {string} identifier course unique identifier
-	 *
-	 * @example validateIdentifier(do_xxxxx)
-	 */
+   *
+   * @param {string} identifier course unique identifier
+   *
+   * @example validateIdentifier(do_xxxxx)
+   */
   validateIdentifier(identifier: string) {
     if (identifier) {
       const selectedCourse = _.find(this.myCoursesList, ['identifier', identifier]);
@@ -185,8 +185,8 @@ export class CourseConsumptionComponent implements OnInit {
   }
 
   /**
-	 * Get published course(s) of logged-in user
-	 */
+   * Get published course(s) of logged-in user
+   */
   getMyContent() {
     const searchParams = {
       status: ['Live'],
@@ -218,12 +218,12 @@ export class CourseConsumptionComponent implements OnInit {
   }
 
   /**
-	 * Function to change course selection and display selected course data
-	 *
-	 * @param {any} course course object containg course details
-	 *
-	 * @example onAfterCourseChange({name: Course 1, identifier: do_xxxxx})
-	 */
+   * Function to change course selection and display selected course data
+   *
+   * @param {any} course course object containg course details
+   *
+   * @example onAfterCourseChange({name: Course 1, identifier: do_xxxxx})
+   */
   onAfterCourseChange(course: any) {
     if (this.identifier === course.identifier) {
       return false;
@@ -233,36 +233,36 @@ export class CourseConsumptionComponent implements OnInit {
   }
 
   /**
-	 * Function to change time filter and get selected time period data.
-	 *
-	 * As of now dashboard supports only to show last 7 days, 14 days, and 5 weeks data
-	 *
-	 * @param {string} timePeriod timePeriod: last 7d / 14d / 5w
-	 *
-	 * @example onAfterFilterChange(7d)
-	 */
+   * Function to change time filter and get selected time period data.
+   *
+   * As of now dashboard supports only to show last 7 days, 14 days, and 5 weeks data
+   *
+   * @param {string} timePeriod timePeriod: last 7d / 14d / 5w
+   *
+   * @example onAfterFilterChange(7d)
+   */
   onAfterFilterChange(timePeriod: string) {
     if (this.timePeriod === timePeriod) {
-       return false;
+      return false;
     }
 
     this.route.navigate(['migration/dashboard/course/consumption', this.identifier, timePeriod]);
   }
 
   /**
-	 * Function used to switch graph - from Number of user per day to Time spent by day and vice versa
-	 *
-	 * @param {string} step next / previous
-	 */
+   * Function used to switch graph - from Number of user per day to Time spent by day and vice versa
+   *
+   * @param {string} step next / previous
+   */
   graphNavigation(step: string) {
     step === 'next' ? this.showGraph++ : this.showGraph--;
   }
 
   /**
-	 * Angular life cycle hook
-	 *
-	 * It indicates that angular is done creating the component
-	 */
+   * Angular life cycle hook
+   *
+   * It indicates that angular is done creating the component
+   */
   ngOnInit() {
   }
 }
