@@ -53,7 +53,7 @@ export class OrganisationComponent implements OnInit {
   /**
    * Contains Graph index to switch between two graphs
    */
-  showGraph = 0;
+  showGraph = 1;
 
   /**
    * Organization list
@@ -231,7 +231,7 @@ export class OrganisationComponent implements OnInit {
     if (this.datasetType === datasetType) {
       return false;
     }
-
+    this.showGraph = datasetType === 'creation' ? 1 : 0;
     this.route.navigate(['migration/dashboard/organization', datasetType, this.identifier, this.timePeriod]);
   }
 
@@ -283,7 +283,7 @@ export class OrganisationComponent implements OnInit {
         if (user && user.userProfile.organisationIds && user.userProfile.organisationIds.length) {
           this.getOrgDetails(user.userProfile.organisationIds);
         } else {
-          // this.route.navigate(['migration/groups']);
+          this.route.navigate(['migration/groups']);
         }
       },
       err => {
