@@ -60,7 +60,6 @@ describe('LineChartService', () => {
       const i = 0;
       const lable = 'Content created per day';
       const response = service.getChartOption(lable);
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', response);
       expect(response.legend.display).toEqual(true);
       // X-axes option
       expect(response.scales.xAxes[i].gridLines.display).toEqual(false);
