@@ -18,7 +18,7 @@ import { ResourceService, UserService, SearchService } from './../../../../servi
   styleUrls: ['./course-consumption.component.css']
 })
 
-export class CourseConsumptionComponent implements OnInit {
+export class CourseConsumptionComponent {
 
   /**
    * Contains time period - last 7days, 14days, and 5weeks
@@ -250,13 +250,5 @@ export class CourseConsumptionComponent implements OnInit {
    */
   graphNavigation(step: string) {
     step === 'next' ? this.showGraph++ : this.showGraph--;
-  }
-
-  /**
-   * Angular life cycle hook
-   *
-   * It indicates that angular is done creating the component
-   */
-  ngOnInit() {
   }
 }

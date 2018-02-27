@@ -21,7 +21,7 @@ import { ResourceService, UserService, SearchService } from './../../../../servi
 /**
  * @class OrganisationComponent
  */
-export class OrganisationComponent implements OnInit {
+export class OrganisationComponent {
 
   /**
    * Contains time period - last 7days, 14days, and 5weeks
@@ -340,13 +340,5 @@ export class OrganisationComponent implements OnInit {
         }
       );
     }
-  }
-
-  /**
-   * Angular life cycle hook
-   *
-   * It indicates that angular is done creating the component
-   */
-  ngOnInit() {
   }
 }
