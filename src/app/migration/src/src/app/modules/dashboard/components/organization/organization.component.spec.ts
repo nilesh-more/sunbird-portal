@@ -65,7 +65,6 @@ describe('OrganisationComponent', () => {
     (organisationService, searchService, userService) => {
       spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(testData.orgsDetailsSuccess));
       component.getOrgDetails(['01229679766115942443', '0123150108807004166']);
-      expect(component.showError).toBe(false);
       expect(component.showLoader).toBe(false);
       expect(component.myOrganizations.length).not.toBeUndefined();
       expect(component.myOrganizations.length).toBeGreaterThanOrEqual(2);
@@ -76,7 +75,6 @@ describe('OrganisationComponent', () => {
     (organisationService, searchService, userService) => {
       spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.of(testData.orgDetailsSuccess));
       component.getOrgDetails(['01229679766115942443']);
-      expect(component.showError).toBe(false);
       expect(component.myOrganizations.length).not.toBeUndefined();
       expect(component.myOrganizations.length).toEqual(1);
     }));
@@ -86,7 +84,6 @@ describe('OrganisationComponent', () => {
     (organisationService, searchService, userService) => {
       spyOn(searchService, 'getOrganisationDetails').and.callFake(() => Observable.throw({}));
       component.getOrgDetails(['01229679766115942443']);
-      expect(component.showError).toBe(true);
       expect(component.showLoader).toBe(false);
       expect(component.myOrganizations.length).toEqual(0);
     }));
@@ -98,7 +95,6 @@ describe('OrganisationComponent', () => {
       component.getDashboardData('7d', 'do_2123250076616048641482');
       fixture.detectChanges();
       expect(component.showDashboard).toBe(true);
-      expect(component.showError).toBe(false);
       expect(component.graphData.length).not.toBeUndefined();
       expect(component.blockData.length).toBeGreaterThanOrEqual(3);
       expect(component.graphData.length).toBeGreaterThanOrEqual(1);
@@ -111,7 +107,6 @@ describe('OrganisationComponent', () => {
     component.getDashboardData('7d', 'do_2123250076616048641482');
     fixture.detectChanges();
     expect(component.setError).toHaveBeenCalledWith(true);
-    expect(component.showError).toEqual(true);
     expect(component.showLoader).toBe(false);
     expect(component.blockData.length).toBe(0);
   }));

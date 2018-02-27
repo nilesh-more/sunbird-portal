@@ -81,11 +81,6 @@ export class OrganisationComponent implements OnInit {
   showLoader = true;
 
   /**
-   * To show error
-   */
-  showError = false;
-
-  /**
    * To show dashboard canvas
    */
   showDashboard = false;
@@ -270,7 +265,6 @@ export class OrganisationComponent implements OnInit {
    * @example setError(true)
    */
   setError(flag: boolean) {
-    this.showError = flag;
     this.showLoader = false;
   }
 

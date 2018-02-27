@@ -65,7 +65,6 @@ describe('CourseConsumptionComponent', () => {
     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccess));
     component.getMyContent();
     fixture.detectChanges();
-    expect(component.showError).toEqual(false);
     expect(component.myCoursesList).toBeDefined();
     expect(component.myCoursesList.length).toEqual(1);
     expect(component.identifier).toEqual('do_2124339707713126401772');
@@ -79,7 +78,6 @@ describe('CourseConsumptionComponent', () => {
     fixture.detectChanges();
     expect(component.blockData.length).toBeLessThanOrEqual(0);
     expect(component.myCoursesList.length).toEqual(0);
-    expect(component.showError).toEqual(true);
   }));
 
   // If search api returns more than one course
@@ -88,7 +86,6 @@ describe('CourseConsumptionComponent', () => {
     spyOn(searchService, 'searchContentByUserId').and.callFake(() => Observable.of(testData.searchSuccessWithCountTwo));
     component.getMyContent();
     fixture.detectChanges();
-    expect(component.showError).toEqual(false);
     expect(component.myCoursesList).toBeDefined();
     expect(component.isMultipleCourses).toEqual(true);
     expect(component.myCoursesList.length).toBeGreaterThan(1);
@@ -102,7 +99,6 @@ describe('CourseConsumptionComponent', () => {
       fixture.detectChanges();
       expect(component.blockData.length).toBeGreaterThan(1);
       expect(component.graphData.length).toBeGreaterThanOrEqual(1);
-      expect(component.showError).toEqual(false);
       expect(component.showLoader).toEqual(false);
   }));
 
@@ -110,15 +106,14 @@ describe('CourseConsumptionComponent', () => {
     spyOn(courseConsumptionService, 'getDashboardData').and.callFake(() => Observable.throw({}));
     component.getDashboardData('', 'do_2123250076616048641482');
     fixture.detectChanges();
-    expect(component.showError).toEqual(true);
     expect(component.blockData.length).toEqual(0);
-    expect(component.showError).toEqual(true);
     expect(component.showLoader).toEqual(false);
   }));
 
   it('should call onAfterCourseChange - and load graph', inject([Router], (route) => {
     component.identifier = 'do_2124319530479697921602';
     const courseDetails = { 'identifier': 'do_2124319530479697921602123' };
+    spyOn(component, 'onAfterCourseChange').and.callThrough();
     const response = component.onAfterCourseChange(courseDetails);
     fixture.detectChanges();
     expect(component.isMultipleCourses).toBeFalsy();

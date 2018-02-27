@@ -68,11 +68,6 @@ export class CourseConsumptionComponent implements OnInit {
   showLoader = true;
 
   /**
-   * To show error
-   */
-  showError = false;
-
-  /**
    * Contains boolean value to hide / show course selection dropdown
    */
   isMultipleCourses = false;
@@ -156,7 +151,6 @@ export class CourseConsumptionComponent implements OnInit {
       },
         err => {
           this.showLoader = false;
-          this.showError = true;
         }
       );
   }
@@ -189,9 +183,9 @@ export class CourseConsumptionComponent implements OnInit {
    */
   getMyContent() {
     const searchParams = {
-      status: ['Live'],
-      contentType: ['Course'],
-      params: { lastUpdatedOn: 'desc' }
+      status: ['Live', 'Draft'],
+      contentType: ['Course', 'Textbook'],
+      params: { lastUpdatedOn: 'desc', userId: 'b14e7747-e66d-49f3-8152-7a6706f0b530' }
     };
     this.searchService.searchContentByUserId(searchParams).subscribe(
       data => {
@@ -212,7 +206,6 @@ export class CourseConsumptionComponent implements OnInit {
         }
       },
       err => {
-        this.showError = true;
       }
     );
   }
@@ -226,6 +219,7 @@ export class CourseConsumptionComponent implements OnInit {
    */
   onAfterCourseChange(course: any) {
     if (this.identifier === course.identifier) {
+      console.log('same as previous');
       return false;
     }
 
