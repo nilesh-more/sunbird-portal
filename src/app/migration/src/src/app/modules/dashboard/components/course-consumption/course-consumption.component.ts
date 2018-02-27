@@ -183,9 +183,9 @@ export class CourseConsumptionComponent {
    */
   getMyContent() {
     const searchParams = {
-      status: ['Live', 'Draft'],
-      contentType: ['Course', 'Textbook'],
-      params: { lastUpdatedOn: 'desc', userId: 'b14e7747-e66d-49f3-8152-7a6706f0b530' }
+      status: ['Live'],
+      contentType: ['Course'],
+      params: { lastUpdatedOn: 'desc' }
     };
     this.searchService.searchContentByUserId(searchParams).subscribe(
       data => {
