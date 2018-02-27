@@ -6,14 +6,7 @@ import * as  urlConfig from '../../config/url.config.json';
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { DashboardUtilsService } from './../dashboard-utils.service';
 import * as _ from 'lodash';
-
-/**
- * Interface to hold api request data and dataset
- */
-interface RequestParam {
-  data: object;
-  dataset?: string;
-}
+import { Dashboard } from './../../index';
 
 /**
  * Service to get organization admin dashboard data
@@ -67,7 +60,7 @@ export class OrganisationService {
    *
    * @return {object} api response
    */
-  getDashboardData(requestParam: RequestParam) {
+  getDashboardData(requestParam: Dashboard) {
     const paramOptions = {
       url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, requestParam.dataset)
     };

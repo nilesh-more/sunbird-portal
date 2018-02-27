@@ -5,14 +5,7 @@ import 'rxjs/add/observable/throw';
 import * as _ from 'lodash';
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { DashboardUtilsService } from './../dashboard-utils.service';
-
-/**
- * Interface to hold api request data and dataset
- */
-interface RequestParam {
-  data: object;
-  dataset?: string;
-}
+import { Dashboard } from './../../index';
 
 /**
  * Service to get course consumption dashboard
@@ -27,9 +20,7 @@ interface RequestParam {
 export class CourseConsumptionService {
 
   /**
-   * Contains parsed snapshot data
-   *
-   * Snapshot data - authors and reviewers count
+   * Contains parsed snapshot data like authors and reviewers count
    */
   blockData: any;
 
@@ -45,11 +36,11 @@ export class CourseConsumptionService {
   /**
    * To get course consumption data by making api call
    *
-   * @param {object} requestParam identifier and time period
+   * @param {requestParam} requestParam identifier and time period
    *
    * @return {object} api response
    */
-  getDashboardData(requestParam: RequestParam) {
+  getDashboardData(requestParam: Dashboard) {
     const paramOptions = {
       url: this.dashboardUtil.constructDashboardApiUrl(requestParam.data, 'COURSE_CONSUMPTION')
     };

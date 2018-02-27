@@ -2,14 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { LearnerService } from './../../../../services/learner/learner.service';
 import { DashboardUtilsService } from './../dashboard-utils.service';
-
-/**
- * Interface to hold request data
- */
-interface RequestParam {
-  data: object;
-  dataset?: string;
-}
+import { Dashboard } from './../../index';
 
 /**
  * Service to download dashboard report
@@ -36,7 +29,7 @@ export class DownloadService {
    *
    * @param {object} requestParam identifier and time period
    */
-  getReport(requestParam: RequestParam) {
+  getReport(requestParam: Dashboard) {
     const requestBody = {
       url: this.dashboardUtil.constructDownloadReportApiUrl(requestParam.data, requestParam.dataset)
     };
