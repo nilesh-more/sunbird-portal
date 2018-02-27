@@ -20,7 +20,7 @@ describe('DashboardUtilsService', () => {
     const response = service.secondToMinConversion(numericRes);
     expect(service).toBeTruthy();
     expect(service.secondToMinConversion).toBeDefined();
-    expect(response.value).toEqual('12 second(s)');
+    expect(response.value).toEqual('12 Second');
   }));
 
   it('should return value in a min', inject([DashboardUtilsService], (service: DashboardUtilsService) => {
@@ -29,7 +29,7 @@ describe('DashboardUtilsService', () => {
     const response = service.secondToMinConversion(numericRes);
     expect(service).toBeTruthy();
     expect(service.secondToMinConversion).toBeDefined();
-    expect(response.value).toEqual('2 min(s)');
+    expect(response.value).toEqual('2 minutes');
   }));
 
   it('should return value in a hour', inject([DashboardUtilsService], (service: DashboardUtilsService) => {
@@ -38,7 +38,7 @@ describe('DashboardUtilsService', () => {
     const response = service.secondToMinConversion(numericRes);
     expect(service).toBeTruthy();
     expect(service.secondToMinConversion).toBeDefined();
-    expect(response.value).toEqual('1 hour(s)');
+    expect(response.value).toEqual('1 Hour');
   }));
 
   it('should return value in a hour', inject([DashboardUtilsService], (service: DashboardUtilsService) => {

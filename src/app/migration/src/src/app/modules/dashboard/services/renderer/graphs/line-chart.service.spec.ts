@@ -1,3 +1,4 @@
+import { ChartData } from './../../../interfaces/chart';
 import { TestBed, inject } from '@angular/core/testing';
 import { LineChartService } from './line-chart.service';
 import * as _ from 'lodash';
@@ -21,7 +22,7 @@ describe('LineChartService', () => {
     (service: LineChartService) => {
       spyOn(service, 'parseLineChart').and.callThrough();
       spyOn(service, 'getChartColors').and.callThrough();
-      const response = service.parseLineChart(testData.consumptionData);
+      const response = service.parseLineChart(testData.consumptionData[0]);
       expect(service).toBeTruthy();
       expect(service.getChartColors).toHaveBeenCalled();
       expect(response.length).not.toBe(0);
@@ -39,7 +40,7 @@ describe('LineChartService', () => {
     (service: LineChartService) => {
       spyOn(service, 'parseLineChart').and.callThrough();
       spyOn(service, 'getChartColors').and.callThrough();
-      const response = service.parseLineChart(testData.creationData);
+      const response = service.parseLineChart(testData.creationData[0]);
       expect(service).toBeTruthy();
       expect(service.getChartColors).toHaveBeenCalled();
       expect(response.length).not.toBe(0);
@@ -59,6 +60,7 @@ describe('LineChartService', () => {
       const i = 0;
       const lable = 'Content created per day';
       const response = service.getChartOption(lable);
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', response);
       expect(response.legend.display).toEqual(true);
       // X-axes option
       expect(response.scales.xAxes[i].gridLines.display).toEqual(false);

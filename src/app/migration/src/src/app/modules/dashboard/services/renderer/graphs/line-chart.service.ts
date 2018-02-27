@@ -91,7 +91,7 @@ export class LineChartService {
    *
    * @param {string} labelString get chart option
    */
-  getChartOption(labelString: string): object {
+  getChartOption(labelString: string) {
     return {
       legend: { display: true },
       scales: {
