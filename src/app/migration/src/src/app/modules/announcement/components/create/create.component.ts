@@ -8,6 +8,10 @@ import { CreateService } from './../../services/create/create.service';
 import { UserService } from '@sunbird/core';
 import { GeoLocationDetails } from './../../interfaces';
 import { IAnnouncementDetails } from '@sunbird/announcement';
+import { SuiModalService, TemplateModalConfig, ModalTemplate, ModalSize } from 'ng2-semantic-ui';
+interface IContext {
+  data: string;
+}
 
 // Rxjs
 import { Observable } from 'rxjs/Observable';
@@ -40,10 +44,23 @@ interface IAnnouncementAttachment {
   styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit, AfterViewInit {
+
   /**
    * Reference of Geo explorer component
+   *
+   * Geo component is responsible to render location list
    */
   @ViewChild(GeoExplorerComponent) geoExplorer: GeoExplorerComponent;
+
+  /**
+   * Get semantic ui modal template
+   */
+  @ViewChild('announcementFormModalTemplate')
+
+  /**
+   * Contains template reference of semantic ui modal
+   */
+  public modalTemplate: ModalTemplate<IContext, string, string>;
 
   /**
    * Announcement creation form name
@@ -97,6 +114,18 @@ export class CreateComponent implements OnInit, AfterViewInit {
    */
   attachments: Array<IAnnouncementAttachment>;
 
+  /**
+   * Flag to check user has entered / modified meta data
+   */
+  isMetaModified = false;
+
+  /**
+   * To show announcement success modal
+   */
+  showSuccess = false;
+
+  suiModalHandler: any;
+
   /*
    * Contains resource service ref
    */
@@ -128,13 +157,25 @@ export class CreateComponent implements OnInit, AfterViewInit {
   public createService: CreateService;
 
   /**
+   * To get user profile of logged-in user
+   */
+  public user: UserService;
+
+  /**
+   * Reference of semantic UI modal service
+   * It helps to configure modal popup
+   */
+  public modalService: SuiModalService;
+
+  /**
    * Default method of classs CreateComponent
    *
    * @param {ResourceService} resource To get language constant
    * @param {FileUploadService} fileUpload To upload file
    */
   constructor(resource: ResourceService, fileUpload: FileUploadService, activatedRoute: ActivatedRoute, route: Router,
-    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, private user: UserService) {
+    iziToast: ToasterService, formBuilder: FormBuilder, createService: CreateService, user: UserService,
+    modalService: SuiModalService) {
     this.stepNumber = 1;
     this.resource = resource;
     this.fileUpload = fileUpload;
@@ -143,10 +184,40 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.iziToast = iziToast;
     this.sbFormBuilder = formBuilder;
     this.createService = createService;
+    this.user = user;
+    this.modalService = modalService;
     this.recipientsList = [];
     this.attachments = [];
+    this.suiModalHandler = {
+      showCancelModal: false
+    };
   }
 
+  /**
+   * Funtion to configure modal settings like modal size, isClosable and callback function
+   */
+  public configureSuiModal() {
+    const config = new TemplateModalConfig<IContext, string, string>(this.modalTemplate);
+    config.closeResult = 'closed!';
+    config.size = 'large';
+    config.isClosable = true;
+    this.modalService
+      .open(config)
+      .onApprove(result => { })
+      .onDeny(result => {
+        if (this.isMetaModified) {
+          this.suiModalHandler.showCancelModal = true;
+        } else {
+          this.route.navigate(['announcement/outbox', 1]);
+        }
+      });
+  }
+
+  /**
+   * Function to get logged-in user root org id
+   *
+   * Root org id is needed to get and create announcement types
+   */
   getRootOrgId(): void {
     this.user.userData$.subscribe(
       user => {
@@ -161,6 +232,12 @@ export class CreateComponent implements OnInit, AfterViewInit {
     );
   }
 
+  /**
+   * Get announcement type by making http call
+   *
+   * Announcement type(s) are needed to create new annoucement.
+   * Without type(s) user won't be able to create new announcement
+   */
   getAnnouncementTypes(): void {
     if (this.createService._announcementTypes) {
       this.announcementTypes = this.createService._announcementTypes;
@@ -178,6 +255,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Executed when user click on add new link icon while creating announcement
+   *
+   * Helps user to add more than one web url
+   */
   addNewLink(): void {
     const arrayControl = <FormArray>this.announcementForm.controls['links'];
     arrayControl.push(this.sbFormBuilder.group({
@@ -185,11 +267,21 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }));
   }
 
+  /**
+   * Executed when user click on delete icon
+   *
+   * @param {number} index index of current url
+   */
   removeLink(index: number): void {
     const links = <FormArray>this.announcementForm.controls['links'];
     links.removeAt(index);
   }
 
+  /**
+   * Executed when user click on confirm recipients button
+   *
+   * It enforce user to select at least one location
+   */
   confirmRecipients(): void {
     this.recipientsList = this.geoExplorer.selectedItems;
     if (this.recipientsList && this.recipientsList.length) {
@@ -199,6 +291,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Executed when user click remove icon on confirm recipients page
+   *
+   * @param {GeoLocationDetails} item contains selected location details
+   */
   removeRecipient(item: GeoLocationDetails): void {
     _.remove(this.recipientsList, (recipient) => {
       if (recipient.id === item.id) {
@@ -213,6 +310,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Executed when user click on preview announcement button
+   *
+   * It helps user to show announcement preview - after creating the announcement how it will look
+   */
   previewAnnouncement(): void {
     const data = this.announcementForm.value;
     data.type = data.type.name;
@@ -222,6 +324,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.route.navigate(['announcement/create', 4]);
   }
 
+  /**
+   * Executed when user enter value input field value
+   */
   enableRecipientsBtn(): boolean {
     const data = this.announcementForm.value;
     if (data.title && data.from && data.type) {
@@ -241,7 +346,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Function to go previous step
+   * Navigate user to previous form step
+   *
+   * It helps user to change form input
    */
   previousStep(): void {
     const step = this.stepNumber - 1;
@@ -249,13 +356,15 @@ export class CreateComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Check user has filled all required form fields
+   * It gets executed when user directly hit the url.
+   *
+   * It navigates user to the first step if required fields data are not filled
    */
-  validateFormState(step: number): void {
+  validateFormState(): void {
     const data = this.announcementForm.value;
     if (data.title && data.from && data.type) {
-      if (data.links.length || data.description) {
-        console.log('previous all steps are good');
+      if (data.links.length || data.description || this.attachments && this.attachments.length) {
+        console.log('All good. Load next step');
       } else {
         this.route.navigate(['announcement/create', 1]);
       }
@@ -308,19 +417,25 @@ export class CreateComponent implements OnInit, AfterViewInit {
       uploadSuccess: this.onFileUploadSuccess
     };
 
-    this.fileUpload.initilizeFileUploader(options);
+    // this.fileUpload.initilizeFileUploader(options);
   }
 
+  /**
+   * To detech form input value changes.
+   */
   onFormValueChanges(): void {
     this.announcementForm.valueChanges.subscribe(val => {
+      this.isMetaModified = true;
       this.enableRecipientsBtn();
     });
   }
 
   /**
-   * Angular life cycle hook
+   * Executed when user come from any other page or directly hit the url
+   *
+   * It helps to initialize form fields and apply field level validation
    */
-  ngOnInit(): void {
+  initializeFormFields(): void {
     this.announcementForm = this.sbFormBuilder.group({
       title: ['', Validators.maxLength(100)],
       from: ['', null],
@@ -328,15 +443,23 @@ export class CreateComponent implements OnInit, AfterViewInit {
       description: ['', Validators.maxLength(1200)],
       links: this.sbFormBuilder.array([])
     });
+  }
+
+  /**
+   * Angular life cycle hook
+   */
+  ngOnInit(): void {
+    this.initializeFormFields();
     this.activatedRoute.params.subscribe(params => {
       if (params.stepNumber) {
         this.stepNumber = params.stepNumber;
-        this.validateFormState(params.stepNumber);
+        this.validateFormState();
       }
     });
 
     this.getRootOrgId();
     this.onFormValueChanges();
+    setTimeout(() => this.configureSuiModal(), 0);
   }
 
   redirectToOutbox(): void {
