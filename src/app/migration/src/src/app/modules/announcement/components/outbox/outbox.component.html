@@ -1,5 +1,5 @@
 <div>
-  <div class="ui grid">
+  <div class="ui grid margin-top-10">
     <div class="one wide column"></div>
     <div class="ten wide column">
       <div class="ui grid">
@@ -12,7 +12,7 @@
         <div class="right floated three wide column padding-right-dropdown padding-right-10">
           <div class="ui float-ContentRight">
             <button class="ui primary basic button announcementButton" (click)="createAnnouncement();">
-              <span class="announcementButtonText">{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
+              <span class="announcementButtonText" [routerLink]="['../../create/1']">{{resourceService?.frmelmnts?.lbl?.anncmntcreate}}</span>
             </button>
           </div>
         </div>

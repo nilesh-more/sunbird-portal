@@ -71,6 +71,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
   announcementTypes: any;
 
   /**
+   * This variable is used to show/hide creation modal
+   */
+  hideModal: string;
+
+  /**
    * Contains announcement recipients list
    */
   recipientsList: Array<GeoLocationDetails>;
@@ -287,7 +292,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.createService.saveAnnouncement(data).
       subscribe(
         (res: ServerResponse) => {
-          this.iziToast.success('Announcement created successfully');
+         // this.iziToast.success('Announcement created successfully');
+          this.hideModal = 'create';
         },
         (err: ServerResponse) => {
         }
@@ -331,5 +337,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
     this.getRootOrgId();
     this.onFormValueChanges();
+  }
+
+  redirectToOutbox(): void {
+    this.route.navigate(['announcement/outbox/1']);
   }
 }
