@@ -43,6 +43,13 @@ export class FileUploadService {
   }
 
   /**
+   * Return the global native browser window object
+   */
+  get getWindowObject(): any {
+    return window;
+  }
+
+  /**
    * Default file upload configuration. It can be easily override by passing component specific config.
    *
    * Default config contains http params - url and headers and allowed file extension(s) and size
@@ -117,6 +124,9 @@ export class FileUploadService {
         },
         onCancel: options.onCancel
       },
+    };
+    this.getWindowObject.cancelUploadFile = function () {
+      document.getElementById('hide-section-with-button').style.display = 'block';
     };
     setTimeout(() => {
       this.uploader = new FineUploader(this.uiOptions);
